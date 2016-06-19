@@ -13,6 +13,7 @@ function fetchResult(qno, data) {
 
     $.ajax('/home/' + qno, {
         data: data,
+        cache: false,
         success: function (data, status, xhrObj) {
             console.log("ajax success");
             $('#result').html(data);

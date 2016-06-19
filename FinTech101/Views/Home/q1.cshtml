@@ -1,45 +1,92 @@
 ﻿@using FinTech101.Models
-@{ 
-    List<KeyAndCount> years = ViewBag.years;
-    List<SP_Q1_StockEntityWasUpOrDownByPercentResult> result = ViewBag.result;
+@{
+    var years = ViewBag.years;
+    string charttitle = Convert.ToString(ViewBag.title);
+    string howerdescription =Convert.ToString(ViewBag.Descirption);
+    // List<SP_Q1_StockEntityWasUpOrDownByPercentResult> result = ViewBag.result;
+
 }
-<table border="1" width="75%">
-    <thead>
-        <tr>
-            <td align="center">
-                Month / Year
-            </td>
-            @{
-                foreach (var yearItem in years)
-                {
-                    <td align="center" style="font-weight:bold">
-                        @yearItem.Key <br/> (@yearItem.Count)
-                    </td>
-                }
+
+
+
+
+
+<div id="chartdiv" style="width: 100%; height: 500px;"></div>
+
+
+
+
+<script type="text/javascript">
+
+    function fetchResult(qno, data) {
+        initResults();
+
+        $.ajax('/home/' + qno, {
+            data: data,
+            cache: false,
+            success: function (data, status, xhrObj) {
+                console.log("ajax success");
+                $('#result').html(data);
+            },
+            error: function (xhrObj, status, errorThrown) {
+                resultWasError();
             }
-        </tr>
-    </thead>
-    <tbody>
-        @{ 
-            for(int m=1; m<=12; m++)
-            {
-                <tr>
-                    <td align="center" style="font-weight:bold">
-                        @*@new DateTime(2010, 8, 1).ToString("MMM", CultureInfo.InvariantCulture);*@
-                        @(new System.Globalization.DateTimeFormatInfo().GetMonthName(m).ToString())
-                    </td>
-                    @foreach(var yearItem in years)
-                    {
-                        var monthDays = (from r in result where r.year == int.Parse(yearItem.Key) && r.month == m select r.theDate).ToList();
-                        <td align="center">
-                            @foreach(var monthDay in monthDays)
-                            {
-                                @monthDay<br/>
-                            }
-                        </td>
-                    }
-                </tr>
-            }
+        });
+    }
+    function handleClick(event) {
+        // alert(event.item.category + ": " + event.item.values.value);
+        fetchResult('q1',
+           {
+               setID: $('#set_selection').val(),
+               seID: $('#q1_se').val(),
+               upOrDown: $('#q1_uod').val(),
+               percent: $('#q1_percent').val(),
+               fromYear: $('#q1_from_year').val(),
+               toYear: $('#q1_to_year').val(),
+               yearvalue :event.item.category
+           });
+
+    }
+
+    var title= "@charttitle";
+    var description="@howerdescription";
+    var data= @Html.Raw(years);
+
+
+    var chart = AmCharts.makeChart("chartdiv", {
+        "type": "serial",
+        "theme": "none",
+        "creditsPosition": "top-right",
+        "autoMargins": false,
+        "marginLeft": 30,
+        "marginRight": 8,
+        "marginTop": 10,
+        "marginBottom": 26,
+        "titles": [{
+            "text": ""+title+""
+        }],
+        listeners: [{
+            "event": "clickGraphItem",
+            "method": handleClick
+        }],
+        "dataProvider": data,
+        "startDuration": 1,
+        "graphs": [{
+            "alphaField": "alpha",
+            "balloonText": "<span style='font-size:13px;'>[[category]]:<b>[[value]]</b> [[additional]]</span> <br>"+description+"",
+            "dashLengthField": "dashLengthColumn",
+            "fillAlphas": 1,
+            "title": "",
+            "type": "column",
+            "valueField": "Key",
+            "urlField": "url"
+        }],
+        "categoryField": "Value",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0,
+            "tickLength": 0
         }
-    </tbody>
-</table>
+    });
+
+</script>

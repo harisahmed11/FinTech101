@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Web.Script.Serialization;
 
 namespace FinTech101.Controllers
 {
@@ -75,156 +75,178 @@ namespace FinTech101.Controllers
         }
 
         // On what dates was the Stock of an entity up and or down by 'n' percent in a Date Range
-        public ActionResult q1(int setID /* StockEntityTypeID */, int seID /* StockEntityID */, string upOrDown, decimal percent, int fromYear, int toYear)
+        public ActionResult q1(int setID /* StockEntityTypeID */, int seID /* StockEntityID */, string upOrDown, decimal percent, int fromYear, int toYear,int? yearvalue)
         {
+            var jsonSerialiser = new JavaScriptSerializer();
             var result = FintechService.StockEntityWasUpOrDownByPercent(setID, seID, upOrDown, percent, fromYear, toYear);
-
-            ViewBag.result = result;
-
-            ViewBag.years = (from p in result
-                             group p by p.year into g
-                             select new KeyAndCount
-                             {
-                                 Key = g.Key.ToString(),
-                                 Count = g.Count()
-                             }).ToList();
-
-            return PartialView();
-        }
-
-        // What were the number of good / bad / neutral days for a Stock Entity in a specified year
-        public ActionResult q2(int setID, int seID, int year)
-        {
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+            var listyear = (from p in result
+                            group p by p.year into g
+                            select new
+                            {
+                                Key = g.Count(),
+                                Value = g.Key.ToString()
+                            }).ToList();
+            var listofyearinJson = jsonSerialiser.Serialize(listyear);
+            ViewBag.years = listofyearinJson;
+            ViewBag.title = "Year wise Representation";
+            ViewBag.Descirption = "Click to Drill In";
+            if (yearvalue.HasValue)
             {
-                var result = aadc.SP_Q2_StockEntityGoodAndBadDays(seID, setID, year);
-
-                ViewBag.result = result.ToList();
-            }
-
-            return PartialView();
-        }
-
-        // Months in which a Stock entity was up or down in a date range
-        public ActionResult q3(int setID, int seID, int from_year, int to_year, bool isPartial)
-        {
-            ViewData["RESULT"] = FintechService.StockEntityWasUpOrDownMonths(setID, seID, from_year, to_year);
-            ViewData["SE"] = FintechService.GetStockEntity(setID, seID);
-
-            ViewBag.isPartial = isPartial;
-
-            return PartialView();
-        }
-        public JsonResult q3_json(int companyID, int from_year, int to_year)
-        {
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
-            {
-                //var result = aadc.SP_MonthsCompanyWasUpOrDown(from_year, to_year, companyID);
-
-                //ViewBag.result = result.ToList();
-            }
-
-            return Json(ViewBag.result, JsonRequestBehavior.AllowGet);
-        }
-
-        // Which companies were up more than n percent in selected date range
-        public ActionResult q5(int setID, int from_year, int to_year, decimal percent)
-        {
-            ViewBag.result = FintechService.StockEntityTypesWhichWereUpMoreThanEnnPercentOfTheTime(setID, from_year, to_year, percent);
-
-            ViewBag.percent = percent;
-            ViewBag.fromYear = from_year;
-            ViewBag.toYear = to_year;
-            ViewBag.setID = setID;
-
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
-            {
-                ViewData["SELECTED_SET"] = (from p in aadc.StockEntityTypes where p.StockEntityTypeID == setID select p).First();
-            }
-
-            return PartialView();
-        }
-
-        public ActionResult q4(int setID, int seID, int eventID, int daysBefore, int daysAfter, bool isPartial = false)
-        {
-            List<TableRowViewModel> model = null;
-            Q4_ViewModel newResult = null;
-
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
-            {
-                var eventDate = (from p in aadc.Events
-                                 where p.EventID == eventID
-                                 select new
-                                 {
-                                     StartDate = p.StartsOn,
-                                     EndDate = p.EndsOn
-                                 }).FirstOrDefault();
-                try
+                var lstitm = new List<KeyValuePair<int, string>>();
+                for (int m = 1; m <= 12; m++)
                 {
-                    //model = FintechService.GetStockEntityPricesAroundDates_UI(setID, seID, eventDate.StartDate, eventDate.EndDate.HasValue ? eventDate.EndDate : null, daysBefore, daysAfter);
-                    newResult = FintechService.GetStockEntityPricesAroundDates(setID, seID, eventDate.StartDate, eventDate.EndDate, daysBefore, daysAfter);
+                    var monthname = new System.Globalization.DateTimeFormatInfo().GetMonthName(m).ToString();
+                    int count = 0;
+                    var monthDays = (from r in result where r.year == yearvalue && r.month == m select r.theDate).ToList();
+                    foreach (var mday in monthDays)
+                    {
+                        count++;
+                    }
+                    lstitm.Add(new KeyValuePair<int, string>(count, monthname));
                 }
-                catch (Exception ex)
-                {
-
-                }
+                var monthdetailsinJson = jsonSerialiser.Serialize(lstitm);
+                ViewBag.years = monthdetailsinJson;
+                ViewBag.title = "Monthly Representaiton of Year " + yearvalue;
+                ViewBag.Descirption = "Click to Drill Out";
             }
-
-            ViewBag.isPartial = isPartial;
-
-            if (isPartial)
-                return (PartialView("q4_pivoted", newResult));
-            else
-                return (View("q4_pivoted", newResult));
-        }
-
-        public ActionResult q4_1(int setID, int eventID, int daysBefore, int daysAfter)
-        {
-            Q4_1_Model model = new Q4_1_Model();
-            model.SetID = setID;
-            model.EventID = eventID;
-
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
-            {
-                var eventDate = (from p in aadc.Events
-                                 where p.EventID == eventID
-                                 select new
-                                 {
-                                     StartDate = p.StartsOn,
-                                     EndDate = p.EndsOn
-                                 }).FirstOrDefault();
-
-                model.IsRangeEvent = eventDate.EndDate.HasValue ? true : false;
-
-                model.Result = FintechService.GetAllStockEntityPricesAroundDates(setID, null, eventDate.StartDate, eventDate.EndDate.HasValue ? eventDate.EndDate : null, daysBefore, daysAfter);
-
-                model.DaysBefore = daysBefore;
-                model.DaysAfter = daysAfter;
-            }
-
-            return (View("q4_1", model));
-        }
-
-        public ActionResult q4_2(int seID, int companyEventType, int daysBefore, int daysAfter)
-        {
-            DataTable result;
-
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
-            {
-                result = FintechService.GetPricesChangeBasedOnCompanyEvent(seID,companyEventType, daysBefore, daysAfter);
-            }
-
-            return (PartialView("q4_2", result));
-        }
-
-        public ActionResult q7(int anchorSeID, int targetSetID, int targetSeID, decimal anchorPercent, int targetAfterDays, int fromYear, int toYear)
-        {
-            using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
-            {
-                ViewData["result"] = aadc.SP_Q7_GetStockEntityPricesBasedOnSomeOtherStockEntity(5, anchorSeID, targetSetID, targetSeID, anchorPercent, targetAfterDays, fromYear, toYear).ToList();
-            }
-
-            return (View());
-        }
+            //ViewBag.result = result;          
+            return PartialView();
     }
+
+   
+    // What were the number of good / bad / neutral days for a Stock Entity in a specified year
+    public ActionResult q2(int setID, int seID, int year)
+    {
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            var result = aadc.SP_Q2_StockEntityGoodAndBadDays(seID, setID, year);
+
+            ViewBag.result = result.ToList();
+        }
+
+        return PartialView();
+    }
+
+    // Months in which a Stock entity was up or down in a date range
+    public ActionResult q3(int setID, int seID, int from_year, int to_year, bool isPartial)
+    {
+        ViewData["RESULT"] = FintechService.StockEntityWasUpOrDownMonths(setID, seID, from_year, to_year);
+        ViewData["SE"] = FintechService.GetStockEntity(setID, seID);
+
+        ViewBag.isPartial = isPartial;
+
+        return PartialView();
+    }
+    public JsonResult q3_json(int companyID, int from_year, int to_year)
+    {
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            //var result = aadc.SP_MonthsCompanyWasUpOrDown(from_year, to_year, companyID);
+
+            //ViewBag.result = result.ToList();
+        }
+
+        return Json(ViewBag.result, JsonRequestBehavior.AllowGet);
+    }
+
+    // Which companies were up more than n percent in selected date range
+    public ActionResult q5(int setID, int from_year, int to_year, decimal percent)
+    {
+        ViewBag.result = FintechService.StockEntityTypesWhichWereUpMoreThanEnnPercentOfTheTime(setID, from_year, to_year, percent);
+
+        ViewBag.percent = percent;
+        ViewBag.fromYear = from_year;
+        ViewBag.toYear = to_year;
+        ViewBag.setID = setID;
+
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            ViewData["SELECTED_SET"] = (from p in aadc.StockEntityTypes where p.StockEntityTypeID == setID select p).First();
+        }
+
+        return PartialView();
+    }
+
+    public ActionResult q4(int setID, int seID, int eventID, int daysBefore, int daysAfter, bool isPartial = false)
+    {
+        List<TableRowViewModel> model = null;
+        Q4_ViewModel newResult = null;
+
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            var eventDate = (from p in aadc.Events
+                             where p.EventID == eventID
+                             select new
+                             {
+                                 StartDate = p.StartsOn,
+                                 EndDate = p.EndsOn
+                             }).FirstOrDefault();
+            try
+            {
+                //model = FintechService.GetStockEntityPricesAroundDates_UI(setID, seID, eventDate.StartDate, eventDate.EndDate.HasValue ? eventDate.EndDate : null, daysBefore, daysAfter);
+                newResult = FintechService.GetStockEntityPricesAroundDates(setID, seID, eventDate.StartDate, eventDate.EndDate, daysBefore, daysAfter);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        ViewBag.isPartial = isPartial;
+
+        if (isPartial)
+            return (PartialView("q4_pivoted", newResult));
+        else
+            return (View("q4_pivoted", newResult));
+    }
+
+    public ActionResult q4_1(int setID, int eventID, int daysBefore, int daysAfter)
+    {
+        Q4_1_Model model = new Q4_1_Model();
+        model.SetID = setID;
+        model.EventID = eventID;
+
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            var eventDate = (from p in aadc.Events
+                             where p.EventID == eventID
+                             select new
+                             {
+                                 StartDate = p.StartsOn,
+                                 EndDate = p.EndsOn
+                             }).FirstOrDefault();
+
+            model.IsRangeEvent = eventDate.EndDate.HasValue ? true : false;
+
+            model.Result = FintechService.GetAllStockEntityPricesAroundDates(setID, null, eventDate.StartDate, eventDate.EndDate.HasValue ? eventDate.EndDate : null, daysBefore, daysAfter);
+
+            model.DaysBefore = daysBefore;
+            model.DaysAfter = daysAfter;
+        }
+
+        return (View("q4_1", model));
+    }
+
+    public ActionResult q4_2(int seID, int companyEventType, int daysBefore, int daysAfter)
+    {
+        DataTable result;
+
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            result = FintechService.GetPricesChangeBasedOnCompanyEvent(seID, companyEventType, daysBefore, daysAfter);
+        }
+
+        return (PartialView("q4_2", result));
+    }
+
+    public ActionResult q7(int anchorSeID, int targetSetID, int targetSeID, decimal anchorPercent, int targetAfterDays, int fromYear, int toYear)
+    {
+        using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
+        {
+            ViewData["result"] = aadc.SP_Q7_GetStockEntityPricesBasedOnSomeOtherStockEntity(5, anchorSeID, targetSetID, targetSeID, anchorPercent, targetAfterDays, fromYear, toYear).ToList();
+        }
+
+        return (View());
+    }
+}
 }

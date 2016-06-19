@@ -24,7 +24,8 @@ namespace FinTech101
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/fintech").Include(
-                      "~/Scripts/fintech.js"));
+                      "~/Scripts/fintech.js",
+                      "~/Content/amcharts/amcharts.js", "~/Content/amcharts/serial.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

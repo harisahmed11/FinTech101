@@ -191,6 +191,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\amcharts\amcharts.js" />
+    <Content Include="Content\amcharts\theme\black.js" />
+    <Content Include="Content\amcharts\theme\chalk.js" />
+    <Content Include="Content\amcharts\theme\dark.js" />
+    <Content Include="Content\amcharts\theme\light.js" />
+    <Content Include="Content\amcharts\theme\patterns.js" />
+    <Content Include="Content\amcharts\serial.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
