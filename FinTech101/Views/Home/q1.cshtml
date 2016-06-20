@@ -8,11 +8,7 @@
 }
 
 
-
-
-
 <div id="chartdiv" style="width: 100%; height: 500px;"></div>
-
 
 
 
@@ -52,41 +48,81 @@
     var description="@howerdescription";
     var data= @Html.Raw(years);
 
-
     var chart = AmCharts.makeChart("chartdiv", {
         "type": "serial",
         "theme": "none",
         "creditsPosition": "top-right",
         "autoMargins": false,
-        "marginLeft": 30,
-        "marginRight": 8,
+        "marginLeft": 60,
+        "marginRight": 15,
         "marginTop": 10,
         "marginBottom": 26,
         "titles": [{
             "text": ""+title+""
-        }],
-        listeners: [{
-            "event": "clickGraphItem",
-            "method": handleClick
-        }],
+        }],       
         "dataProvider": data,
         "startDuration": 1,
         "graphs": [{
             "alphaField": "alpha",
             "balloonText": "<span style='font-size:13px;'>[[category]]:<b>[[value]]</b> [[additional]]</span> <br>"+description+"",
             "dashLengthField": "dashLengthColumn",
-            "fillAlphas": 1,
+            "fillAlphas": 1,           
             "title": "",
             "type": "column",
             "valueField": "Key",
-            "urlField": "url"
-        }],
+            "urlField": ""
+        }],       
         "categoryField": "Value",
+        "rotate": true,
+        listeners: [{
+            "event": "clickGraphItem",
+            "method": handleClick 
+        }],
+        valueAxes: [{
+            guides: [{
+                value: 40,
+                lineColor: "#CC0000",
+                lineAlpha: 3,
+                dashLength: 3,
+                inside: true,
+                labelRotation: 90,
+                label: "Average of xyz...",
+                position:"right",
+                above:true,
+                "balloonText": "<span style='font-size:14px; color:#000000;'><b>Average</b></span>",
+            
+            }],
+            "listeners": [{
+                "event": "clickItem",
+                "method": function(event) {
+                    window.location.href ="https://www.google.com";// event.serialDataItem.dataContext.url;
+                }
+            }]
+        }],
         "categoryAxis": {
             "gridPosition": "start",
-            "axisAlpha": 0,
-            "tickLength": 0
+            "axisAlpha": 90,
+            "tickLength": 0,
+            "listeners": [{
+                "event": "clickItem",
+                "method": function(event) {
+                    window.location.href ="https://www.google.com";// event.serialDataItem.dataContext.url;
+                }
+            }],
+            //"guides": [{
+            //    category: "2013",
+            //    lineColor: "#CC0000",
+            //    lineAlpha: 3,
+            //    dashLength: 3,
+            //    inside: true,
+            //    labelRotation: 90,
+            //    label: "Average of xyz...",
+            //    position:"right",
+            //    above:true,
+            //    "balloonText": "<span style='font-size:14px; color:#000000;'><b>Average</b></span>",
+            //}]
         }
     });
-
+   
+    
 </script>
