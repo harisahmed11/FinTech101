@@ -10,7 +10,7 @@
 </p>
 <p class="well well-sm" style="width:65%">
     <span style="font-weight:bold">Q1:</span> How many times was @Html.DropDownList("q1_se", Model.StockEntities) <select id="q1_uod"><option value="up">up</option><option value="down">down</option> </select>
-    by <input type="text" id="q1_percent" value="1" /> % from @Html.DropDownList("q1_from_year", Model.SetActiveYears_From) to @Html.DropDownList("q1_to_year", Model.SetActiveYears_To) <button id="q1_go">Go</button>
+    by <input type="text" id="q1_percent" value="1" /> % from @Html.DropDownList("q1_from_year", Model.SetActiveYears_From) to @Html.DropDownList("q1_to_year", Model.SetActiveYears_To) <button id="q1_go">Go</button><button id="q1_d3">Go by d3.js</button>
 </p>
 <p class="well well-sm" style="width:65%">
     <span style="font-weight:bold">Q2:</span> What have been the best and worst days for @Html.DropDownList("q2_se", Model.StockEntities) in @Html.DropDownList("q2_year", Model.SetActiveYears_To) <button id="q2_go">Go</button>

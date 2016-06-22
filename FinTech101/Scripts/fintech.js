@@ -60,6 +60,18 @@ $(function () {
             });
     });
 
+    $("#q1_d3").on("click", function () {
+        fetchResult('q1_d3',
+            {
+                setID: $('#set_selection').val(),
+                seID: $('#q1_se').val(),
+                upOrDown: $('#q1_uod').val(),
+                percent: $('#q1_percent').val(),
+                fromYear: $('#q1_from_year').val(),
+                toYear: $('#q1_to_year').val(),
+            });
+    });
+
     $("#q2_go").on("click", function () {
         fetchResult("q2",
             {

@@ -113,9 +113,47 @@ namespace FinTech101.Controllers
             return PartialView();
     }
 
-   
-    // What were the number of good / bad / neutral days for a Stock Entity in a specified year
-    public ActionResult q2(int setID, int seID, int year)
+        public ActionResult q1_d3(int setID /* StockEntityTypeID */, int seID /* StockEntityID */, string upOrDown, decimal percent, int fromYear, int toYear, int? yearvalue)
+        {
+            var jsonSerialiser = new JavaScriptSerializer();
+            var result = FintechService.StockEntityWasUpOrDownByPercent(setID, seID, upOrDown, percent, fromYear, toYear);
+            var listyear = (from p in result
+                            group p by p.year into g
+                            select new
+                            {
+                                Key = g.Count(),
+                                Value = g.Key.ToString()
+                            }).ToList();
+            var listofyearinJson = jsonSerialiser.Serialize(listyear);
+            ViewBag.years = listofyearinJson;
+            ViewBag.title = "Year wise Representation";
+            ViewBag.Descirption = "Click to Drill In";
+            if (yearvalue.HasValue)
+            {
+                var lstitm = new List<KeyValuePair<int, string>>();
+                for (int m = 1; m <= 12; m++)
+                {
+                    var monthname = new System.Globalization.DateTimeFormatInfo().GetMonthName(m).ToString();
+                    int count = 0;
+                    var monthDays = (from r in result where r.year == yearvalue && r.month == m select r.theDate).ToList();
+                    foreach (var mday in monthDays)
+                    {
+                        count++;
+                    }
+                    lstitm.Add(new KeyValuePair<int, string>(count, monthname));
+                }
+                var monthdetailsinJson = jsonSerialiser.Serialize(lstitm);
+                ViewBag.years = monthdetailsinJson;
+                ViewBag.title = "Monthly Representaiton of Year " + yearvalue;
+                ViewBag.Descirption = "Click to Drill Out";
+            }
+            //ViewBag.result = result;          
+            return PartialView();
+        }
+
+
+        // What were the number of good / bad / neutral days for a Stock Entity in a specified year
+        public ActionResult q2(int setID, int seID, int year)
     {
         using (ArgaamAnalyticsDataContext aadc = new ArgaamAnalyticsDataContext())
         {

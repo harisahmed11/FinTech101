@@ -1,0 +1,176 @@
+﻿@using FinTech101.Models
+    @{
+        var years = ViewBag.years;
+        string charttitle = Convert.ToString(ViewBag.title);
+        string howerdescription = Convert.ToString(ViewBag.Descirption);
+        // List<SP_Q1_StockEntityWasUpOrDownByPercentResult> result = ViewBag.result;
+
+    }
+
+<style>
+    body {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .bar {
+        fill: orange;
+    }
+
+        .bar:hover {
+            fill: orangered;
+        }
+
+    .x.axis path {
+        display: none;
+    }
+
+    .d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+            box-sizing: border-box;
+            display: inline;
+            font-size: 10px;
+            width: 100%;
+            line-height: 1;
+            color: rgba(0, 0, 0, 0.8);
+            content: "\25BC";
+            position: absolute;
+            text-align: center;
+        }
+
+        /* Style northward tooltips differently */
+        .d3-tip.n:after {
+            margin: -1px 0 0 0;
+            top: 100%;
+            left: 0;
+        }
+</style>
+
+<body>
+    <script src="~/Content/d3.js/d3.min.js"></script>
+    <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
+
+    <script>
+        var jsonData = @Html.Raw(years);
+        var margin = { top: 40, right: 20, bottom: 30, left: 70 },
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        var formatPercent = d3.format(".0%");
+
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1);
+
+        var y = d3.scale.linear()
+            .range([height, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+           
+
+        var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function (d) {
+              return "<strong>Entries are :</strong> <span style='color:red'>" + d.Key + "</span>";
+          })
+        function fetchResult(qno, data) {
+            initResults();
+
+            $.ajax('/home/' + qno, {
+                data: data,
+                cache: false,
+                success: function (data, status, xhrObj) {
+                    console.log("ajax success");
+                    $('#result').html("");
+                    $('#result').empty().append(data);
+                },
+                error: function (xhrObj, status, errorThrown) {
+                    resultWasError();
+                }
+            });
+        }
+        //var barclicked = 
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .data(jsonData);
+        
+        svg.call(tip);
+
+
+        x.domain(jsonData.map(function (d) { return d.Value; }));
+        y.domain([0, d3.max(jsonData, function (d) { return d.Key; })]);
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+          .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Total Entries by Year");
+
+        svg.selectAll(".bar")
+            .data(jsonData)
+          .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function (d) { return x(d.Value); })
+            .attr("width", x.rangeBand())
+            .attr("y", function (d) { return y(d.Key); })
+            .attr("height", function (d) { return height - y(d.Key); })
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
+            .on('click', function (d){
+                fetchResult('q1_d3',
+               {
+                   setID: $('#set_selection').val(),
+                   seID: $('#q1_se').val(),
+                   upOrDown: $('#q1_uod').val(),
+                   percent: $('#q1_percent').val(),
+                   fromYear: $('#q1_from_year').val(),
+                   toYear: $('#q1_to_year').val(),
+                   yearvalue :d.Value
+               });
+            })
+
+
+        function type(d) {
+            d.Key = +d.Key;
+            return d;
+        }
+
+        
+
+    </script>
+
+</body>

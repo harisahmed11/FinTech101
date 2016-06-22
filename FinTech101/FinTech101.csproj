@@ -200,11 +200,15 @@
     <Content Include="Content\amcharts\serial.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\d3.js\d3.js" />
+    <Content Include="Content\d3.js\d3.min.js" />
+    <Content Include="Content\d3.js\d3.tip.v0.6.3.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="App_Data\data.tsv" />
     <None Include="Models\ArgaamAnalytics.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <SubType>Designer</SubType>
@@ -277,10 +281,9 @@
     <Content Include="Views\Home\q4_1.cshtml" />
     <Content Include="Views\Home\q4_2.cshtml" />
     <Content Include="Views\Home\q4_pivoted.cshtml" />
+    <Content Include="Views\Home\q1_d3.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
