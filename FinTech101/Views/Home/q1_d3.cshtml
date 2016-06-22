@@ -20,11 +20,11 @@
     }
 
     .bar {
-        fill: orange;
+       /*fill: orange;*/
     }
 
         .bar:hover {
-            fill: orangered;
+            fill: royalblue;
         }
 
     .x.axis path {
@@ -66,6 +66,8 @@
     <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
     <script>
+        
+        d3.select("svg").remove();
         var jsonData = @Html.Raw(years);
         var margin = { top: 40, right: 20, bottom: 30, left: 70 },
             width = 960 - margin.left - margin.right,
@@ -130,6 +132,8 @@
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
+   
+
         svg.append("g")
             .attr("class", "y axis")
             .call(yAxis)
@@ -146,6 +150,7 @@
             .attr("class", "bar")
             .attr("x", function (d) { return x(d.Value); })
             .attr("width", x.rangeBand())
+
             .attr("y", function (d) { return y(d.Key); })
             .attr("height", function (d) { return height - y(d.Key); })
             .on('mouseover', tip.show)
@@ -162,8 +167,9 @@
                    yearvalue :d.Value
                });
             })
-
-
+           .attr("fill", function(d) {
+               return "rgb(0, 0, " + (d.Key * 10) + ")";
+           });
         function type(d) {
             d.Key = +d.Key;
             return d;
