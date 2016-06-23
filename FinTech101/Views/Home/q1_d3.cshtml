@@ -3,8 +3,6 @@
         var years = ViewBag.years;
         string charttitle = Convert.ToString(ViewBag.title);
         string howerdescription = Convert.ToString(ViewBag.Descirption);
-        // List<SP_Q1_StockEntityWasUpOrDownByPercentResult> result = ViewBag.result;
-
     }
 
 <style>
@@ -66,8 +64,7 @@
     <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
     <script>
-        
-        d3.select("svg").remove();
+        d3.select("svg").remove();     
         var jsonData = @Html.Raw(years);
         var margin = { top: 40, right: 20, bottom: 30, left: 70 },
             width = 960 - margin.left - margin.right,
@@ -112,8 +109,6 @@
                 }
             });
         }
-        //var barclicked = 
-
         var svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -123,7 +118,6 @@
         
         svg.call(tip);
 
-
         x.domain(jsonData.map(function (d) { return d.Value; }));
         y.domain([0, d3.max(jsonData, function (d) { return d.Key; })]);
 
@@ -131,8 +125,6 @@
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
-
-   
 
         svg.append("g")
             .attr("class", "y axis")
@@ -150,12 +142,13 @@
             .attr("class", "bar")
             .attr("x", function (d) { return x(d.Value); })
             .attr("width", x.rangeBand())
-
             .attr("y", function (d) { return y(d.Key); })
             .attr("height", function (d) { return height - y(d.Key); })
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
             .on('click', function (d){
+                tip.hide(d) //hide the tip Over the bar...
+                //call controller with ajax
                 fetchResult('q1_d3',
                {
                    setID: $('#set_selection').val(),
@@ -166,16 +159,16 @@
                    toYear: $('#q1_to_year').val(),
                    yearvalue :d.Value
                });
+               
             })
            .attr("fill", function(d) {
                return "rgb(0, 0, " + (d.Key * 10) + ")";
            });
+       
         function type(d) {
             d.Key = +d.Key;
             return d;
         }
-
-        
 
     </script>
 
