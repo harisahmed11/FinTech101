@@ -1,9 +1,9 @@
 ﻿@using FinTech101.Models
-    @{
-        var years = ViewBag.years;
-        string charttitle = Convert.ToString(ViewBag.title);
-        string howerdescription = Convert.ToString(ViewBag.Descirption);
-    }
+@{
+    var years = ViewBag.years;
+    string charttitle = Convert.ToString(ViewBag.title);
+    string howerdescription = Convert.ToString(ViewBag.Descirption);
+}
 
 <style>
     body {
@@ -18,7 +18,7 @@
     }
 
     .bar {
-       /*fill: orange;*/
+        /*fill: orange;*/
     }
 
         .bar:hover {
@@ -41,7 +41,7 @@
         /* Creates a small triangle extender for the tooltip */
         .d3-tip:after {
             box-sizing: border-box;
-            display: inline;
+            display: marker;
             font-size: 10px;
             width: 100%;
             line-height: 1;
@@ -57,119 +57,168 @@
             top: 100%;
             left: 0;
         }
+
+     .line {
+            fill: none;
+            stroke: #444;
+            stroke-width: 1.5px;
+            stroke-opacity:0.5;
+     
+        }
 </style>
 
-<body>
-    <script src="~/Content/d3.js/d3.min.js"></script>
-    <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
+<div id="bargraph"></div>
 
-    <script>
-        d3.select("svg").remove();     
-        var jsonData = @Html.Raw(years);
-        var margin = { top: 40, right: 20, bottom: 30, left: 70 },
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+<script src="~/Content/d3.js/d3.min.js"></script>
+<script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
-        var formatPercent = d3.format(".0%");
+<script>
+    //d3.select("svg").remove();
+    var dataset = @Html.Raw(years);
 
-        var x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+    var w = 800;
+    var h = 500;
+    var padding = 60;
+  
 
-        var y = d3.scale.linear()
-            .range([height, 0]);
+    var title= "@charttitle";
+    var description="@howerdescription";
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10,0])
+      
+   
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left")
+
+    function fetchResult(qno, data) {
+        initResults();
+
+        $.ajax('/home/' + qno, {
+            data: data,
+            cache: false,
+            success: function (data, status, xhrObj) {
+                console.log("ajax success");
+                $('#result').html("");
+                $('#result').empty().append(data);
+            },
+            error: function (xhrObj, status, errorThrown) {
+                resultWasError();
+            }
+        });
+    }
+
+    //Create scale functions
+    var xScale = d3.scale.linear()
+                         .domain([0, d3.max(dataset, function(d) { return d.Key; })])
+                         .range([padding, w - padding]);
+
+    var yScale = d3.scale.ordinal()
+                         .rangeRoundBands([0, h], .1)
+                         .domain(dataset.map(function (d) { return d.Value; }));
+
+    
+    var y2 = d3.scale.ordinal()
+                         .rangeRoundBands([0, h+padding+5], 0)
+                         .domain(dataset.map(function (d) { return d.Value; }));
+
+
+    //Define X axis
+    var xAxis = d3.svg.axis()
+                      .scale(xScale)
+                      .orient("bottom")
+                      .ticks(5);
+
+    //Define Y axis
+    var yAxis = d3.svg.axis()
+                      .scale(yScale)
+                      .orient("left")
+
+
+    //Create SVG element
+    var svg = d3.select("#bargraph")
+                .append("svg")
+                .attr("width", w+padding)
+                .attr("height", h+padding);
+
+    svg.call(tip);
+
+    svg.selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", 0 + padding )
+        .attr("width",function (d) { return  xScale(d.Key)-padding; })
+        .attr("y", function (d) { return yScale(d.Value) })
+        .attr("height",  yScale.rangeBand())
+        .attr("fill", "Red")
+        .on('mouseover', function(d){
            
-
-        var tip = d3.tip()
-          .attr('class', 'd3-tip')
-          .offset([-10, 0])
-          .html(function (d) {
-              return "<strong>Entries are :</strong> <span style='color:red'>" + d.Key + "</span>";
-          })
-        function fetchResult(qno, data) {
-            initResults();
-
-            $.ajax('/home/' + qno, {
-                data: data,
-                cache: false,
-                success: function (data, status, xhrObj) {
-                    console.log("ajax success");
-                    $('#result').html("");
-                    $('#result').empty().append(data);
-                },
-                error: function (xhrObj, status, errorThrown) {
-                    resultWasError();
-                }
-            });
-        }
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                .data(jsonData);
-        
-        svg.call(tip);
-
-        x.domain(jsonData.map(function (d) { return d.Value; }));
-        y.domain([0, d3.max(jsonData, function (d) { return d.Key; })]);
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Total Entries by Year");
-
-        svg.selectAll(".bar")
-            .data(jsonData)
-          .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return x(d.Value); })
-            .attr("width", x.rangeBand())
-            .attr("y", function (d) { return y(d.Key); })
-            .attr("height", function (d) { return height - y(d.Key); })
-            .on('mouseover', tip.show)
-            .on('mouseout', tip.hide)
-            .on('click', function (d){
-                tip.hide(d) //hide the tip Over the bar...
-                //call controller with ajax
-                fetchResult('q1_d3',
-               {
-                   setID: $('#set_selection').val(),
-                   seID: $('#q1_se').val(),
-                   upOrDown: $('#q1_uod').val(),
-                   percent: $('#q1_percent').val(),
-                   fromYear: $('#q1_from_year').val(),
-                   toYear: $('#q1_to_year').val(),
-                   yearvalue :d.Value
-               });
-               
+            tip.html(function (d) {
+                return "<strong>Entries are :</strong> <span style='color:red'>" + d.Key + "</span> <br/>"+ description ;
             })
-           .attr("fill", function(d) {
-               return "rgb(0, 0, " + (d.Key * 10) + ")";
+            tip.show(d)
+        })
+        .on('mouseout', function(d){
+            tip.hide(d)
+            
+        })
+        .on('click', function (d){
+            tip.hide(d) //hide the tip Over the bar...
+            //call controller with ajax
+            fetchResult('q1_d3',
+           {
+               setID: $('#set_selection').val(),
+               seID: $('#q1_se').val(),
+               upOrDown: $('#q1_uod').val(),
+               percent: $('#q1_percent').val(),
+               fromYear: $('#q1_from_year').val(),
+               toYear: $('#q1_to_year').val(),
+               yearvalue :d.Value
            });
+
+        });
+
+
+
+    //Create X axis
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + h  + ")")
+        .call(xAxis)
+        .on("click", function(d) {  alert('clicked!'); });
+
+    //Create Y axis
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + padding + ",0)")
+        .call(yAxis)
+        .on("click", function(d) {  alert('clicked!'); });
+
+    var dataSum = d3.sum(dataset, function (d) { return d.Key; });
+   
+    var line = d3.svg.line()
+       .x(function (d, i) { return xScale(dataSum / dataset.length); })
+       .y(function (d, i) { return y2(d.Value) + i; })
        
-        function type(d) {
-            d.Key = +d.Key;
-            return d;
-        }
+    svg.append("path")
+        .datum(dataset)
+        .attr("class", "line")
+        .attr("d", line)
+        .on('mouseover', function(d){
+            
+            tip.html(function (d) {
+                return "<strong>Average is </strong> <span style='color:red'>" + dataSum / dataset.length + "</span>" ;
+            })
+            tip.show(d)
+        })
+        .on('mouseout', function(d){
+            tip.hide(d)
+            
+        });
 
-    </script>
 
-</body>
+
+</script>
+
