@@ -3,6 +3,12 @@
     var years = ViewBag.years;
     string charttitle = Convert.ToString(ViewBag.title);
     string howerdescription = Convert.ToString(ViewBag.Descirption);
+    int? yearvalue = null;
+    if (ViewBag.yrvalue!=null)
+    {
+        yearvalue = Convert.ToInt32(ViewBag.yrvalue);
+    }
+
 }
 
 <style>
@@ -78,64 +84,121 @@
     var w = 800;
     var h = 500;
     var padding = 60;
-    var margintop=30;
-    var title= "@charttitle";
-    var description="@howerdescription";
+    var title = "@charttitle";
+    var description = "@howerdescription";
+    var yrvalue="@yearvalue";
 
 
-
-    var xScale =d3.scale.ordinal()
-                .domain(dataset.map(function (d) { return d.Value; }))
-                 .rangeRoundBands([0, w], .1)
-
-    var yScale =d3.scale.linear()
-                .domain([0, d3.max(dataset, function(d) { return d.Key; })])
-                .range([h - padding -margintop ,0]);
-                   
-    var xAxis = d3.svg.axis()
-                      .scale(xScale)
-                      .orient("bottom");
-                      
-
-    //Define Y axis
-    var yAxis = d3.svg.axis()
-                      .scale(yScale)
-                      .orient("left")
-
-    //Create SVG element
-    var svg = d3.select("#bargraph")
-                .append("svg")
-                .attr("width", w+padding)
-                .attr("height", h+padding);
-
-    //Create X axis
-    svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(" + padding + "," + h  + ")")
-        .call(xAxis)
-        .on("click", function(d) {  alert('clicked!'); });
-
-    svg.selectAll("text.bar")
-          .data(dataset)
-          .enter().append("text")
-          .attr("text-anchor", "middle")
-          .attr("x", function(d) { return xScale(d.Value)+padding; })
-          .attr("y", function(d) { return yScale(d.Key) - 10; })
-          .text(function(d) { return d.Key; });
-    
-
-    svg.selectAll("rect")
-        .data(dataset)
-        .enter()
-        .append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d) { return xScale(d.Value) + padding; })
-        .attr("width",xScale.rangeBand())
-        .attr("y", function(d) { return yScale(d.Key);})
-        .attr("height", function(d) { return h- yScale(d.Key); })
-        .attr("fill", "Red")
-
+        var xScale = d3.scale.ordinal()
+                    .domain(dataset.map(function (d) { return d.Value; }))
+                     .rangeRoundBands([0, w], .1)
            
+
+        var yScale = d3.scale.linear()
+                    .domain([0, d3.max(dataset, function (d) { return d.Key; })])
+                    .range([h - padding , 0]);
+
+        var xAxis = d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom");
+
+
+        //Define Y axis
+        var yAxis = d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left")
+
+        //Create SVG element
+        var svg = d3.select("#bargraph")
+                    .append("svg")
+                    .attr("width", w + padding)
+                    .attr("height", h + padding)
+
+
+        //Create X axis
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(" + padding + "," + h + ")")
+            .call(xAxis)
+            .on("click", function (d) { alert('clicked!'); });
+
+        ////Create Y axis
+        //svg.append("g")
+        //    .attr("class", "axis")
+        //    .attr("transform", "translate(" + padding + "," + padding + ")")
+        //    .call(yAxis);
+
+
+        var barwidth = xScale.rangeBand() / 2;
+        console.log(barwidth);
+
+        svg.selectAll("text.bar")
+            .data(dataset)
+            .enter().append("text")
+            .attr("text-anchor", "middle")
+            .attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
+            .attr("y", function (d) { return yScale(d.Key)+padding-5; })
+            .text(function (d) { return d.Key; });
+
+        svg.append("text")
+            .attr("x", (w +padding)/ 2)             
+            .attr("y",padding/2)
+            .attr("text-anchor", "middle")  
+            .style("font-size", "16px") 
+            .style("font-weight", "bold")  
+            .text(""+title+"")
+
+
+        svg.selectAll("rect")
+            .data(dataset)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            //.attr("x", function (d) { return xScale(d.Value) + padding; })
+            .attr("x", function (d) { return xScale(d.Value) + padding; })
+            .attr("width", xScale.rangeBand())
+            .attr("y", function (d) { return yScale(d.Key)+padding; })
+            .attr("height", function (d) { return h - yScale(d.Key)-padding; })
+            .attr("fill", "Red")
+            .on('click', function (d){
+                 
+                console.log(d.Key.length);
+                if(d.Key.length>2)
+                {
+                    //call controller with ajax
+                    fetchResult('q1_d3',
+                   {
+                       setID: $('#set_selection').val(),
+                       seID: $('#q1_se').val(),
+                       upOrDown: $('#q1_uod').val(),
+                       percent: $('#q1_percent').val(),
+                       fromYear: $('#q1_from_year').val(),
+                       toYear: $('#q1_to_year').val(),                          
+                       yearvalue :d.Key,                      
+                   });
+                
+                }
+                else{
+                    //call controller with ajax
+                    fetchResult('q1_d3',
+                   {
+                       setID: $('#set_selection').val(),
+                       seID: $('#q1_se').val(),
+                       upOrDown: $('#q1_uod').val(),
+                       percent: $('#q1_percent').val(),
+                       fromYear: $('#q1_from_year').val(),
+                       toYear: $('#q1_to_year').val(),                           
+                       yearvalue :yrvalue,
+                       monthValue: d.Key
+                   });
+                
+                }
+                    
+
+                });
+
+
+
 
          //.attr("x", function(d) { return x(d.date); })
          // .attr("width", x.rangeBand())
@@ -150,7 +213,7 @@
         //})
         //.on('mouseout', function(d){
         //    tip.hide(d)
-            
+
         //})
         //.on('click', function (d){
         //    tip.hide(d) //hide the tip Over the bar...
@@ -178,8 +241,8 @@
     //var tip = d3.tip()
     //  .attr('class', 'd3-tip')
     //  .offset([-10,0])
-      
-   
+
+
 
 
     //function fetchResult(qno, data) {
@@ -208,7 +271,7 @@
     //                     .rangeRoundBands([0, h], .1)
     //                     .domain(dataset.map(function (d) { return d.Value; }));
 
-    
+
     //var y2 = d3.scale.ordinal()
     //                     .rangeRoundBands([0, h+padding+5], 0)
     //                     .domain(dataset.map(function (d) { return d.Value; }));
@@ -245,7 +308,7 @@
     //    .attr("height",  yScale.rangeBand())
     //    .attr("fill", "Red")
     //    .on('mouseover', function(d){
-           
+
     //        tip.html(function (d) {
     //            return "<strong>Entries are :</strong> <span style='color:red'>" + d.Key + "</span> <br/>"+ description ;
     //        })
@@ -253,7 +316,7 @@
     //    })
     //    .on('mouseout', function(d){
     //        tip.hide(d)
-            
+
     //    })
     //    .on('click', function (d){
     //        tip.hide(d) //hide the tip Over the bar...
@@ -293,14 +356,14 @@
     //var line = d3.svg.line()
     //   .x(function (d, i) { return xScale(dataSum / dataset.length); })
     //   .y(function (d, i) { return y2(d.Value) + i; })
-       
+
     //svg.append("path")
     //    .datum(dataset)
     //    .attr("class", "line")
     //    .attr("d", line)
     //    .style("stroke-dasharray", ("3, 3"))
     //    .on('mouseover', function(d){
-            
+
     //        tip.html(function (d) {
     //            return "<strong>Average is </strong> <span style='color:red'>" + dataSum / dataset.length + "</span>" ;
     //        })
@@ -308,14 +371,14 @@
     //    })
     //    .on('mouseout', function(d){
     //        tip.hide(d)
-            
+
     //    });
 
     //svg.append("text")
-    //    .attr("x", (width / 2))             
+    //    .attr("x", (width / 2))
     //    .attr("y", 10)
-    //    .attr("text-anchor", "middle")  
-    //    .style("font-size", "16px") 
+    //    .attr("text-anchor", "middle")
+    //    .style("font-size", "16px")
     //    .text("Value vs Date Graph");
 
 </script>

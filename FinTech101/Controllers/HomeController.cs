@@ -79,6 +79,10 @@ namespace FinTech101.Controllers
         {
             var jsonSerialiser = new JavaScriptSerializer();
             var result = FintechService.StockEntityWasUpOrDownByPercent(setID, seID, upOrDown, percent, fromYear, toYear);
+
+
+            
+                            
             var listyear = (from p in result
                             group p by p.year into g
                             select new
@@ -108,12 +112,13 @@ namespace FinTech101.Controllers
                 ViewBag.years = monthdetailsinJson;
                 ViewBag.title = "Monthly Representaiton of Year " + yearvalue;
                 ViewBag.Descirption = "Click to Drill Out";
+                ViewBag.yrvalue = yearvalue;
             }
             //ViewBag.result = result;          
             return PartialView();
     }
 
-        public ActionResult q1_d3(int setID /* StockEntityTypeID */, int seID /* StockEntityID */, string upOrDown, decimal percent, int fromYear, int toYear, int? yearvalue)
+        public ActionResult q1_d3(int setID /* StockEntityTypeID */, int seID /* StockEntityID */, string upOrDown, decimal percent, int fromYear, int toYear, int? yearvalue, int? monthValue)
         {
             var jsonSerialiser = new JavaScriptSerializer();
             var result = FintechService.StockEntityWasUpOrDownByPercent(setID, seID, upOrDown, percent, fromYear, toYear);
@@ -128,6 +133,26 @@ namespace FinTech101.Controllers
             ViewBag.years = listofyearinJson;
             ViewBag.title = "Year wise Representation";
             ViewBag.Descirption = "Click to Drill In";
+
+            //Show Days for the Selected Year and Month
+            if (monthValue != null && yearvalue != null)
+            {
+                var selectedyr = yearvalue;
+                var selectedmonth = monthValue;
+                var daysbymonth = (from p in result
+                                   orderby p.year & p.month
+                                   where p.year == selectedyr & p.month == selectedmonth
+                                   select new
+                                   {
+                                       Key = p.day,
+                                       Value = p.theDate
+                                   }).ToList();
+                var daysdetail = jsonSerialiser.Serialize(daysbymonth);
+                ViewBag.years = daysdetail;
+
+            }
+
+            //show's month for selected year
             if (yearvalue.HasValue)
             {
                 var lstitm = new List<KeyValuePair<int, string>>();
