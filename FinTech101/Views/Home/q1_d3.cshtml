@@ -196,8 +196,9 @@
         .call(yAxis)
         .on("click", function(d) {  alert('clicked!'); });
 
-    var dataSum = d3.sum(dataset, function (d) { return d.Key; });
-   
+    var dataSum =0;
+    dataSum = d3.sum(dataset, function (d) { return d.Key; });
+
     var line = d3.svg.line()
        .x(function (d, i) { return xScale(dataSum / dataset.length); })
        .y(function (d, i) { return y2(d.Value) + i; })
@@ -206,6 +207,7 @@
         .datum(dataset)
         .attr("class", "line")
         .attr("d", line)
+        .style("stroke-dasharray", ("3, 3"))
         .on('mouseover', function(d){
             
             tip.html(function (d) {
@@ -218,7 +220,12 @@
             
         });
 
-
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 10)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .text("Value vs Date Graph");
 
 </script>
 
