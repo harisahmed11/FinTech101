@@ -3,17 +3,12 @@
     var years = ViewBag.years;
     string charttitle = Convert.ToString(ViewBag.title);
     string howerdescription = Convert.ToString(ViewBag.Descirption);
-    int? yearvalue = null;
-    if (ViewBag.yrvalue!=null)
-    {
-        yearvalue = Convert.ToInt32(ViewBag.yrvalue);
-    }
+    int? yearvalue = ViewBag.yrvalue;
+
+    //}
 
 }
-
 <style>
-  
-
     .axis path,
     .axis line {
         fill: none;
@@ -62,13 +57,11 @@
             top: 100%;
             left: 0;
         }
-
      .line {
             fill: none;
             stroke: #444;
             stroke-width: 1.5px;
             stroke-opacity:0.5;
-     
         }
 </style>
 
@@ -88,11 +81,10 @@
     var description = "@howerdescription";
     var yrvalue="@yearvalue";
 
-
         var xScale = d3.scale.ordinal()
                     .domain(dataset.map(function (d) { return d.Value; }))
                      .rangeRoundBands([0, w], .1)
-           
+
 
         var yScale = d3.scale.linear()
                     .domain([0, d3.max(dataset, function (d) { return d.Key; })])
@@ -123,10 +115,10 @@
             .on("click", function (d) { alert('clicked!'); });
 
         ////Create Y axis
-        //svg.append("g")
-        //    .attr("class", "axis")
-        //    .attr("transform", "translate(" + padding + "," + padding + ")")
-        //    .call(yAxis);
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(" + padding + "," + padding + ")")
+            .call(yAxis);
 
 
         var barwidth = xScale.rangeBand() / 2;
@@ -141,11 +133,11 @@
             .text(function (d) { return d.Key; });
 
         svg.append("text")
-            .attr("x", (w +padding)/ 2)             
+            .attr("x", (w +padding)/ 2)
             .attr("y",padding/2)
-            .attr("text-anchor", "middle")  
-            .style("font-size", "16px") 
-            .style("font-weight", "bold")  
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
             .text(""+title+"")
 
 
@@ -161,10 +153,11 @@
             .attr("height", function (d) { return h - yScale(d.Key)-padding; })
             .attr("fill", "Red")
             .on('click', function (d){
-                 
-                console.log(d.Key.length);
-                if(d.Key.length>2)
+                var a=(d.Value).toString();
+                //show months wise data.
+                if(a.length==4)
                 {
+                    console.log("clicked on year length is "+a.length);
                     //call controller with ajax
                     fetchResult('q1_d3',
                    {
@@ -173,27 +166,30 @@
                        upOrDown: $('#q1_uod').val(),
                        percent: $('#q1_percent').val(),
                        fromYear: $('#q1_from_year').val(),
-                       toYear: $('#q1_to_year').val(),                          
-                       yearvalue :d.Key,                      
+                       toYear: $('#q1_to_year').val(),
+                       yearvalue :d.Value,
                    });
-                
+
                 }
-                else{
+                else
+                    //show Day wise data.
+                if(a.length>4){
                     //call controller with ajax
-                    fetchResult('q1_d3',
-                   {
+                  console.log("clicked on month length is "+a.length);
+                  fetchResult('q1_d3_1',
+                  {
                        setID: $('#set_selection').val(),
                        seID: $('#q1_se').val(),
                        upOrDown: $('#q1_uod').val(),
                        percent: $('#q1_percent').val(),
                        fromYear: $('#q1_from_year').val(),
-                       toYear: $('#q1_to_year').val(),                           
-                       yearvalue :yrvalue,
+                       toYear: $('#q1_to_year').val(),
+                       yearvalue :"@yearvalue",
                        monthValue: d.Key
                    });
                 
                 }
-                    
+
 
                 });
 

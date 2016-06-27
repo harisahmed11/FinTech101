@@ -282,6 +282,7 @@
     <Content Include="Views\Home\q4_2.cshtml" />
     <Content Include="Views\Home\q4_pivoted.cshtml" />
     <Content Include="Views\Home\q1_d3.cshtml" />
+    <Content Include="Views\Home\q1_d3_1.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
