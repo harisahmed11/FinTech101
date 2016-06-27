@@ -115,10 +115,10 @@
             .on("click", function (d) { alert('clicked!'); });
 
         ////Create Y axis
-        svg.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(" + padding + "," + padding + ")")
-            .call(yAxis);
+        //svg.append("g")
+        //    .attr("class", "axis")
+        //    .attr("transform", "translate(" + padding + "," + padding + ")")
+        //    .call(yAxis);
 
 
         var barwidth = xScale.rangeBand() / 2;
@@ -154,10 +154,11 @@
             .attr("fill", "Red")
             .on('click', function (d){
                 var a=(d.Value).toString();
-                //show months wise data.
-                if(a.length==4)
+                var isnum = /^\d+$/.test(a);
+                
+                if(isnum)
                 {
-                    console.log("clicked on year length is "+a.length);
+                    
                     //call controller with ajax
                     fetchResult('q1_d3',
                    {
@@ -173,9 +174,9 @@
                 }
                 else
                     //show Day wise data.
-                if(a.length>4){
+                {
                     //call controller with ajax
-                  console.log("clicked on month length is "+a.length);
+                  
                   fetchResult('q1_d3_1',
                   {
                        setID: $('#set_selection').val(),
