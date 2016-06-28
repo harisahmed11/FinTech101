@@ -220,14 +220,9 @@ namespace FinTech101.Controllers
                 {
                     lstforDayandcount.Add(new KeyValuePair<int, int>(line.Count, Convert.ToInt32(line.Day)));
                 }
-
-
-
                 var daysdetail = jsonSerialiser.Serialize(lstforDayandcount);
                 ViewBag.years = daysdetail;
-
-            }
-                    
+            }                  
             return PartialView();
         }
 
