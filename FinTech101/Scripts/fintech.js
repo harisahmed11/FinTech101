@@ -10,8 +10,7 @@ function resultWasError() {
 
 function fetchResult(qno, data) {
     initResults();
-
-    $.ajax('/home/' + qno, {
+        $.ajax('/home/' + qno, {
         data: data,
         cache: false,
         success: function (data, status, xhrObj) {

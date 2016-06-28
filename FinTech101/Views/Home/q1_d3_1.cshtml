@@ -2,7 +2,6 @@
 @{
     var years = ViewBag.years;
     string charttitle = Convert.ToString(ViewBag.title);
-    string howerdescription = Convert.ToString(ViewBag.Descirption);
     int? yearvalue = ViewBag.yrvalue;
 }
 <style>
@@ -30,7 +29,7 @@
 <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
 <script>
-    //d3.select("svg").remove();
+
     @*//var dataset = @Html.Raw(years);*@
     var dataset = [{ "Key": 1, "Value": 20 },
                    { "Key": 1, "Value": 27 },
@@ -45,8 +44,6 @@
     var h = 500;
     var padding = 60;
     var title = "@charttitle";
-    var description = "@howerdescription";
-    var yrvalue="@yearvalue";
 
     var xScale = d3.scale.ordinal()
                 .domain(dataset.map(function (d) { return d.Value; }))
@@ -80,15 +77,15 @@
         .call(xAxis)
         .on("click", function (d) { alert('clicked!'); });
 
-    ////Create Y axis
-    //svg.append("g")
-    //    .attr("class", "axis")
-    //    .attr("transform", "translate(" + padding + "," + padding + ")")
-    //    .call(yAxis);
-
-
     var barwidth = xScale.rangeBand() / 2;
    
+    svg.append("text")
+    .attr("x", (w + padding) / 2)
+    .attr("y", padding / 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .text("" + title + "")
 
     svg.selectAll("circle")
                .data(dataset)
@@ -101,19 +98,6 @@
                .on('click', function (d) {
                    alert('circle clicked');
                });
-
-   
-    //for (var i in dataset) {       
-    //    var key = dataset[i].Key;     
-    //    for (var j =1; j <= key;j++)
-    //    {
-    //        //console.log("keyy in dataset iteration "+i+" is :"+j)
-    //        var yplot = j;
-            
-    //        console.log("y plot is " + yplot);
-                  
-    //    }
-    //}
    
 </script>
 

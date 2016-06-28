@@ -131,41 +131,7 @@ namespace FinTech101.Controllers
                             }).ToList();
             var listofyearinJson = jsonSerialiser.Serialize(listyear);
             ViewBag.years = listofyearinJson;
-            ViewBag.title = "Year wise Representation";
-            ViewBag.Descirption = "Click to Drill In";
-
-            //Show Days for the Selected Year and Month
-            if (monthValue.HasValue && yearvalue.HasValue)
-            {
-                var selectedyr = yearvalue;
-                var selectedmonth = monthValue;
-                var daysbymonth = (from p in result
-                                   orderby p.year & p.month
-                                   where p.year == selectedyr & p.month == selectedmonth
-                                   select new
-                                   {
-                                       Key = p.day,
-                                       Value = p.theDate
-                                   }).ToList();
-
-                var lstforDayandcount = new List<KeyValuePair<int, int>>();
-                foreach (var line in daysbymonth.GroupBy(info => info.Key)
-                        .Select(group => new
-                        {               
-                            Day = group.Key,
-                            Count = group.Count()
-                        }))
-                {
-                    lstforDayandcount.Add(new KeyValuePair<int,int>(line.Count,Convert.ToInt32(line.Day)));
-                }
-                       
-                
-
-                var daysdetail = jsonSerialiser.Serialize(lstforDayandcount);
-                ViewBag.years = daysdetail;
-
-            }
-            else
+            ViewBag.title = "Year wise Representation";      
             //show's month for selected year
             if (yearvalue.HasValue)
             {
@@ -183,19 +149,16 @@ namespace FinTech101.Controllers
                 }
                 var monthdetailsinJson = jsonSerialiser.Serialize(lstitm);
                 ViewBag.years = monthdetailsinJson;
-                ViewBag.title = "Monthly Representaiton of Year " + yearvalue;
-                ViewBag.Descirption = "Click to Drill Out";
-                ViewBag.yrvalue = yearvalue;
+                ViewBag.title = "Monthly Representaiton of Year " + yearvalue; 
+                ViewBag.yrvalue = yearvalue; //Save the Selected year For Use in Fetching Days of the selected month
             }
-            //ViewBag.result = result;          
             return PartialView();
         }
 
         public ActionResult q1_d3_1(int setID /* StockEntityTypeID */, int seID /* StockEntityID */, string upOrDown, decimal percent, int fromYear, int toYear, int? yearvalue, int? monthValue)
         {
             var jsonSerialiser = new JavaScriptSerializer();
-            var result = FintechService.StockEntityWasUpOrDownByPercent(setID, seID, upOrDown, percent, fromYear, toYear);
-           
+            var result = FintechService.StockEntityWasUpOrDownByPercent(setID, seID, upOrDown, percent, fromYear, toYear);          
             //Show Days for the Selected Year and Month
             if (monthValue.HasValue && yearvalue.HasValue)
             {
@@ -222,6 +185,7 @@ namespace FinTech101.Controllers
                 }
                 var daysdetail = jsonSerialiser.Serialize(lstforDayandcount);
                 ViewBag.years = daysdetail;
+                ViewBag.title = "Days of the Month of "+monthValue +" in " + yearvalue;
             }                  
             return PartialView();
         }
