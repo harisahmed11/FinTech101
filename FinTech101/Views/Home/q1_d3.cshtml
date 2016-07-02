@@ -13,16 +13,39 @@
         shape-rendering: crispEdges;
     }
 
+    .bar {
+        fill: red;
+    }
+
         .bar:hover {
             fill: royalblue;
-            cursor:pointer;
+            cursor: pointer;
         }
 
     .x.axis path {
         display: none;
     }
 
+    .graphtitletext {
+        text-anchor: middle;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .bartext {
+        text-anchor: middle;
+        font-weight: bold;
+    }
+
+    .line {
+        fill: none;
+        stroke: #444;
+        stroke-width: 1.5px;
+        stroke-opacity: 0.5;
+    }
 </style>
+
+
 
 <div id="bargraph"></div>
 
@@ -30,32 +53,40 @@
 <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
 <script>
-    
-    var dataset = @Html.Raw(years);
-    var w = 800;
-    var h = 500;
-    var padding = 60;
-    var title = "@charttitle";
-    var yrvalue="@yearvalue";
 
-        var xScale = d3.scale.ordinal()
-                    .domain(dataset.map(function (d) { return d.Value; }))
-                     .rangeRoundBands([0, w], .1)
+    var data=@Html.Raw(years);
+
+    var barConfig = new Object();
+    barConfig={
+        div_name : "Result",
+        height: 500,
+        width: 800,
+        dataset:data,
+        api_url: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
+        bar_css_class: "bar",
+        bar_title_class:"graphtitletext",
+        bar_text_css_class: "bartext",
+        bar_hover_css_class: "bar",//I Think this is not usefull for us.
+        show_category_axis_label_vertical: false,
+        show_graph_horizontally: true,
+        show_Average_line: true,
+        Show_Scale:false //hide X-axis Scale or if Vertical then Y-Axis Scale
+    }
+
+    $(document).ready(function () {
+        window.load = graph(barConfig);
+    });
 
 
-        var yScale = d3.scale.linear()
-                    .domain([0, d3.max(dataset, function (d) { return d.Key; })])
-                    .range([h - padding , 0]);
+    function graph(Object){
 
-        var xAxis = d3.svg.axis()
-                          .scale(xScale)
-                          .orient("bottom");
+        var dataset =  Object.dataset;
+        var w = Object.width;
+        var h = Object.height;
+        var padding = 60;
+        var title = "@charttitle";
+        var yrvalue="@yearvalue";
 
-
-        //Define Y axis
-        var yAxis = d3.svg.axis()
-                          .scale(yScale)
-                          .orient("left")
 
         //Create SVG element
         var svg = d3.select("#bargraph")
@@ -63,53 +94,68 @@
                     .attr("width", w + padding)
                     .attr("height", h + padding)
 
+        if(Object.show_graph_horizontally)
+        {
+            //run when dataset is provided via api url
+            if (!dataset.hasOwnProperty) {
 
-        //Create X axis
-        svg.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(" + padding + "," + h + ")")
-            .call(xAxis)
-            .on("click", function (d) { alert('clicked!'); });
+                dataset = $(function () {
+                    $.getJSON(Object.api_url, function (data) {
+                        return data;
+                    });
+                });
+                console.log("yse it's dont have a value");
+            }
+            //Create scale functions
+            var xScale = d3.scale.linear()
+                                 .domain([0, d3.max(dataset, function(d) { return d.Key; })])
+                                 .range([padding, w - padding]);
 
-        ////Create Y axis
-        //svg.append("g")
-        //    .attr("class", "axis")
-        //    .attr("transform", "translate(" + padding + "," + padding + ")")
-        //    .call(yAxis);
+            var yScale = d3.scale.ordinal()
+                                 .rangeRoundBands([0, h], .1)
+                                 .domain(dataset.map(function (d) { return d.Value; }));
 
-
-        var barwidth = xScale.rangeBand() / 2;
-        svg.selectAll("text.bar")
-            .data(dataset)
-            .enter().append("text")
-            .attr("text-anchor", "middle")
-            .attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
-            .attr("y", function (d) { return yScale(d.Key)+padding-5; })
-            .text(function (d) { return d.Key; });
-
-        svg.append("text")
-            .attr("x", (w +padding)/ 2)
-            .attr("y",padding/2)
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("font-weight", "bold")
-            .text(""+title+"")
+            //Define X axis
+            var xAxis = d3.svg.axis()
+                              .scale(xScale)
+                              .orient("bottom")
 
 
-        svg.selectAll("rect")
+            //Define Y axis
+            var yAxis = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+
+            var barwidth = yScale.rangeBand() / 2;
+            console.log("bar width is "+barwidth);
+            svg.selectAll("text.bar")
+                .data(dataset)
+                .enter().append("text")
+                .attr("class",Object.bar_text_css_class)
+                .attr("x", function (d) { return xScale(d.Key)+barwidth ; })
+                .attr("y", function (d) { return yScale(d.Value)+(padding -20) +barwidth ; })
+                .text(function (d) { return d.Key; });
+
+            svg.append("text")
+                .attr("x", (w +padding)/ 2)
+                .attr("y",padding/2)
+                .attr("class",Object.bar_title_class)
+                .text(""+title+"")
+
+
+            svg.selectAll("rect")
             .data(dataset)
             .enter()
             .append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return xScale(d.Value) + padding; })
-            .attr("width", xScale.rangeBand())
-            .attr("y", function (d) { return yScale(d.Key)+padding; })
-            .attr("height", function (d) { return h - yScale(d.Key)-padding; })
-            .attr("fill", "Red")
+            .attr("class", Object.bar_css_class)
+            .attr("x", 0 + padding )
+                .attr("width",function (d) { return  xScale(d.Key)-padding; })
+                .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
+                .attr("height",  yScale.rangeBand())
             .on('click', function (d){
                 var xaxisdescription=(d.Value).toString();
                 //isnum check the xaxis value if it's an integer like 2010 return true else Name of the Months like May,June then return false
-                var isnum = /^\d+$/.test(xaxisdescription); 
+                var isnum = /^\d+$/.test(xaxisdescription);
                 //true then load Months of the year
                 if(isnum)
                 {
@@ -127,20 +173,217 @@
 
                 }
                 else
-                //False then load Days of the Month
+                    //False then load Days of the Month
                 {
-                  fetchResult('q1_d3_1',
-                  {
-                       setID: $('#set_selection').val(),
-                       seID: $('#q1_se').val(),
-                       upOrDown: $('#q1_uod').val(),
-                       percent: $('#q1_percent').val(),
-                       fromYear: $('#q1_from_year').val(),
-                       toYear: $('#q1_to_year').val(),
-                       yearvalue :"@yearvalue",
-                       monthValue: d.Key
-                   });            
+                    fetchResult('q1_d3_1',
+                    {
+                        setID: $('#set_selection').val(),
+                        seID: $('#q1_se').val(),
+                        upOrDown: $('#q1_uod').val(),
+                        percent: $('#q1_percent').val(),
+                        fromYear: $('#q1_from_year').val(),
+                        toYear: $('#q1_to_year').val(),
+                        yearvalue :"@yearvalue",
+                        monthValue: d.Key
+                    });
                 }
-                });
-</script>
+            });
 
+            if (Object.Show_Scale)
+            {
+            //Create X axis
+            svg.append("g")
+                .attr("class", "axis")
+                //.attr("transform", "translate(0," + h  + ")")
+                .attr("transform", "translate(" + 0 + "," + (h + (padding-20)) + ")")
+                .call(xAxis)
+                .on("click", function(d) {  alert('clicked!'); });
+            }
+
+            //Create Y axis
+            svg.append("g")
+                .attr("class", "axis")
+                //.attr("transform", "translate(" + padding + ",0)")
+                .attr("transform", "translate(" + padding + "," + (padding-20) + ")")
+                .call(yAxis)
+                .on("click", function (d) { alert('clicked!'); });
+
+
+                //This axis used only in drawing Average Line.
+                if (Object.show_Average_line) {
+                    var y2 = d3.scale.ordinal()
+                                     .rangeBands([0, h + padding + 5], 0)
+                                     .domain( dataset.map(function (d) { return d.Value; }));
+                    var dataSum = d3.sum( dataset, function (d) { return d.Key; });
+
+                    var line = d3.svg.line()
+                       .x(function (d, i) { return xScale(dataSum /  dataset.length); })
+                       .y(function (d, i) { return y2(d.Value) + i + (padding - 20); })
+
+                    svg.append("path")
+                        .datum( dataset)
+                        .attr("class", "line")
+                        .attr("d", line)
+                        .style("stroke-dasharray", ("3, 3"));
+
+                }
+
+
+
+
+           }
+
+
+        else{
+
+            //run when dataset is provided via api url
+            if(!dataset.hasOwnProperty)
+            {
+
+                dataset= $(function () {
+                    $.getJSON(Object.api_url, function (data) {
+                        return  data;
+                    });
+                });
+                console.log("yse it's dont have a value");
+            }
+
+            var xScale = d3.scale.ordinal()
+                        .domain(dataset.map(function (d) { return d.Value; }))
+                         .rangeRoundBands([0, w], .1)
+
+
+            var yScale = d3.scale.linear()
+                        .domain([0, d3.max(dataset, function (d) { return d.Key; })])
+                        .range([h - padding , 0]);
+
+            var xAxis = d3.svg.axis()
+                              .scale(xScale)
+                              .orient("bottom");
+
+
+            //Define Y axis
+            var yAxis = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+
+
+            //Create X axis
+
+            if(Object.show_category_axis_label_vertical)
+            {
+                svg.append("g")
+                  .attr("class", "axis")
+                  .attr("transform", "translate(" + padding + "," + h + ")")
+                  .call(xAxis)
+                  .on("click", function (d) { alert('clicked!'); })
+                //Text for Xaxis Scale values.
+                .selectAll("text")
+                .attr("y", 0)
+                .attr("x", 9)
+                .attr("dy", ".35em")
+                .attr("transform", "rotate(90)")
+                .style("text-anchor", "start");
+            }
+            else{
+                svg.append("g")
+                      .attr("class", "axis")
+                      .attr("transform", "translate(" + padding + "," + h + ")")
+                      .call(xAxis)
+                      .on("click", function (d) { alert('clicked!'); });
+            }
+
+            //Create Y axis
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding + "," + padding + ")")
+                .call(yAxis);
+
+
+            var barwidth = xScale.rangeBand() / 2;
+            svg.selectAll("text.bar")
+                .data(dataset)
+                .enter().append("text")
+                .attr("class",Object.bar_text_css_class)
+                .attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
+                .attr("y", function (d) { return yScale(d.Key)+padding-5; })
+                .text(function (d) { return d.Key; });
+
+
+            svg.append("text")
+                .attr("x", (w +padding)/ 2)
+                .attr("y",padding/2)
+                .attr("class",Object.bar_title_class)
+                .text(""+title+"")
+
+
+            svg.selectAll("rect")
+                .data(dataset)
+                .enter()
+                .append("rect")
+                .attr("class", Object.bar_css_class)
+                .attr("x", function (d) { return xScale(d.Value) + padding; })
+                .attr("width", xScale.rangeBand())
+                .attr("y", function (d) { return yScale(d.Key)+padding; })
+                .attr("height", function (d) { return h - yScale(d.Key)-padding; })
+                .on('click', function (d){
+                    var xaxisdescription=(d.Value).toString();
+                    //isnum check the xaxis value if it's an integer like 2010 return true else Name of the Months like May,June then return false
+                    var isnum = /^\d+$/.test(xaxisdescription);
+                    //true then load Months of the year
+                    if(isnum)
+                    {
+                        //call controller with ajax
+                        fetchResult('q1_d3',
+                       {
+                           setID: $('#set_selection').val(),
+                           seID: $('#q1_se').val(),
+                           upOrDown: $('#q1_uod').val(),
+                           percent: $('#q1_percent').val(),
+                           fromYear: $('#q1_from_year').val(),
+                           toYear: $('#q1_to_year').val(),
+                           yearvalue :d.Value,
+                       });
+
+                    }
+                    else
+                        //False then load Days of the Month
+                    {
+                        fetchResult('q1_d3_1',
+                        {
+                            setID: $('#set_selection').val(),
+                            seID: $('#q1_se').val(),
+                            upOrDown: $('#q1_uod').val(),
+                            percent: $('#q1_percent').val(),
+                            fromYear: $('#q1_from_year').val(),
+                            toYear: $('#q1_to_year').val(),
+                            yearvalue :"@yearvalue",
+                            monthValue: d.Key
+                        });
+                    }
+                });
+
+            //Create Average Line
+            if (Object.show_Average_line)
+            {
+                var x2 = d3.scale.ordinal()
+                         .rangeBands([0, w], 0)
+                         .domain( dataset.map(function (d) { return d.Value; }));
+
+                var dataSum = d3.sum( dataset, function (d) { return d.Key; });
+
+                var line = d3.svg.line()
+                   .x(function (d, i) {
+                       return x2(d.Value) + i + (padding);
+                   })
+                   .y(function (d, i) { return yScale(dataSum /  dataset.length); });
+
+                svg.append("path")
+                    .datum( dataset)
+                    .attr("class", "line")
+                    .attr("d", line)
+                .style("stroke-dasharray", ("3, 3"));
+            }
+        }
+    }
+</script>
