@@ -17,10 +17,10 @@
         fill: red;
     }
 
-        .bar:hover {
-            fill: royalblue;
-            cursor: pointer;
-        }
+    .bar:hover {
+        fill: royalblue;
+        cursor: pointer;
+    }
 
     .x.axis path {
         display: none;
@@ -53,60 +53,66 @@
 <script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
 <script>
-
     var data=@Html.Raw(years);
 
-    var barConfig = new Object();
-    barConfig={
-        div_name : "Result",
+    var barConfig = {
+        barGraphContainerDiv : "bargraph",
         height: 500,
         width: 800,
-        dataset:data,
-        api_url: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
-        bar_css_class: "bar",
-        bar_title_class:"graphtitletext",
+        dataset: data, // What specs are being expected ? Show sample
+        dataApiUrl: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
+        barCssClass: "bar",
+        bar_title_class:"graphtitletext", // rename this also according to proper JS convention
         bar_text_css_class: "bartext",
-        bar_hover_css_class: "bar",//I Think this is not usefull for us.
+        bar_hover_css_class: "bar", // I Think this is not usefull for us. Adnan: Yes you are right, this might not be needed.
         show_category_axis_label_vertical: false,
         show_graph_horizontally: false,
         show_Average_line: false,
-        Show_Scale:false, //hide X-axis Scale or if Vertical then Y-Axis Scale
-        Clickable_bar:true,
-        On_BarClick:function(d) { alert("Bar clicked, Value is "+d.Key); }
-    }
+        averageLineDataProvider: function() { return(5); },
+        showScale:false, // hide X-axis Scale or if Vertical then Y-Axis Scale
+        Clickable_bar:true, // Fix names ! This should not be needed as you can find out is the OnBarClick has a function associated with it, so it should be clickable
+        onBarClick:function(d) { alert("Bar clicked, Value is " + d.Key); }
+    };
 
     $(document).ready(function () {
-        window.load = graph(barConfig);
+        window.load = drawBarChart(barConfig);
     });
 
 
-    function graph(Object){
+    // This function will not assume any sort of calcualtion unless specified by an external callaback function
+    function drawBarChart(config) {
+        function doSomethingSmall(params) {
 
-        var dataset =  Object.dataset;
-        var w = Object.width;
-        var h = Object.height;
-        var padding = 60;
-        var title = "@charttitle";
-        var yrvalue="@yearvalue";
+        }
+
+        var dataset =  config.dataset;
+        var w = config.width;
+        var h = config.height;
+        var padding = 60; // Should be configurable
+        var title = "@charttitle"; // This should come from config object
+        var yrvalue="@yearvalue"; // This should come from config object
 
         //Create SVG element
-        var svg = d3.select("#bargraph")
+        var svg = d3.select("#" + config.barGraphContainerDiv)
                     .append("svg")
                     .attr("width", w + padding)
-                    .attr("height", h + padding)
+                    .attr("height", h + padding);
 
+        // Rename Object to config
         if(Object.show_graph_horizontally)
         {
             //run when dataset is provided via api url
-            if (!dataset.hasOwnProperty) {
-
+            if (!dataset) {
                 dataset = $(function () {
-                    $.getJSON(Object.api_url, function (data) {
+                    $.getJSON(Object.dataApiUrl, function (data) {
+                        // what is the behaviour is the data is returned after 10 seconds
+                        // as this is an asynch call so the code might run ahead before this is executed
                         return data;
                     });
                 });
                 console.log("yse it's dont have a value");
             }
+
             //Create scale functions
             var xScale = d3.scale.linear()
                                  .domain([0, d3.max(dataset, function(d) { return d.Key; })])
@@ -129,32 +135,39 @@
 
             var barwidth = yScale.rangeBand() / 2;
             console.log("bar width is "+barwidth);
-            svg.selectAll("text.bar")
+
+            //svg.selectAll("text.bar")
+            // What exactly are you doing here, please write a proper comment
+            svg.selectAll("text" + config.barCssClass) // something like this
                 .data(dataset)
                 .enter().append("text")
-                .attr("class",Object.bar_text_css_class)
-                .attr("x", function (d) { return xScale(d.Key)+barwidth ; })
-                .attr("y", function (d) { return yScale(d.Value)+(padding -20) +barwidth ; })
+                .attr("class", Object.bar_text_css_class)
+                .attr("x", function (d) { return xScale(d.Key) + barwidth ; })
+                .attr("y", function (d) { return yScale(d.Value) + (padding -20) + barwidth ; })
                 .text(function (d) { return d.Key; });
 
+            // Also here, what is this for ?
             svg.append("text")
                 .attr("x", (w +padding)/ 2)
                 .attr("y",padding/2)
                 .attr("class",Object.bar_title_class)
                 .text(""+title+"")
 
-            if(Object.Clickable_bar)
+            if(config.onBarClick)
             {
                 svg.selectAll("rect")
                 .data(dataset)
                 .enter()
                 .append("rect")
-                .attr("class", Object.bar_css_class)
+                .attr("class", Object.barCssClass)
                 .attr("x", 0 + padding )
                     .attr("width",function (d) { return  xScale(d.Key)-padding; })
                     .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
                     .attr("height",  yScale.rangeBand())
-               .on('click', function(d){ Object.On_BarClick(d)})
+               .on('click', config.onBarClick); //function(d){ Object.onBarClick(d)})
+
+                // remove this if not needed...
+
                 @*.on('click', function (d){
                     var xaxisdescription=(d.Value).toString();
                     //isnum check the xaxis value if it's an integer like 2010 return true else Name of the Months like May,June then return false
@@ -192,13 +205,13 @@
                     }
                 });*@
             }
-            else
+            else // What is this else about? Please write it as this else is very far from the if
             {
                 svg.selectAll("rect")
                     .data(dataset)
                     .enter()
                     .append("rect")
-                    .attr("class", Object.bar_css_class)
+                    .attr("class", Object.barCssClass)
                     .attr("x", 0 + padding )
                         .attr("width",function (d) { return  xScale(d.Key)-padding; })
                         .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
@@ -207,7 +220,7 @@
             }
              
 
-            if (Object.Show_Scale)
+            if (Object.showScale)
             {
             //Create X axis
             svg.append("g")
@@ -256,7 +269,7 @@
             {
 
                 dataset= $(function () {
-                    $.getJSON(Object.api_url, function (data) {
+                    $.getJSON(Object.dataApiUrl, function (data) {
                         return  data;
                     });
                 });
@@ -308,7 +321,7 @@
                       .on("click", function (d) { alert('clicked!'); });
             }
             //show only when show scale is true
-            if(Object.Show_Scale){
+            if(Object.showScale){
             //Create Y axis
             svg.append("g")
                 .attr("class", "axis")
@@ -338,12 +351,12 @@
                     .data(dataset)
                     .enter()
                     .append("rect")
-                    .attr("class", Object.bar_css_class)
+                    .attr("class", Object.barCssClass)
                     .attr("x", function (d) { return xScale(d.Value) + padding; })
                     .attr("width", xScale.rangeBand())
                     .attr("y", function (d) { return yScale(d.Key)+padding; })
                     .attr("height", function (d) { return h - yScale(d.Key)-padding; })
-                    .on('click', function(d){ Object.On_BarClick(d)})
+                    .on('click', function(d){ Object.onBarClick(d)})
                     @*.on('click', function (d){
                         var xaxisdescription=(d.Value).toString();
                         //isnum check the xaxis value if it's an integer like 2010 return true else Name of the Months like May,June then return false
@@ -386,7 +399,7 @@
                        .data(dataset)
                        .enter()
                        .append("rect")
-                       .attr("class", Object.bar_css_class)
+                       .attr("class", Object.barCssClass)
                        .attr("x", function (d) { return xScale(d.Value) + padding; })
                        .attr("width", xScale.rangeBand())
                        .attr("y", function (d) { return yScale(d.Key)+padding; })
