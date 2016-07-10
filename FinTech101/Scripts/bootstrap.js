@@ -253,7 +253,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.button')
-      var options = typeof option == 'object' && option
+      var options = typeof option == 'config' && option
 
       if (!data) $this.data('bs.button', (data = new Button(this, options)))
 
@@ -454,7 +454,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'config' && option)
       var action  = typeof option == 'string' ? option : options.slide
 
       if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
@@ -641,7 +641,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.collapse')
-      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'config' && option)
 
       if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
       if (typeof option == 'string') data[option]()
@@ -1042,7 +1042,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.modal')
-      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'config' && option)
 
       if (!data) $this.data('bs.modal', (data = new Modal(this, options)))
       if (typeof option == 'string') data[option](_relatedTarget)
@@ -1453,7 +1453,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.tooltip')
-      var options = typeof option == 'object' && option
+      var options = typeof option == 'config' && option
 
       if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
       if (typeof option == 'string') data[option]()
@@ -1571,7 +1571,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.popover')
-      var options = typeof option == 'object' && option
+      var options = typeof option == 'config' && option
 
       if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
       if (typeof option == 'string') data[option]()
@@ -1719,7 +1719,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.scrollspy')
-      var options = typeof option == 'object' && option
+      var options = typeof option == 'config' && option
 
       if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
       if (typeof option == 'string') data[option]()
@@ -1944,7 +1944,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     var offsetTop    = offset.top
     var offsetBottom = offset.bottom
 
-    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
+    if (typeof offset != 'config')         offsetBottom = offsetTop = offset
     if (typeof offsetTop == 'function')    offsetTop    = offset.top()
     if (typeof offsetBottom == 'function') offsetBottom = offset.bottom()
 
@@ -1975,7 +1975,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('bs.affix')
-      var options = typeof option == 'object' && option
+      var options = typeof option == 'config' && option
 
       if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
       if (typeof option == 'string') data[option]()

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Argaam_Analytics" Class="ArgaamAnalyticsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=172.16.3.51;Initial Catalog=Argaam_Analytics;User ID=argplus_user" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Argaam_AnalyticsConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=172.16.3.51;Initial Catalog=Argaam_Analytics;User ID=argplus_user" SettingsconfigName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Argaam_AnalyticsConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.StockEntityTypes" Member="StockEntityTypes">
     <Type Name="StockEntityType">
       <Column Name="StockEntityTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

@@ -314,7 +314,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 				xmlhttpmethod = new XMLHttpRequest();
 			}
 			catch( e ){
-				xmlhttpmethod = new ActiveXObject( "Microsoft.XMLHTTP" );
+				xmlhttpmethod = new ActiveXconfig( "Microsoft.XMLHTTP" );
 			}
 			return function(){
 				return xmlhttpmethod;

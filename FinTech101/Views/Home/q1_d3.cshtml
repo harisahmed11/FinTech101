@@ -2,7 +2,7 @@
 @{
     var years = ViewBag.years;
     string charttitle = Convert.ToString(ViewBag.title);
-    int? yearvalue = ViewBag.yrvalue;
+    //int? yearvalue = ViewBag.yrvalue;
 }
 
 <style>
@@ -59,18 +59,19 @@
         barGraphContainerDiv : "bargraph",
         height: 500,
         width: 800,
-        dataset: data, // What specs are being expected ? Show sample
+        padding:60,
+        dataset: data, //Data Contain Key and Value, For Example Value = 2013 & Key = 15
         dataApiUrl: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
+        barGraphTitleText:"@charttitle",
         barCssClass: "bar",
-        bar_title_class:"graphtitletext", // rename this also according to proper JS convention
-        bar_text_css_class: "bartext",
-        bar_hover_css_class: "bar", // I Think this is not usefull for us. Adnan: Yes you are right, this might not be needed.
-        show_category_axis_label_vertical: false,
-        show_graph_horizontally: false,
-        show_Average_line: false,
+        barTitleClass:"graphtitletext", // rename this also according to proper JS convention
+        barTextCssClass: "bartext",
+        showCategoryLabelVertically: false,
+        showGraphHorizontally: false,
+        showAverageLine: false,
         averageLineDataProvider: function() { return(5); },
         showScale:false, // hide X-axis Scale or if Vertical then Y-Axis Scale
-        Clickable_bar:true, // Fix names ! This should not be needed as you can find out is the OnBarClick has a function associated with it, so it should be clickable
+        //Clickable_bar:true, // Fix names ! This should not be needed as you can find out is the OnBarClick has a function associated with it, so it should be clickable
         onBarClick:function(d) { alert("Bar clicked, Value is " + d.Key); }
     };
 
@@ -78,19 +79,15 @@
         window.load = drawBarChart(barConfig);
     });
 
-
-    // This function will not assume any sort of calcualtion unless specified by an external callaback function
     function drawBarChart(config) {
-        function doSomethingSmall(params) {
-
-        }
 
         var dataset =  config.dataset;
         var w = config.width;
         var h = config.height;
-        var padding = 60; // Should be configurable
-        var title = "@charttitle"; // This should come from config object
-        var yrvalue="@yearvalue"; // This should come from config object
+        var padding = config.padding; 
+        var title = config.barGraphTitleText ; 
+        
+        //var yrvalue="@yearvalue"; // This should come from config object
 
         //Create SVG element
         var svg = d3.select("#" + config.barGraphContainerDiv)
@@ -99,7 +96,7 @@
                     .attr("height", h + padding);
 
         // Rename Object to config
-        if(Object.show_graph_horizontally)
+        if(Object.showGraphHorizontally)
         {
             //run when dataset is provided via api url
             if (!dataset) {
@@ -141,7 +138,7 @@
             svg.selectAll("text" + config.barCssClass) // something like this
                 .data(dataset)
                 .enter().append("text")
-                .attr("class", Object.bar_text_css_class)
+                .attr("class", Object.barTextCssClass)
                 .attr("x", function (d) { return xScale(d.Key) + barwidth ; })
                 .attr("y", function (d) { return yScale(d.Value) + (padding -20) + barwidth ; })
                 .text(function (d) { return d.Key; });
@@ -150,7 +147,7 @@
             svg.append("text")
                 .attr("x", (w +padding)/ 2)
                 .attr("y",padding/2)
-                .attr("class",Object.bar_title_class)
+                .attr("class",Object.barTitleClass)
                 .text(""+title+"")
 
             if(config.onBarClick)
@@ -215,10 +212,10 @@
                     .attr("x", 0 + padding )
                         .attr("width",function (d) { return  xScale(d.Key)-padding; })
                         .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
-                        .attr("height",  yScale.rangeBand());    
-            
+                        .attr("height",  yScale.rangeBand());
+
             }
-             
+
 
             if (Object.showScale)
             {
@@ -241,7 +238,7 @@
 
 
                 //This axis used only in drawing Average Line.
-                if (Object.show_Average_line) {
+                if (Object.showAverageLine) {
                     var y2 = d3.scale.ordinal()
                                      .rangeBands([0, h + padding + 5], 0)
                                      .domain( dataset.map(function (d) { return d.Value; }));
@@ -298,7 +295,7 @@
 
             //Create X axis
 
-            if(Object.show_category_axis_label_vertical)
+            if(Object.showCategoryLabelVertically)
             {
                 svg.append("g")
                   .attr("class", "axis")
@@ -333,7 +330,7 @@
             svg.selectAll("text.bar")
                 .data(dataset)
                 .enter().append("text")
-                .attr("class",Object.bar_text_css_class)
+                .attr("class",Object.barTextCssClass)
                 .attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
                 .attr("y", function (d) { return yScale(d.Key)+padding-5; })
                 .text(function (d) { return d.Key; });
@@ -342,7 +339,7 @@
             svg.append("text")
                 .attr("x", (w +padding)/ 2)
                 .attr("y",padding/2)
-                .attr("class",Object.bar_title_class)
+                .attr("class",Object.barTitleClass)
                 .text(""+title+"")
 
             if(Object.Clickable_bar)
@@ -403,11 +400,11 @@
                        .attr("x", function (d) { return xScale(d.Value) + padding; })
                        .attr("width", xScale.rangeBand())
                        .attr("y", function (d) { return yScale(d.Key)+padding; })
-                       .attr("height", function (d) { return h - yScale(d.Key)-padding; })        
+                       .attr("height", function (d) { return h - yScale(d.Key)-padding; })
             }
 
             //Create Average Line
-            if (Object.show_Average_line)
+            if (Object.showAverageLine)
             {
                 var x2 = d3.scale.ordinal()
                          .rangeBands([0, w], 0)

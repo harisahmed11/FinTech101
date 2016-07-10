@@ -17,12 +17,12 @@ intellisense.annotate(jQuery, {
     /// <signature>
     ///   <summary>Perform an asynchronous HTTP (Ajax) request.</summary>
     ///   <param name="url" type="String">A string containing the URL to which the request is sent.</param>
-    ///   <param name="settings" type="PlainObject">A set of key/value pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup(). See jQuery.ajax( settings ) below for a complete list of all settings.</param>
+    ///   <param name="settings" type="Plainconfig">A set of key/value pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup(). See jQuery.ajax( settings ) below for a complete list of all settings.</param>
     ///   <returns type="jqXHR" />
     /// </signature>
     /// <signature>
     ///   <summary>Perform an asynchronous HTTP (Ajax) request.</summary>
-    ///   <param name="settings" type="PlainObject">A set of key/value pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup().</param>
+    ///   <param name="settings" type="Plainconfig">A set of key/value pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup().</param>
     ///   <returns type="jqXHR" />
     /// </signature>
   },
@@ -36,14 +36,14 @@ intellisense.annotate(jQuery, {
   'ajaxSetup': function() {
     /// <signature>
     ///   <summary>Set default values for future Ajax requests.</summary>
-    ///   <param name="options" type="PlainObject">A set of key/value pairs that configure the default Ajax request. All options are optional.</param>
+    ///   <param name="options" type="Plainconfig">A set of key/value pairs that configure the default Ajax request. All options are optional.</param>
     /// </signature>
   },
   'ajaxTransport': function() {
     /// <signature>
-    ///   <summary>Creates an object that handles the actual transmission of Ajax data.</summary>
+    ///   <summary>Creates an config that handles the actual transmission of Ajax data.</summary>
     ///   <param name="dataType" type="String">A string identifying the data type to use</param>
-    ///   <param name="handler(options, originalOptions, jqXHR)" type="Function">A handler to return the new transport object to use with the data type provided in the first argument.</param>
+    ///   <param name="handler(options, originalOptions, jqXHR)" type="Function">A handler to return the new transport config to use with the data type provided in the first argument.</param>
     /// </signature>
   },
   'boxModel': function() {
@@ -52,7 +52,7 @@ intellisense.annotate(jQuery, {
   },
   'browser': function() {
     /// <summary>Contains flags for the useragent, read from navigator.userAgent. We recommend against using this property; please try to use feature detection instead (see jQuery.support). jQuery.browser may be moved to a plugin in a future release of jQuery.</summary>
-    /// <returns type="PlainObject" />
+    /// <returns type="Plainconfig" />
   },
   'browser.version': function() {
     /// <summary>The version number of the rendering engine for the user's browser.</summary>
@@ -60,7 +60,7 @@ intellisense.annotate(jQuery, {
   },
   'Callbacks': function() {
     /// <signature>
-    ///   <summary>A multi-purpose callbacks list object that provides a powerful way to manage callback lists.</summary>
+    ///   <summary>A multi-purpose callbacks list config that provides a powerful way to manage callback lists.</summary>
     ///   <param name="flags" type="String">An optional list of space-separated flags that change how the callback list behaves.</param>
     ///   <returns type="Callbacks" />
     /// </signature>
@@ -75,24 +75,24 @@ intellisense.annotate(jQuery, {
   },
   'cssHooks': function() {
     /// <summary>Hook directly into jQuery to override how particular CSS properties are retrieved or set, normalize CSS property naming, or create custom properties.</summary>
-    /// <returns type="Object" />
+    /// <returns type="config" />
   },
   'data': function() {
     /// <signature>
     ///   <summary>Returns value at named data store for the element, as set by jQuery.data(element, name, value), or the full data store for the element.</summary>
     ///   <param name="element" type="Element">The DOM element to query for the data.</param>
     ///   <param name="key" type="String">Name of the data stored.</param>
-    ///   <returns type="Object" />
+    ///   <returns type="config" />
     /// </signature>
     /// <signature>
     ///   <summary>Returns value at named data store for the element, as set by jQuery.data(element, name, value), or the full data store for the element.</summary>
     ///   <param name="element" type="Element">The DOM element to query for the data.</param>
-    ///   <returns type="Object" />
+    ///   <returns type="config" />
     /// </signature>
   },
   'Deferred': function() {
     /// <signature>
-    ///   <summary>A constructor function that returns a chainable utility object with methods to register multiple callbacks into callback queues, invoke callback queues, and relay the success or failure state of any synchronous or asynchronous function.</summary>
+    ///   <summary>A constructor function that returns a chainable utility config with methods to register multiple callbacks into callback queues, invoke callback queues, and relay the success or failure state of any synchronous or asynchronous function.</summary>
     ///   <param name="beforeStart" type="Function">A function that is called just before the constructor returns.</param>
     ///   <returns type="Deferred" />
     /// </signature>
@@ -106,10 +106,10 @@ intellisense.annotate(jQuery, {
   },
   'each': function() {
     /// <signature>
-    ///   <summary>A generic iterator function, which can be used to seamlessly iterate over both objects and arrays. Arrays and array-like objects with a length property (such as a function's arguments object) are iterated by numeric index, from 0 to length-1. Other objects are iterated via their named properties.</summary>
-    ///   <param name="collection" type="Object">The object or array to iterate over.</param>
-    ///   <param name="callback(indexInArray, valueOfElement)" type="Function">The function that will be executed on every object.</param>
-    ///   <returns type="Object" />
+    ///   <summary>A generic iterator function, which can be used to seamlessly iterate over both configs and arrays. Arrays and array-like configs with a length property (such as a function's arguments config) are iterated by numeric index, from 0 to length-1. Other configs are iterated via their named properties.</summary>
+    ///   <param name="collection" type="config">The config or array to iterate over.</param>
+    ///   <param name="callback(indexInArray, valueOfElement)" type="Function">The function that will be executed on every config.</param>
+    ///   <returns type="config" />
     /// </signature>
   },
   'error': function() {
@@ -120,26 +120,26 @@ intellisense.annotate(jQuery, {
   },
   'extend': function() {
     /// <signature>
-    ///   <summary>Merge the contents of two or more objects together into the first object.</summary>
-    ///   <param name="target" type="Object">An object that will receive the new properties if additional objects are passed in or that will extend the jQuery namespace if it is the sole argument.</param>
-    ///   <param name="object1" type="Object">An object containing additional properties to merge in.</param>
-    ///   <param name="objectN" type="Object">Additional objects containing properties to merge in.</param>
-    ///   <returns type="Object" />
+    ///   <summary>Merge the contents of two or more configs together into the first config.</summary>
+    ///   <param name="target" type="config">An config that will receive the new properties if additional configs are passed in or that will extend the jQuery namespace if it is the sole argument.</param>
+    ///   <param name="config1" type="config">An config containing additional properties to merge in.</param>
+    ///   <param name="configN" type="config">Additional configs containing properties to merge in.</param>
+    ///   <returns type="config" />
     /// </signature>
     /// <signature>
-    ///   <summary>Merge the contents of two or more objects together into the first object.</summary>
+    ///   <summary>Merge the contents of two or more configs together into the first config.</summary>
     ///   <param name="deep" type="Boolean">If true, the merge becomes recursive (aka. deep copy).</param>
-    ///   <param name="target" type="Object">The object to extend. It will receive the new properties.</param>
-    ///   <param name="object1" type="Object">An object containing additional properties to merge in.</param>
-    ///   <param name="objectN" type="Object">Additional objects containing properties to merge in.</param>
-    ///   <returns type="Object" />
+    ///   <param name="target" type="config">The config to extend. It will receive the new properties.</param>
+    ///   <param name="config1" type="config">An config containing additional properties to merge in.</param>
+    ///   <param name="configN" type="config">Additional configs containing properties to merge in.</param>
+    ///   <returns type="config" />
     /// </signature>
   },
   'get': function() {
     /// <signature>
     ///   <summary>Load data from the server using a HTTP GET request.</summary>
     ///   <param name="url" type="String">A string containing the URL to which the request is sent.</param>
-    ///   <param name="data" type="String">A plain object or string that is sent to the server with the request.</param>
+    ///   <param name="data" type="String">A plain config or string that is sent to the server with the request.</param>
     ///   <param name="success(data, textStatus, jqXHR)" type="Function">A callback function that is executed if the request succeeds.</param>
     ///   <param name="dataType" type="String">The type of data expected from the server. Default: Intelligent Guess (xml, json, script, or html).</param>
     ///   <returns type="jqXHR" />
@@ -149,7 +149,7 @@ intellisense.annotate(jQuery, {
     /// <signature>
     ///   <summary>Load JSON-encoded data from the server using a GET HTTP request.</summary>
     ///   <param name="url" type="String">A string containing the URL to which the request is sent.</param>
-    ///   <param name="data" type="PlainObject">A plain object or string that is sent to the server with the request.</param>
+    ///   <param name="data" type="Plainconfig">A plain config or string that is sent to the server with the request.</param>
     ///   <param name="success(data, textStatus, jqXHR)" type="Function">A callback function that is executed if the request succeeds.</param>
     ///   <returns type="jqXHR" />
     /// </signature>
@@ -172,7 +172,7 @@ intellisense.annotate(jQuery, {
     /// <signature>
     ///   <summary>Finds the elements of an array which satisfy a filter function. The original array is not affected.</summary>
     ///   <param name="array" type="Array">The array to search through.</param>
-    ///   <param name="function(elementOfArray, indexInArray)" type="Function">The function to process each item against.  The first argument to the function is the item, and the second argument is the index.  The function should return a Boolean value.  this will be the global window object.</param>
+    ///   <param name="function(elementOfArray, indexInArray)" type="Function">The function to process each item against.  The first argument to the function is the item, and the second argument is the index.  The function should return a Boolean value.  this will be the global window config.</param>
     ///   <param name="invert" type="Boolean">If "invert" is false, or not provided, then the function returns an array consisting of all elements for which "callback" returns true.  If "invert" is true, then the function returns an array consisting of all elements for which "callback" returns false.</param>
     ///   <returns type="Array" />
     /// </signature>
@@ -202,42 +202,42 @@ intellisense.annotate(jQuery, {
   'isArray': function() {
     /// <signature>
     ///   <summary>Determine whether the argument is an array.</summary>
-    ///   <param name="obj" type="Object">Object to test whether or not it is an array.</param>
+    ///   <param name="obj" type="config">config to test whether or not it is an array.</param>
     ///   <returns type="boolean" />
     /// </signature>
   },
-  'isEmptyObject': function() {
+  'isEmptyconfig': function() {
     /// <signature>
-    ///   <summary>Check to see if an object is empty (contains no enumerable properties).</summary>
-    ///   <param name="object" type="Object">The object that will be checked to see if it's empty.</param>
+    ///   <summary>Check to see if an config is empty (contains no enumerable properties).</summary>
+    ///   <param name="config" type="config">The config that will be checked to see if it's empty.</param>
     ///   <returns type="Boolean" />
     /// </signature>
   },
   'isFunction': function() {
     /// <signature>
-    ///   <summary>Determine if the argument passed is a Javascript function object.</summary>
-    ///   <param name="obj" type="PlainObject">Object to test whether or not it is a function.</param>
+    ///   <summary>Determine if the argument passed is a Javascript function config.</summary>
+    ///   <param name="obj" type="Plainconfig">config to test whether or not it is a function.</param>
     ///   <returns type="boolean" />
     /// </signature>
   },
   'isNumeric': function() {
     /// <signature>
     ///   <summary>Determines whether its argument is a number.</summary>
-    ///   <param name="value" type="PlainObject">The value to be tested.</param>
+    ///   <param name="value" type="Plainconfig">The value to be tested.</param>
     ///   <returns type="Boolean" />
     /// </signature>
   },
-  'isPlainObject': function() {
+  'isPlainconfig': function() {
     /// <signature>
-    ///   <summary>Check to see if an object is a plain object (created using "{}" or "new Object").</summary>
-    ///   <param name="object" type="PlainObject">The object that will be checked to see if it's a plain object.</param>
+    ///   <summary>Check to see if an config is a plain config (created using "{}" or "new config").</summary>
+    ///   <param name="config" type="Plainconfig">The config that will be checked to see if it's a plain config.</param>
     ///   <returns type="Boolean" />
     /// </signature>
   },
   'isWindow': function() {
     /// <signature>
     ///   <summary>Determine whether the argument is a window.</summary>
-    ///   <param name="obj" type="PlainObject">Object to test whether or not it is a window.</param>
+    ///   <param name="obj" type="Plainconfig">config to test whether or not it is a window.</param>
     ///   <returns type="boolean" />
     /// </signature>
   },
@@ -250,22 +250,22 @@ intellisense.annotate(jQuery, {
   },
   'makeArray': function() {
     /// <signature>
-    ///   <summary>Convert an array-like object into a true JavaScript array.</summary>
-    ///   <param name="obj" type="PlainObject">Any object to turn into a native Array.</param>
+    ///   <summary>Convert an array-like config into a true JavaScript array.</summary>
+    ///   <param name="obj" type="Plainconfig">Any config to turn into a native Array.</param>
     ///   <returns type="Array" />
     /// </signature>
   },
   'map': function() {
     /// <signature>
-    ///   <summary>Translate all items in an array or object to new array of items.</summary>
+    ///   <summary>Translate all items in an array or config to new array of items.</summary>
     ///   <param name="array" type="Array">The Array to translate.</param>
-    ///   <param name="callback(elementOfArray, indexInArray)" type="Function">The function to process each item against.  The first argument to the function is the array item, the second argument is the index in array The function can return any value. Within the function, this refers to the global (window) object.</param>
+    ///   <param name="callback(elementOfArray, indexInArray)" type="Function">The function to process each item against.  The first argument to the function is the array item, the second argument is the index in array The function can return any value. Within the function, this refers to the global (window) config.</param>
     ///   <returns type="Array" />
     /// </signature>
     /// <signature>
-    ///   <summary>Translate all items in an array or object to new array of items.</summary>
-    ///   <param name="arrayOrObject" type="Object">The Array or Object to translate.</param>
-    ///   <param name="callback( value, indexOrKey )" type="Function">The function to process each item against.  The first argument to the function is the value; the second argument is the index or key of the array or object property. The function can return any value to add to the array. A returned array will be flattened into the resulting array. Within the function, this refers to the global (window) object.</param>
+    ///   <summary>Translate all items in an array or config to new array of items.</summary>
+    ///   <param name="arrayOrconfig" type="config">The Array or config to translate.</param>
+    ///   <param name="callback( value, indexOrKey )" type="Function">The function to process each item against.  The first argument to the function is the value; the second argument is the index or key of the array or config property. The function can return any value to add to the array. A returned array will be flattened into the resulting array. Within the function, this refers to the global (window) config.</param>
     ///   <returns type="Array" />
     /// </signature>
   },
@@ -281,7 +281,7 @@ intellisense.annotate(jQuery, {
     /// <signature>
     ///   <summary>Relinquish jQuery's control of the $ variable.</summary>
     ///   <param name="removeAll" type="Boolean">A Boolean indicating whether to remove all jQuery variables from the global scope (including jQuery itself).</param>
-    ///   <returns type="Object" />
+    ///   <returns type="config" />
     /// </signature>
   },
   'noop': function() {
@@ -293,13 +293,13 @@ intellisense.annotate(jQuery, {
   },
   'param': function() {
     /// <signature>
-    ///   <summary>Create a serialized representation of an array or object, suitable for use in a URL query string or Ajax request.</summary>
-    ///   <param name="obj" type="Object">An array or object to serialize.</param>
+    ///   <summary>Create a serialized representation of an array or config, suitable for use in a URL query string or Ajax request.</summary>
+    ///   <param name="obj" type="config">An array or config to serialize.</param>
     ///   <returns type="String" />
     /// </signature>
     /// <signature>
-    ///   <summary>Create a serialized representation of an array or object, suitable for use in a URL query string or Ajax request.</summary>
-    ///   <param name="obj" type="Object">An array or object to serialize.</param>
+    ///   <summary>Create a serialized representation of an array or config, suitable for use in a URL query string or Ajax request.</summary>
+    ///   <param name="obj" type="config">An array or config to serialize.</param>
     ///   <param name="traditional" type="Boolean">A Boolean indicating whether to perform a traditional "shallow" serialization.</param>
     ///   <returns type="String" />
     /// </signature>
@@ -315,9 +315,9 @@ intellisense.annotate(jQuery, {
   },
   'parseJSON': function() {
     /// <signature>
-    ///   <summary>Takes a well-formed JSON string and returns the resulting JavaScript object.</summary>
+    ///   <summary>Takes a well-formed JSON string and returns the resulting JavaScript config.</summary>
     ///   <param name="json" type="String">The JSON string to parse.</param>
-    ///   <returns type="Object" />
+    ///   <returns type="config" />
     /// </signature>
   },
   'parseXML': function() {
@@ -331,7 +331,7 @@ intellisense.annotate(jQuery, {
     /// <signature>
     ///   <summary>Load data from the server using a HTTP POST request.</summary>
     ///   <param name="url" type="String">A string containing the URL to which the request is sent.</param>
-    ///   <param name="data" type="String">A plain object or string that is sent to the server with the request.</param>
+    ///   <param name="data" type="String">A plain config or string that is sent to the server with the request.</param>
     ///   <param name="success(data, textStatus, jqXHR)" type="Function">A callback function that is executed if the request succeeds.</param>
     ///   <param name="dataType" type="String">The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).</param>
     ///   <returns type="jqXHR" />
@@ -341,26 +341,26 @@ intellisense.annotate(jQuery, {
     /// <signature>
     ///   <summary>Takes a function and returns a new one that will always have a particular context.</summary>
     ///   <param name="function" type="Function">The function whose context will be changed.</param>
-    ///   <param name="context" type="PlainObject">The object to which the context (this) of the function should be set.</param>
+    ///   <param name="context" type="Plainconfig">The config to which the context (this) of the function should be set.</param>
     ///   <returns type="Function" />
     /// </signature>
     /// <signature>
     ///   <summary>Takes a function and returns a new one that will always have a particular context.</summary>
-    ///   <param name="context" type="PlainObject">The object to which the context of the function should be set.</param>
-    ///   <param name="name" type="String">The name of the function whose context will be changed (should be a property of the context object).</param>
+    ///   <param name="context" type="Plainconfig">The config to which the context of the function should be set.</param>
+    ///   <param name="name" type="String">The name of the function whose context will be changed (should be a property of the context config).</param>
     ///   <returns type="Function" />
     /// </signature>
     /// <signature>
     ///   <summary>Takes a function and returns a new one that will always have a particular context.</summary>
     ///   <param name="function" type="Function">The function whose context will be changed.</param>
-    ///   <param name="context" type="PlainObject">The object to which the context (this) of the function should be set.</param>
+    ///   <param name="context" type="Plainconfig">The config to which the context (this) of the function should be set.</param>
     ///   <param name="additionalArguments" type="Anything">Any number of arguments to be passed to the function referenced in the function argument.</param>
     ///   <returns type="Function" />
     /// </signature>
     /// <signature>
     ///   <summary>Takes a function and returns a new one that will always have a particular context.</summary>
-    ///   <param name="context" type="PlainObject">The object to which the context of the function should be set.</param>
-    ///   <param name="name" type="String">The name of the function whose context will be changed (should be a property of the context object).</param>
+    ///   <param name="context" type="Plainconfig">The config to which the context of the function should be set.</param>
+    ///   <param name="name" type="String">The name of the function whose context will be changed (should be a property of the context config).</param>
     ///   <param name="additionalArguments" type="Anything">Any number of arguments to be passed to the function named in the name argument.</param>
     ///   <returns type="Function" />
     /// </signature>
@@ -390,12 +390,12 @@ intellisense.annotate(jQuery, {
     /// </signature>
   },
   'sub': function() {
-    /// <summary>Creates a new copy of jQuery whose properties and methods can be modified without affecting the original jQuery object.</summary>
+    /// <summary>Creates a new copy of jQuery whose properties and methods can be modified without affecting the original jQuery config.</summary>
     /// <returns type="jQuery" />
   },
   'support': function() {
     /// <summary>A collection of properties that represent the presence of different browser features or bugs. Primarily intended for jQuery's internal use; specific properties may be removed when they are no longer needed internally to improve page startup performance.</summary>
-    /// <returns type="Object" />
+    /// <returns type="config" />
   },
   'trim': function() {
     /// <signature>
@@ -406,8 +406,8 @@ intellisense.annotate(jQuery, {
   },
   'type': function() {
     /// <signature>
-    ///   <summary>Determine the internal JavaScript [[Class]] of an object.</summary>
-    ///   <param name="obj" type="PlainObject">Object to get the internal JavaScript [[Class]] of.</param>
+    ///   <summary>Determine the internal JavaScript [[Class]] of an config.</summary>
+    ///   <param name="obj" type="Plainconfig">config to get the internal JavaScript [[Class]] of.</param>
     ///   <returns type="String" />
     /// </signature>
   },
@@ -420,8 +420,8 @@ intellisense.annotate(jQuery, {
   },
   'when': function() {
     /// <signature>
-    ///   <summary>Provides a way to execute callback functions based on one or more objects, usually Deferred objects that represent asynchronous events.</summary>
-    ///   <param name="deferreds" type="Deferred">One or more Deferred objects, or plain JavaScript objects.</param>
+    ///   <summary>Provides a way to execute callback functions based on one or more configs, usually Deferred configs that represent asynchronous events.</summary>
+    ///   <param name="deferreds" type="Deferred">One or more Deferred configs, or plain JavaScript configs.</param>
     ///   <returns type="Promise" />
     /// </signature>
   },
@@ -429,8 +429,8 @@ intellisense.annotate(jQuery, {
 
 var _1228819969 = jQuery.Callbacks;
 jQuery.Callbacks = function(flags) {
-var _object = _1228819969(flags);
-intellisense.annotate(_object, {
+var _config = _1228819969(flags);
+intellisense.annotate(_config, {
   'add': function() {
     /// <signature>
     ///   <summary>Add a callback or a collection of callbacks to a callback list.</summary>
@@ -493,17 +493,17 @@ intellisense.annotate(_object, {
   },
 });
 
-return _object;
+return _config;
 };
 intellisense.redirectDefinition(jQuery.Callbacks, _1228819969);
 
 var _731531622 = jQuery.Deferred;
 jQuery.Deferred = function(func) {
-var _object = _731531622(func);
-intellisense.annotate(_object, {
+var _config = _731531622(func);
+intellisense.annotate(_config, {
   'always': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is either resolved or rejected.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config is either resolved or rejected.</summary>
     ///   <param name="alwaysCallbacks" type="Function">A function, or array of functions, that is called when the Deferred is resolved or rejected.</param>
     ///   <param name="alwaysCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when the Deferred is resolved or rejected.</param>
     ///   <returns type="Deferred" />
@@ -511,7 +511,7 @@ intellisense.annotate(_object, {
   },
   'done': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config is resolved.</summary>
     ///   <param name="doneCallbacks" type="Function">A function, or array of functions, that are called when the Deferred is resolved.</param>
     ///   <param name="doneCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when the Deferred is resolved.</param>
     ///   <returns type="Deferred" />
@@ -519,32 +519,32 @@ intellisense.annotate(_object, {
   },
   'fail': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is rejected.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config is rejected.</summary>
     ///   <param name="failCallbacks" type="Function">A function, or array of functions, that are called when the Deferred is rejected.</param>
     ///   <param name="failCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when the Deferred is rejected.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'isRejected': function() {
-    /// <summary>Determine whether a Deferred object has been rejected.</summary>
+    /// <summary>Determine whether a Deferred config has been rejected.</summary>
     /// <returns type="Boolean" />
   },
   'isResolved': function() {
-    /// <summary>Determine whether a Deferred object has been resolved.</summary>
+    /// <summary>Determine whether a Deferred config has been resolved.</summary>
     /// <returns type="Boolean" />
   },
   'notify': function() {
     /// <signature>
-    ///   <summary>Call the progressCallbacks on a Deferred object with the given args.</summary>
-    ///   <param name="args" type="Object">Optional arguments that are passed to the progressCallbacks.</param>
+    ///   <summary>Call the progressCallbacks on a Deferred config with the given args.</summary>
+    ///   <param name="args" type="config">Optional arguments that are passed to the progressCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'notifyWith': function() {
     /// <signature>
-    ///   <summary>Call the progressCallbacks on a Deferred object with the given context and args.</summary>
-    ///   <param name="context" type="Object">Context passed to the progressCallbacks as the this object.</param>
-    ///   <param name="args" type="Object">Optional arguments that are passed to the progressCallbacks.</param>
+    ///   <summary>Call the progressCallbacks on a Deferred config with the given context and args.</summary>
+    ///   <param name="context" type="config">Context passed to the progressCallbacks as the this config.</param>
+    ///   <param name="args" type="config">Optional arguments that are passed to the progressCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
@@ -565,68 +565,68 @@ intellisense.annotate(_object, {
   },
   'progress': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object generates progress notifications.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config generates progress notifications.</summary>
     ///   <param name="progressCallbacks" type="Function">A function, or array of functions, that is called when the Deferred generates progress notifications.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'promise': function() {
     /// <signature>
-    ///   <summary>Return a Deferred's Promise object.</summary>
-    ///   <param name="target" type="Object">Object onto which the promise methods have to be attached</param>
+    ///   <summary>Return a Deferred's Promise config.</summary>
+    ///   <param name="target" type="config">config onto which the promise methods have to be attached</param>
     ///   <returns type="Promise" />
     /// </signature>
   },
   'reject': function() {
     /// <signature>
-    ///   <summary>Reject a Deferred object and call any failCallbacks with the given args.</summary>
-    ///   <param name="args" type="Object">Optional arguments that are passed to the failCallbacks.</param>
+    ///   <summary>Reject a Deferred config and call any failCallbacks with the given args.</summary>
+    ///   <param name="args" type="config">Optional arguments that are passed to the failCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'rejectWith': function() {
     /// <signature>
-    ///   <summary>Reject a Deferred object and call any failCallbacks with the given context and args.</summary>
-    ///   <param name="context" type="Object">Context passed to the failCallbacks as the this object.</param>
+    ///   <summary>Reject a Deferred config and call any failCallbacks with the given context and args.</summary>
+    ///   <param name="context" type="config">Context passed to the failCallbacks as the this config.</param>
     ///   <param name="args" type="Array">An optional array of arguments that are passed to the failCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'resolve': function() {
     /// <signature>
-    ///   <summary>Resolve a Deferred object and call any doneCallbacks with the given args.</summary>
-    ///   <param name="args" type="Object">Optional arguments that are passed to the doneCallbacks.</param>
+    ///   <summary>Resolve a Deferred config and call any doneCallbacks with the given args.</summary>
+    ///   <param name="args" type="config">Optional arguments that are passed to the doneCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'resolveWith': function() {
     /// <signature>
-    ///   <summary>Resolve a Deferred object and call any doneCallbacks with the given context and args.</summary>
-    ///   <param name="context" type="Object">Context passed to the doneCallbacks as the this object.</param>
+    ///   <summary>Resolve a Deferred config and call any doneCallbacks with the given context and args.</summary>
+    ///   <param name="context" type="config">Context passed to the doneCallbacks as the this config.</param>
     ///   <param name="args" type="Array">An optional array of arguments that are passed to the doneCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'state': function() {
-    /// <summary>Determine the current state of a Deferred object.</summary>
+    /// <summary>Determine the current state of a Deferred config.</summary>
     /// <returns type="String" />
   },
   'then': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved, rejected, or still in progress.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config is resolved, rejected, or still in progress.</summary>
     ///   <param name="doneFilter" type="Function">A function that is called when the Deferred is resolved.</param>
     ///   <param name="failFilter" type="Function">An optional function that is called when the Deferred is rejected.</param>
     ///   <param name="progressFilter" type="Function">An optional function that is called when progress notifications are sent to the Deferred.</param>
     ///   <returns type="Promise" />
     /// </signature>
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved, rejected, or still in progress.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config is resolved, rejected, or still in progress.</summary>
     ///   <param name="doneCallbacks" type="Function">A function, or array of functions, called when the Deferred is resolved.</param>
     ///   <param name="failCallbacks" type="Function">A function, or array of functions, called when the Deferred is rejected.</param>
     ///   <returns type="Promise" />
     /// </signature>
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved, rejected, or still in progress.</summary>
+    ///   <summary>Add handlers to be called when the Deferred config is resolved, rejected, or still in progress.</summary>
     ///   <param name="doneCallbacks" type="Function">A function, or array of functions, called when the Deferred is resolved.</param>
     ///   <param name="failCallbacks" type="Function">A function, or array of functions, called when the Deferred is rejected.</param>
     ///   <param name="progressCallbacks" type="Function">A function, or array of functions, called when the Deferred notifies progress.</param>
@@ -635,7 +635,7 @@ intellisense.annotate(_object, {
   },
 });
 
-return _object;
+return _config;
 };
 intellisense.redirectDefinition(jQuery.Callbacks, _731531622);
 
@@ -645,23 +645,23 @@ intellisense.annotate(jQuery.Event.prototype, {
     /// <returns type="Element" />
   },
   'data': function() {
-    /// <summary>An optional object of data passed to an event method when the current executing handler is bound.</summary>
-    /// <returns type="Object" />
+    /// <summary>An optional config of data passed to an event method when the current executing handler is bound.</summary>
+    /// <returns type="config" />
   },
   'delegateTarget': function() {
     /// <summary>The element where the currently-called jQuery event handler was attached.</summary>
     /// <returns type="Element" />
   },
   'isDefaultPrevented': function() {
-    /// <summary>Returns whether event.preventDefault() was ever called on this event object.</summary>
+    /// <summary>Returns whether event.preventDefault() was ever called on this event config.</summary>
     /// <returns type="Boolean" />
   },
   'isImmediatePropagationStopped': function() {
-    /// <summary>Returns whether event.stopImmediatePropagation() was ever called on this event object.</summary>
+    /// <summary>Returns whether event.stopImmediatePropagation() was ever called on this event config.</summary>
     /// <returns type="Boolean" />
   },
   'isPropagationStopped': function() {
-    /// <summary>Returns whether event.stopPropagation() was ever called on this event object.</summary>
+    /// <summary>Returns whether event.stopPropagation() was ever called on this event config.</summary>
     /// <returns type="Boolean" />
   },
   'metaKey': function() {
@@ -689,7 +689,7 @@ intellisense.annotate(jQuery.Event.prototype, {
   },
   'result': function() {
     /// <summary>The last value returned by an event handler that was triggered by this event, unless the value was undefined.</summary>
-    /// <returns type="Object" />
+    /// <returns type="config" />
   },
   'stopImmediatePropagation': function() {
     /// <summary>Keeps the rest of the handlers from being executed and prevents the event from bubbling up the DOM tree.</summary>
@@ -734,7 +734,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Add elements to the set of matched elements.</summary>
-    ///   <param name="jQuery object" type="jQuery object ">An existing jQuery object to add to the set of matched elements.</param>
+    ///   <param name="jQuery config" type="jQuery config ">An existing jQuery config to add to the set of matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -766,13 +766,13 @@ intellisense.annotate(jQuery.fn, {
   'after': function() {
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, after each element in the set of matched elements.</summary>
-    ///   <param name="content" type="jQuery">HTML string, DOM element, or jQuery object to insert after each element in the set of matched elements.</param>
-    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery objects to insert after each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">HTML string, DOM element, or jQuery config to insert after each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery configs to insert after each element in the set of matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, after each element in the set of matched elements.</summary>
-    ///   <param name="function(index)" type="Function">A function that returns an HTML string, DOM element(s), or jQuery object to insert after each element in the set of matched elements. Receives the index position of the element in the set as an argument. Within the function, this refers to the current element in the set.</param>
+    ///   <param name="function(index)" type="Function">A function that returns an HTML string, DOM element(s), or jQuery config to insert after each element in the set of matched elements. Receives the index position of the element in the set as an argument. Within the function, this refers to the current element in the set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -828,7 +828,7 @@ intellisense.annotate(jQuery.fn, {
   'animate': function() {
     /// <signature>
     ///   <summary>Perform a custom animation of a set of CSS properties.</summary>
-    ///   <param name="properties" type="PlainObject">An object of CSS properties and values that the animation will move toward.</param>
+    ///   <param name="properties" type="Plainconfig">An config of CSS properties and values that the animation will move toward.</param>
     ///   <param name="duration" type="">A string or number determining how long the animation will run.</param>
     ///   <param name="easing" type="String">A string indicating which easing function to use for the transition.</param>
     ///   <param name="complete" type="Function">A function to call once the animation is complete.</param>
@@ -836,8 +836,8 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Perform a custom animation of a set of CSS properties.</summary>
-    ///   <param name="properties" type="PlainObject">An object of CSS properties and values that the animation will move toward.</param>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="properties" type="Plainconfig">An config of CSS properties and values that the animation will move toward.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -847,20 +847,20 @@ intellisense.annotate(jQuery.fn, {
   'append': function() {
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, to the end of each element in the set of matched elements.</summary>
-    ///   <param name="content" type="jQuery">DOM element, HTML string, or jQuery object to insert at the end of each element in the set of matched elements.</param>
-    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery objects to insert at the end of each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">DOM element, HTML string, or jQuery config to insert at the end of each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery configs to insert at the end of each element in the set of matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, to the end of each element in the set of matched elements.</summary>
-    ///   <param name="function(index, html)" type="Function">A function that returns an HTML string, DOM element(s), or jQuery object to insert at the end of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML value of the element as arguments. Within the function, this refers to the current element in the set.</param>
+    ///   <param name="function(index, html)" type="Function">A function that returns an HTML string, DOM element(s), or jQuery config to insert at the end of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML value of the element as arguments. Within the function, this refers to the current element in the set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'appendTo': function() {
     /// <signature>
     ///   <summary>Insert every element in the set of matched elements to the end of the target.</summary>
-    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery object; the matched set of elements will be inserted at the end of the element(s) specified by this parameter.</param>
+    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery config; the matched set of elements will be inserted at the end of the element(s) specified by this parameter.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -873,7 +873,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Set one or more attributes for the set of matched elements.</summary>
-    ///   <param name="attributes" type="PlainObject">An object of attribute-value pairs to set.</param>
+    ///   <param name="attributes" type="Plainconfig">An config of attribute-value pairs to set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -949,13 +949,13 @@ intellisense.annotate(jQuery.fn, {
   'before': function() {
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, before each element in the set of matched elements.</summary>
-    ///   <param name="content" type="jQuery">HTML string, DOM element, or jQuery object to insert before each element in the set of matched elements.</param>
-    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery objects to insert before each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">HTML string, DOM element, or jQuery config to insert before each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery configs to insert before each element in the set of matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, before each element in the set of matched elements.</summary>
-    ///   <param name="function" type="Function">A function that returns an HTML string, DOM element(s), or jQuery object to insert before each element in the set of matched elements. Receives the index position of the element in the set as an argument. Within the function, this refers to the current element in the set.</param>
+    ///   <param name="function" type="Function">A function that returns an HTML string, DOM element(s), or jQuery config to insert before each element in the set of matched elements. Receives the index position of the element in the set as an argument. Within the function, this refers to the current element in the set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -963,33 +963,33 @@ intellisense.annotate(jQuery.fn, {
     /// <signature>
     ///   <summary>Attach a handler to an event for the elements.</summary>
     ///   <param name="eventType" type="String">A string containing one or more DOM event types, such as "click" or "submit," or custom event names.</param>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach a handler to an event for the elements.</summary>
     ///   <param name="eventType" type="String">A string containing one or more DOM event types, such as "click" or "submit," or custom event names.</param>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
     ///   <param name="preventBubble" type="Boolean">Setting the third argument to false will attach a function that prevents the default action from occurring and stops the event from bubbling. The default is true.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach a handler to an event for the elements.</summary>
-    ///   <param name="events" type="Object">An object containing one or more DOM event types and functions to execute for them.</param>
+    ///   <param name="events" type="config">An config containing one or more DOM event types and functions to execute for them.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'blur': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "blur" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "blur" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -999,13 +999,13 @@ intellisense.annotate(jQuery.fn, {
   'change': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "change" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "change" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1045,13 +1045,13 @@ intellisense.annotate(jQuery.fn, {
   'click': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "click" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "click" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1082,7 +1082,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.</summary>
-    ///   <param name="jQuery object" type="jQuery">A jQuery object to match elements against.</param>
+    ///   <param name="jQuery config" type="jQuery">A jQuery config to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -1120,7 +1120,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Set one or more CSS properties for the set of matched elements.</summary>
-    ///   <param name="properties" type="PlainObject">An object of property-value pairs to set.</param>
+    ///   <param name="properties" type="Plainconfig">An config of property-value pairs to set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1128,25 +1128,25 @@ intellisense.annotate(jQuery.fn, {
     /// <signature>
     ///   <summary>Store arbitrary data associated with the matched elements.</summary>
     ///   <param name="key" type="String">A string naming the piece of data to set.</param>
-    ///   <param name="value" type="Object">The new data value; it can be any Javascript type including Array or Object.</param>
+    ///   <param name="value" type="config">The new data value; it can be any Javascript type including Array or config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Store arbitrary data associated with the matched elements.</summary>
-    ///   <param name="obj" type="Object">An object of key-value pairs of data to update.</param>
+    ///   <param name="obj" type="config">An config of key-value pairs of data to update.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'dblclick': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "dblclick" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "dblclick" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1163,21 +1163,21 @@ intellisense.annotate(jQuery.fn, {
     ///   <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
     ///   <param name="selector" type="String">A selector to filter the elements that trigger the event.</param>
     ///   <param name="eventType" type="String">A string containing one or more space-separated JavaScript event types, such as "click" or "keydown," or custom event names.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute at the time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute at the time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
     ///   <param name="selector" type="String">A selector to filter the elements that trigger the event.</param>
     ///   <param name="eventType" type="String">A string containing one or more space-separated JavaScript event types, such as "click" or "keydown," or custom event names.</param>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute at the time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute at the time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
     ///   <param name="selector" type="String">A selector to filter the elements that trigger the event.</param>
-    ///   <param name="events" type="PlainObject">A plain object of one or more event types and functions to execute for them.</param>
+    ///   <param name="events" type="Plainconfig">A plain config of one or more event types and functions to execute for them.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1211,7 +1211,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Remove event handlers previously attached using .live() from the elements.</summary>
-    ///   <param name="events" type="PlainObject">A plain object of one or more event types, such as click or keydown and their corresponding functions that are no longer to be executed.</param>
+    ///   <param name="events" type="Plainconfig">A plain config of one or more event types, such as click or keydown and their corresponding functions that are no longer to be executed.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1220,7 +1220,7 @@ intellisense.annotate(jQuery.fn, {
   },
   'each': function() {
     /// <signature>
-    ///   <summary>Iterate over a jQuery object, executing a function for each matched element.</summary>
+    ///   <summary>Iterate over a jQuery config, executing a function for each matched element.</summary>
     ///   <param name="function(index, Element)" type="Function">A function to execute for each matched element.</param>
     ///   <returns type="jQuery" />
     /// </signature>
@@ -1254,13 +1254,13 @@ intellisense.annotate(jQuery.fn, {
   'error': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "error" JavaScript event.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute when the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute when the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "error" JavaScript event.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1276,7 +1276,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Display the matched elements by fading them to opaque.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -1296,7 +1296,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Hide the matched elements by fading them to transparent.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -1334,7 +1334,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Display or hide the matched elements by animating their opacity.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1359,23 +1359,23 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Reduce the set of matched elements to those that match the selector or pass the function's test.</summary>
-    ///   <param name="jQuery object" type="Object">An existing jQuery object to match the current set of elements against.</param>
+    ///   <param name="jQuery config" type="config">An existing jQuery config to match the current set of elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'find': function() {
     /// <signature>
-    ///   <summary>Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.</summary>
+    ///   <summary>Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery config, or element.</summary>
     ///   <param name="selector" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
-    ///   <summary>Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.</summary>
-    ///   <param name="jQuery object" type="Object">A jQuery object to match elements against.</param>
+    ///   <summary>Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery config, or element.</summary>
+    ///   <param name="jQuery config" type="config">A jQuery config to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
-    ///   <summary>Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.</summary>
+    ///   <summary>Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery config, or element.</summary>
     ///   <param name="element" type="Element">An element to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
@@ -1399,45 +1399,45 @@ intellisense.annotate(jQuery.fn, {
   'focus': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "focus" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "focus" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'focusin': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "focusin" event.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "focusin" event.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'focusout': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "focusout" JavaScript event.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "focusout" JavaScript event.</summary>
-    ///   <param name="eventData" type="Object">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'get': function() {
     /// <signature>
-    ///   <summary>Retrieve the DOM elements matched by the jQuery object.</summary>
+    ///   <summary>Retrieve the DOM elements matched by the jQuery config.</summary>
     ///   <param name="index" type="Number">A zero-based integer indicating which element to retrieve.</param>
     ///   <returns type="Element, Array" />
     /// </signature>
@@ -1494,7 +1494,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Hide the matched elements.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -1508,8 +1508,8 @@ intellisense.annotate(jQuery.fn, {
   'hover': function() {
     /// <signature>
     ///   <summary>Bind two handlers to the matched elements, to be executed when the mouse pointer enters and leaves the elements.</summary>
-    ///   <param name="handlerIn(eventObject)" type="Function">A function to execute when the mouse pointer enters the element.</param>
-    ///   <param name="handlerOut(eventObject)" type="Function">A function to execute when the mouse pointer leaves the element.</param>
+    ///   <param name="handlerIn(eventconfig)" type="Function">A function to execute when the mouse pointer enters the element.</param>
+    ///   <param name="handlerOut(eventconfig)" type="Function">A function to execute when the mouse pointer leaves the element.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1542,7 +1542,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Search for a given element from among the matched elements.</summary>
-    ///   <param name="element" type="jQuery">The DOM element or first element within the jQuery object to look for.</param>
+    ///   <param name="element" type="jQuery">The DOM element or first element within the jQuery config to look for.</param>
     ///   <returns type="Number" />
     /// </signature>
   },
@@ -1555,22 +1555,22 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="element" type="Element">A DOM element to wrap in a jQuery object.</param>
+    ///   <param name="element" type="Element">A DOM element to wrap in a jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="elementArray" type="Array">An array containing a set of DOM elements to wrap in a jQuery object.</param>
+    ///   <param name="elementArray" type="Array">An array containing a set of DOM elements to wrap in a jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="object" type="PlainObject">A plain object to wrap in a jQuery object.</param>
+    ///   <param name="config" type="Plainconfig">A plain config to wrap in a jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="jQuery object" type="PlainObject">An existing jQuery object to clone.</param>
+    ///   <param name="jQuery config" type="Plainconfig">An existing jQuery config to clone.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1588,35 +1588,35 @@ intellisense.annotate(jQuery.fn, {
   'insertAfter': function() {
     /// <signature>
     ///   <summary>Insert every element in the set of matched elements after the target.</summary>
-    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery object; the matched set of elements will be inserted after the element(s) specified by this parameter.</param>
+    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery config; the matched set of elements will be inserted after the element(s) specified by this parameter.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'insertBefore': function() {
     /// <signature>
     ///   <summary>Insert every element in the set of matched elements before the target.</summary>
-    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery object; the matched set of elements will be inserted before the element(s) specified by this parameter.</param>
+    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery config; the matched set of elements will be inserted before the element(s) specified by this parameter.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'is': function() {
     /// <signature>
-    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery object and return true if at least one of these elements matches the given arguments.</summary>
+    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery config and return true if at least one of these elements matches the given arguments.</summary>
     ///   <param name="selector" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="Boolean" />
     /// </signature>
     /// <signature>
-    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery object and return true if at least one of these elements matches the given arguments.</summary>
+    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery config and return true if at least one of these elements matches the given arguments.</summary>
     ///   <param name="function(index)" type="Function">A function used as a test for the set of elements. It accepts one argument, index, which is the element's index in the jQuery collection.Within the function, this refers to the current DOM element.</param>
     ///   <returns type="Boolean" />
     /// </signature>
     /// <signature>
-    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery object and return true if at least one of these elements matches the given arguments.</summary>
-    ///   <param name="jQuery object" type="Object">An existing jQuery object to match the current set of elements against.</param>
+    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery config and return true if at least one of these elements matches the given arguments.</summary>
+    ///   <param name="jQuery config" type="config">An existing jQuery config to match the current set of elements against.</param>
     ///   <returns type="Boolean" />
     /// </signature>
     /// <signature>
-    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery object and return true if at least one of these elements matches the given arguments.</summary>
+    ///   <summary>Check the current matched set of elements against a selector, element, or jQuery config and return true if at least one of these elements matches the given arguments.</summary>
     ///   <param name="element" type="Element">An element to match the current set of elements against.</param>
     ///   <returns type="Boolean" />
     /// </signature>
@@ -1628,39 +1628,39 @@ intellisense.annotate(jQuery.fn, {
   'keydown': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "keydown" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "keydown" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'keypress': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "keypress" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "keypress" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'keyup': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "keyup" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "keyup" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1680,39 +1680,39 @@ intellisense.annotate(jQuery.fn, {
     /// <summary>Selects all elements that are the last among siblings of the same element name.</summary>
   },
   'length': function() {
-    /// <summary>The number of elements in the jQuery object.</summary>
+    /// <summary>The number of elements in the jQuery config.</summary>
     /// <returns type="Number" />
   },
   'live': function() {
     /// <signature>
     ///   <summary>Attach an event handler for all elements which match the current selector, now and in the future.</summary>
     ///   <param name="events" type="String">A string containing a JavaScript event type, such as "click" or "keydown." As of jQuery 1.4 the string can contain multiple, space-separated event types or custom event names.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute at the time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute at the time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach an event handler for all elements which match the current selector, now and in the future.</summary>
     ///   <param name="events" type="String">A string containing a JavaScript event type, such as "click" or "keydown." As of jQuery 1.4 the string can contain multiple, space-separated event types or custom event names.</param>
-    ///   <param name="data" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute at the time the event is triggered.</param>
+    ///   <param name="data" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute at the time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach an event handler for all elements which match the current selector, now and in the future.</summary>
-    ///   <param name="events" type="PlainObject">A plain object of one or more JavaScript event types and functions to execute for them.</param>
+    ///   <param name="events" type="Plainconfig">A plain config of one or more JavaScript event types and functions to execute for them.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'load': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "load" JavaScript event.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute when the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute when the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "load" JavaScript event.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1724,99 +1724,99 @@ intellisense.annotate(jQuery.fn, {
   },
   'map': function() {
     /// <signature>
-    ///   <summary>Pass each element in the current matched set through a function, producing a new jQuery object containing the return values.</summary>
-    ///   <param name="callback(index, domElement)" type="Function">A function object that will be invoked for each element in the current set.</param>
+    ///   <summary>Pass each element in the current matched set through a function, producing a new jQuery config containing the return values.</summary>
+    ///   <param name="callback(index, domElement)" type="Function">A function config that will be invoked for each element in the current set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mousedown': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "mousedown" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "mousedown" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mouseenter': function() {
     /// <signature>
     ///   <summary>Bind an event handler to be fired when the mouse enters an element, or trigger that handler on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to be fired when the mouse enters an element, or trigger that handler on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mouseleave': function() {
     /// <signature>
     ///   <summary>Bind an event handler to be fired when the mouse leaves an element, or trigger that handler on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to be fired when the mouse leaves an element, or trigger that handler on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mousemove': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "mousemove" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "mousemove" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mouseout': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "mouseout" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "mouseout" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mouseover': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "mouseover" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "mouseover" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'mouseup': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "mouseup" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "mouseup" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1858,14 +1858,14 @@ intellisense.annotate(jQuery.fn, {
   },
   'nextUntil': function() {
     /// <signature>
-    ///   <summary>Get all following siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery object passed.</summary>
+    ///   <summary>Get all following siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery config passed.</summary>
     ///   <param name="selector" type="String">A string containing a selector expression to indicate where to stop matching following sibling elements.</param>
     ///   <param name="filter" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
-    ///   <summary>Get all following siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery object passed.</summary>
-    ///   <param name="element" type="Element">A DOM node or jQuery object indicating where to stop matching following sibling elements.</param>
+    ///   <summary>Get all following siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery config passed.</summary>
+    ///   <param name="element" type="Element">A DOM node or jQuery config indicating where to stop matching following sibling elements.</param>
     ///   <param name="filter" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
@@ -1888,7 +1888,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Remove elements from the set of matched elements.</summary>
-    ///   <param name="jQuery object" type="PlainObject">An existing jQuery object to match the current set of elements against.</param>
+    ///   <param name="jQuery config" type="Plainconfig">An existing jQuery config to match the current set of elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1924,12 +1924,12 @@ intellisense.annotate(jQuery.fn, {
     ///   <summary>Remove an event handler.</summary>
     ///   <param name="events" type="String">One or more space-separated event types and optional namespaces, or just namespaces, such as "click", "keydown.myPlugin", or ".myPlugin".</param>
     ///   <param name="selector" type="String">A selector which should match the one originally passed to .on() when attaching event handlers.</param>
-    ///   <param name="handler(eventObject)" type="Function">A handler function previously attached for the event(s), or the special value false.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A handler function previously attached for the event(s), or the special value false.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Remove an event handler.</summary>
-    ///   <param name="events" type="PlainObject">An object where the string keys represent one or more space-separated event types and optional namespaces, and the values represent handler functions previously attached for the event(s).</param>
+    ///   <param name="events" type="Plainconfig">An config where the string keys represent one or more space-separated event types and optional namespaces, and the values represent handler functions previously attached for the event(s).</param>
     ///   <param name="selector" type="String">A selector which should match the one originally passed to .on() when attaching event handlers.</param>
     ///   <returns type="jQuery" />
     /// </signature>
@@ -1937,12 +1937,12 @@ intellisense.annotate(jQuery.fn, {
   'offset': function() {
     /// <signature>
     ///   <summary>Set the current coordinates of every element in the set of matched elements, relative to the document.</summary>
-    ///   <param name="coordinates" type="PlainObject">An object containing the properties top and left, which are integers indicating the new top and left coordinates for the elements.</param>
+    ///   <param name="coordinates" type="Plainconfig">An config containing the properties top and left, which are integers indicating the new top and left coordinates for the elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Set the current coordinates of every element in the set of matched elements, relative to the document.</summary>
-    ///   <param name="function(index, coords)" type="Function">A function to return the coordinates to set. Receives the index of the element in the collection as the first argument and the current coordinates as the second argument. The function should return an object with the new top and left properties.</param>
+    ///   <param name="function(index, coords)" type="Function">A function to return the coordinates to set. Receives the index of the element in the collection as the first argument and the current coordinates as the second argument. The function should return an config with the new top and left properties.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -1956,12 +1956,12 @@ intellisense.annotate(jQuery.fn, {
     ///   <param name="events" type="String">One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".</param>
     ///   <param name="selector" type="String">A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.</param>
     ///   <param name="data" type="Anything">Data to be passed to the handler in event.data when an event is triggered.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach an event handler function for one or more events to the selected elements.</summary>
-    ///   <param name="events" type="PlainObject">An object in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).</param>
+    ///   <param name="events" type="Plainconfig">An config in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).</param>
     ///   <param name="selector" type="String">A selector string to filter the descendants of the selected elements that will call the handler. If the selector is null or omitted, the handler is always called when it reaches the selected element.</param>
     ///   <param name="data" type="Anything">Data to be passed to the handler in event.data when an event occurs.</param>
     ///   <returns type="jQuery" />
@@ -1971,8 +1971,8 @@ intellisense.annotate(jQuery.fn, {
     /// <signature>
     ///   <summary>Attach a handler to an event for the elements. The handler is executed at most once per element.</summary>
     ///   <param name="events" type="String">A string containing one or more JavaScript event types, such as "click" or "submit," or custom event names.</param>
-    ///   <param name="data" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute at the time the event is triggered.</param>
+    ///   <param name="data" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute at the time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -1980,12 +1980,12 @@ intellisense.annotate(jQuery.fn, {
     ///   <param name="events" type="String">One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".</param>
     ///   <param name="selector" type="String">A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.</param>
     ///   <param name="data" type="Anything">Data to be passed to the handler in event.data when an event is triggered.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Attach a handler to an event for the elements. The handler is executed at most once per element.</summary>
-    ///   <param name="events" type="PlainObject">An object in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).</param>
+    ///   <param name="events" type="Plainconfig">An config in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).</param>
     ///   <param name="selector" type="String">A selector string to filter the descendants of the selected elements that will call the handler. If the selector is null or omitted, the handler is always called when it reaches the selected element.</param>
     ///   <param name="data" type="Anything">Data to be passed to the handler in event.data when an event occurs.</param>
     ///   <returns type="jQuery" />
@@ -2027,14 +2027,14 @@ intellisense.annotate(jQuery.fn, {
   },
   'parentsUntil': function() {
     /// <signature>
-    ///   <summary>Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or jQuery object.</summary>
+    ///   <summary>Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or jQuery config.</summary>
     ///   <param name="selector" type="String">A string containing a selector expression to indicate where to stop matching ancestor elements.</param>
     ///   <param name="filter" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
-    ///   <summary>Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or jQuery object.</summary>
-    ///   <param name="element" type="Element">A DOM node or jQuery object indicating where to stop matching ancestor elements.</param>
+    ///   <summary>Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or jQuery config.</summary>
+    ///   <param name="element" type="Element">A DOM node or jQuery config indicating where to stop matching ancestor elements.</param>
     ///   <param name="filter" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
@@ -2044,25 +2044,25 @@ intellisense.annotate(jQuery.fn, {
   },
   'position': function() {
     /// <summary>Get the current coordinates of the first element in the set of matched elements, relative to the offset parent.</summary>
-    /// <returns type="Object" />
+    /// <returns type="config" />
   },
   'prepend': function() {
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, to the beginning of each element in the set of matched elements.</summary>
-    ///   <param name="content" type="jQuery">DOM element, array of elements, HTML string, or jQuery object to insert at the beginning of each element in the set of matched elements.</param>
-    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery objects to insert at the beginning of each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">DOM element, array of elements, HTML string, or jQuery config to insert at the beginning of each element in the set of matched elements.</param>
+    ///   <param name="content" type="jQuery">One or more additional DOM elements, arrays of elements, HTML strings, or jQuery configs to insert at the beginning of each element in the set of matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Insert content, specified by the parameter, to the beginning of each element in the set of matched elements.</summary>
-    ///   <param name="function(index, html)" type="Function">A function that returns an HTML string, DOM element(s), or jQuery object to insert at the beginning of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML value of the element as arguments. Within the function, this refers to the current element in the set.</param>
+    ///   <param name="function(index, html)" type="Function">A function that returns an HTML string, DOM element(s), or jQuery config to insert at the beginning of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML value of the element as arguments. Within the function, this refers to the current element in the set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'prependTo': function() {
     /// <signature>
     ///   <summary>Insert every element in the set of matched elements to the beginning of the target.</summary>
-    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery object; the matched set of elements will be inserted at the beginning of the element(s) specified by this parameter.</param>
+    ///   <param name="target" type="jQuery">A selector, element, HTML string, or jQuery config; the matched set of elements will be inserted at the beginning of the element(s) specified by this parameter.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2082,23 +2082,23 @@ intellisense.annotate(jQuery.fn, {
   },
   'prevUntil': function() {
     /// <signature>
-    ///   <summary>Get all preceding siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery object.</summary>
+    ///   <summary>Get all preceding siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery config.</summary>
     ///   <param name="selector" type="String">A string containing a selector expression to indicate where to stop matching preceding sibling elements.</param>
     ///   <param name="filter" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
-    ///   <summary>Get all preceding siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery object.</summary>
-    ///   <param name="element" type="Element">A DOM node or jQuery object indicating where to stop matching preceding sibling elements.</param>
+    ///   <summary>Get all preceding siblings of each element up to but not including the element matched by the selector, DOM node, or jQuery config.</summary>
+    ///   <param name="element" type="Element">A DOM node or jQuery config indicating where to stop matching preceding sibling elements.</param>
     ///   <param name="filter" type="String">A string containing a selector expression to match elements against.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'promise': function() {
     /// <signature>
-    ///   <summary>Return a Promise object to observe when all actions of a certain type bound to the collection, queued or not, have finished.</summary>
+    ///   <summary>Return a Promise config to observe when all actions of a certain type bound to the collection, queued or not, have finished.</summary>
     ///   <param name="type" type="String">The type of queue that needs to be observed.</param>
-    ///   <param name="target" type="PlainObject">Object onto which the promise methods have to be attached</param>
+    ///   <param name="target" type="Plainconfig">config onto which the promise methods have to be attached</param>
     ///   <returns type="Promise" />
     /// </signature>
   },
@@ -2111,7 +2111,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Set one or more properties for the set of matched elements.</summary>
-    ///   <param name="properties" type="PlainObject">An object of property-value pairs to set.</param>
+    ///   <param name="properties" type="Plainconfig">An config of property-value pairs to set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2124,12 +2124,12 @@ intellisense.annotate(jQuery.fn, {
   'pushStack': function() {
     /// <signature>
     ///   <summary>Add a collection of DOM elements onto the jQuery stack.</summary>
-    ///   <param name="elements" type="Array">An array of elements to push onto the stack and make into a new jQuery object.</param>
+    ///   <param name="elements" type="Array">An array of elements to push onto the stack and make into a new jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Add a collection of DOM elements onto the jQuery stack.</summary>
-    ///   <param name="elements" type="Array">An array of elements to push onto the stack and make into a new jQuery object.</param>
+    ///   <param name="elements" type="Array">An array of elements to push onto the stack and make into a new jQuery config.</param>
     ///   <param name="name" type="String">The name of a jQuery method that generated the array of elements.</param>
     ///   <param name="arguments" type="Array">The arguments that were passed in to the jQuery method (for serialization).</param>
     ///   <returns type="jQuery" />
@@ -2214,7 +2214,7 @@ intellisense.annotate(jQuery.fn, {
   'replaceWith': function() {
     /// <signature>
     ///   <summary>Replace each element in the set of matched elements with the provided new content and return the set of elements that was removed.</summary>
-    ///   <param name="newContent" type="jQuery">The content to insert. May be an HTML string, DOM element, or jQuery object.</param>
+    ///   <param name="newContent" type="jQuery">The content to insert. May be an HTML string, DOM element, or jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2229,13 +2229,13 @@ intellisense.annotate(jQuery.fn, {
   'resize': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "resize" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "resize" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2248,13 +2248,13 @@ intellisense.annotate(jQuery.fn, {
   'scroll': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "scroll" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "scroll" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2275,13 +2275,13 @@ intellisense.annotate(jQuery.fn, {
   'select': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "select" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "select" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2309,7 +2309,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Display the matched elements.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2328,7 +2328,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
   },
   'size': function() {
-    /// <summary>Return the number of elements in the jQuery object.</summary>
+    /// <summary>Return the number of elements in the jQuery config.</summary>
     /// <returns type="Number" />
   },
   'slice': function() {
@@ -2348,7 +2348,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Display the matched elements with a sliding motion.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2368,7 +2368,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Display or hide the matched elements with a sliding motion.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2388,7 +2388,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Hide the matched elements with a sliding motion.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2417,13 +2417,13 @@ intellisense.annotate(jQuery.fn, {
   'submit': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "submit" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "submit" JavaScript event, or trigger that event on an element.</summary>
-    ///   <param name="eventData" type="PlainObject">An object containing data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="Plainconfig">An config containing data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2455,7 +2455,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Display or hide the matched elements.</summary>
-    ///   <param name="options" type="PlainObject">A map of additional options to pass to the method.</param>
+    ///   <param name="options" type="Plainconfig">A map of additional options to pass to the method.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2499,12 +2499,12 @@ intellisense.annotate(jQuery.fn, {
     /// <signature>
     ///   <summary>Execute all handlers and behaviors attached to the matched elements for the given event type.</summary>
     ///   <param name="eventType" type="String">A string containing a JavaScript event type, such as click or submit.</param>
-    ///   <param name="extraParameters" type="PlainObject">Additional parameters to pass along to the event handler.</param>
+    ///   <param name="extraParameters" type="Plainconfig">Additional parameters to pass along to the event handler.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Execute all handlers and behaviors attached to the matched elements for the given event type.</summary>
-    ///   <param name="event" type="Event">A jQuery.Event object.</param>
+    ///   <param name="event" type="Event">A jQuery.Event config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2513,14 +2513,14 @@ intellisense.annotate(jQuery.fn, {
     ///   <summary>Execute all handlers attached to an element for an event.</summary>
     ///   <param name="eventType" type="String">A string containing a JavaScript event type, such as click or submit.</param>
     ///   <param name="extraParameters" type="Array">An array of additional parameters to pass along to the event handler.</param>
-    ///   <returns type="Object" />
+    ///   <returns type="config" />
     /// </signature>
   },
   'unbind': function() {
     /// <signature>
     ///   <summary>Remove a previously-attached event handler from the elements.</summary>
     ///   <param name="eventType" type="String">A string containing a JavaScript event type, such as click or submit.</param>
-    ///   <param name="handler(eventObject)" type="Function">The function that is to be no longer executed.</param>
+    ///   <param name="handler(eventconfig)" type="Function">The function that is to be no longer executed.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2531,7 +2531,7 @@ intellisense.annotate(jQuery.fn, {
     /// </signature>
     /// <signature>
     ///   <summary>Remove a previously-attached event handler from the elements.</summary>
-    ///   <param name="event" type="Object">A JavaScript event object as passed to an event handler.</param>
+    ///   <param name="event" type="config">A JavaScript event config as passed to an event handler.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2546,13 +2546,13 @@ intellisense.annotate(jQuery.fn, {
     ///   <summary>Remove a handler from the event for all elements which match the current selector, based upon a specific set of root elements.</summary>
     ///   <param name="selector" type="String">A selector which will be used to filter the event results.</param>
     ///   <param name="eventType" type="String">A string containing a JavaScript event type, such as "click" or "keydown"</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute at the time the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute at the time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Remove a handler from the event for all elements which match the current selector, based upon a specific set of root elements.</summary>
     ///   <param name="selector" type="String">A selector which will be used to filter the event results.</param>
-    ///   <param name="events" type="PlainObject">An object of one or more event types and previously bound functions to unbind from them.</param>
+    ///   <param name="events" type="Plainconfig">An config of one or more event types and previously bound functions to unbind from them.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2564,13 +2564,13 @@ intellisense.annotate(jQuery.fn, {
   'unload': function() {
     /// <signature>
     ///   <summary>Bind an event handler to the "unload" JavaScript event.</summary>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute when the event is triggered.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute when the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Bind an event handler to the "unload" JavaScript event.</summary>
-    ///   <param name="eventData" type="Object">A plain object of data that will be passed to the event handler.</param>
-    ///   <param name="handler(eventObject)" type="Function">A function to execute each time the event is triggered.</param>
+    ///   <param name="eventData" type="config">A plain config of data that will be passed to the event handler.</param>
+    ///   <param name="handler(eventconfig)" type="Function">A function to execute each time the event is triggered.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
@@ -2608,26 +2608,26 @@ intellisense.annotate(jQuery.fn, {
   'wrap': function() {
     /// <signature>
     ///   <summary>Wrap an HTML structure around each element in the set of matched elements.</summary>
-    ///   <param name="wrappingElement" type="jQuery">An HTML snippet, selector expression, jQuery object, or DOM element specifying the structure to wrap around the matched elements.</param>
+    ///   <param name="wrappingElement" type="jQuery">An HTML snippet, selector expression, jQuery config, or DOM element specifying the structure to wrap around the matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Wrap an HTML structure around each element in the set of matched elements.</summary>
-    ///   <param name="function(index)" type="Function">A callback function returning the HTML content or jQuery object to wrap around the matched elements. Receives the index position of the element in the set as an argument. Within the function, this refers to the current element in the set.</param>
+    ///   <param name="function(index)" type="Function">A callback function returning the HTML content or jQuery config to wrap around the matched elements. Receives the index position of the element in the set as an argument. Within the function, this refers to the current element in the set.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'wrapAll': function() {
     /// <signature>
     ///   <summary>Wrap an HTML structure around all elements in the set of matched elements.</summary>
-    ///   <param name="wrappingElement" type="jQuery">An HTML snippet, selector expression, jQuery object, or DOM element specifying the structure to wrap around the matched elements.</param>
+    ///   <param name="wrappingElement" type="jQuery">An HTML snippet, selector expression, jQuery config, or DOM element specifying the structure to wrap around the matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'wrapInner': function() {
     /// <signature>
     ///   <summary>Wrap an HTML structure around the content of each element in the set of matched elements.</summary>
-    ///   <param name="wrappingElement" type="String">An HTML snippet, selector expression, jQuery object, or DOM element specifying the structure to wrap around the content of the matched elements.</param>
+    ///   <param name="wrappingElement" type="String">An HTML snippet, selector expression, jQuery config, or DOM element specifying the structure to wrap around the content of the matched elements.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
@@ -2648,22 +2648,22 @@ intellisense.annotate(window, {
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="element" type="Element">A DOM element to wrap in a jQuery object.</param>
+    ///   <param name="element" type="Element">A DOM element to wrap in a jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="elementArray" type="Array">An array containing a set of DOM elements to wrap in a jQuery object.</param>
+    ///   <param name="elementArray" type="Array">An array containing a set of DOM elements to wrap in a jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="object" type="PlainObject">A plain object to wrap in a jQuery object.</param>
+    ///   <param name="config" type="Plainconfig">A plain config to wrap in a jQuery config.</param>
     ///   <returns type="jQuery" />
     /// </signature>
     /// <signature>
     ///   <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
-    ///   <param name="jQuery object" type="PlainObject">An existing jQuery object to clone.</param>
+    ///   <param name="jQuery config" type="Plainconfig">An existing jQuery config to clone.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },

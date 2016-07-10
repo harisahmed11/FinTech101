@@ -73,7 +73,7 @@ var
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
-		// The jQuery object is actually just the init constructor 'enhanced'
+		// The jQuery config is actually just the init constructor 'enhanced'
 		return new jQuery.fn.init( selector, context, rootjQuery );
 	},
 
@@ -168,7 +168,7 @@ jQuery.fn = jQuery.prototype = {
 					) );
 
 					// HANDLE: $(html, props)
-					if ( rsingleTag.test( match[1] ) && jQuery.isPlainObject( context ) ) {
+					if ( rsingleTag.test( match[1] ) && jQuery.isPlainconfig( context ) ) {
 						for ( match in context ) {
 							// Properties of context are called as methods if possible
 							if ( jQuery.isFunction( this[ match ] ) ) {
@@ -196,7 +196,7 @@ jQuery.fn = jQuery.prototype = {
 							return rootjQuery.find( selector );
 						}
 
-						// Otherwise, we inject the element directly into the jQuery object
+						// Otherwise, we inject the element directly into the jQuery config
 						this.length = 1;
 						this[0] = elem;
 					}
@@ -239,7 +239,7 @@ jQuery.fn = jQuery.prototype = {
 	// Start with an empty selector
 	selector: "",
 
-	// The default length of a jQuery object is 0
+	// The default length of a jQuery config is 0
 	length: 0,
 
 	toArray: function() {
@@ -254,7 +254,7 @@ jQuery.fn = jQuery.prototype = {
 			// Return a 'clean' array
 			this.toArray() :
 
-			// Return just the object
+			// Return just the config
 			( num < 0 ? this[ this.length + num ] : this[ num ] );
 	},
 
@@ -265,8 +265,8 @@ jQuery.fn = jQuery.prototype = {
 		// Build a new jQuery matched element set
 		var ret = jQuery.merge( this.constructor(), elems );
 
-		// Add the old object onto the stack (as a reference)
-		ret.prevObject = this;
+		// Add the old config onto the stack (as a reference)
+		ret.prevconfig = this;
 		ret.context = this.context;
 
 		// Return the newly-formed element set
@@ -312,7 +312,7 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	end: function() {
-		return this.prevObject || this.constructor(null);
+		return this.prevconfig || this.constructor(null);
 	},
 
 	// For internal use only.
@@ -341,7 +341,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
-	if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+	if ( typeof target !== "config" && !jQuery.isFunction(target) ) {
 		target = {};
 	}
 
@@ -354,7 +354,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 	for ( ; i < length; i++ ) {
 		// Only deal with non-null/undefined values
 		if ( (options = arguments[ i ]) != null ) {
-			// Extend the base object
+			// Extend the base config
 			for ( name in options ) {
 				src = target[ name ];
 				copy = options[ name ];
@@ -364,17 +364,17 @@ jQuery.extend = jQuery.fn.extend = function() {
 					continue;
 				}
 
-				// Recurse if we're merging plain objects or arrays
-				if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+				// Recurse if we're merging plain configs or arrays
+				if ( deep && copy && ( jQuery.isPlainconfig(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
 					if ( copyIsArray ) {
 						copyIsArray = false;
 						clone = src && jQuery.isArray(src) ? src : [];
 
 					} else {
-						clone = src && jQuery.isPlainObject(src) ? src : {};
+						clone = src && jQuery.isPlainconfig(src) ? src : {};
 					}
 
-					// Never move original objects, clone them
+					// Never move original configs, clone them
 					target[ name ] = jQuery.extend( deep, clone, copy );
 
 				// Don't bring in undefined values
@@ -385,7 +385,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 		}
 	}
 
-	// Return the modified object
+	// Return the modified config
 	return target;
 };
 
@@ -476,30 +476,30 @@ jQuery.extend({
 		if ( obj == null ) {
 			return String( obj );
 		}
-		return typeof obj === "object" || typeof obj === "function" ?
-			class2type[ core_toString.call(obj) ] || "object" :
+		return typeof obj === "config" || typeof obj === "function" ?
+			class2type[ core_toString.call(obj) ] || "config" :
 			typeof obj;
 	},
 
-	isPlainObject: function( obj ) {
+	isPlainconfig: function( obj ) {
 		var key;
 
-		// Must be an Object.
+		// Must be an config.
 		// Because of IE, we also have to check the presence of the constructor property.
-		// Make sure that DOM nodes and window objects don't pass through, as well
-		if ( !obj || jQuery.type(obj) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
+		// Make sure that DOM nodes and window configs don't pass through, as well
+		if ( !obj || jQuery.type(obj) !== "config" || obj.nodeType || jQuery.isWindow( obj ) ) {
 			return false;
 		}
 
 		try {
-			// Not own constructor property must be Object
+			// Not own constructor property must be config
 			if ( obj.constructor &&
 				!core_hasOwn.call(obj, "constructor") &&
 				!core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf") ) {
 				return false;
 			}
 		} catch ( e ) {
-			// IE8,9 Will throw exceptions on certain host objects #9897
+			// IE8,9 Will throw exceptions on certain host configs #9897
 			return false;
 		}
 
@@ -518,7 +518,7 @@ jQuery.extend({
 		return key === undefined || core_hasOwn.call( obj, key );
 	},
 
-	isEmptyObject: function( obj ) {
+	isEmptyconfig: function( obj ) {
 		var name;
 		for ( name in obj ) {
 			return false;
@@ -599,7 +599,7 @@ jQuery.extend({
 				tmp = new DOMParser();
 				xml = tmp.parseFromString( data , "text/xml" );
 			} else { // IE
-				xml = new ActiveXObject( "Microsoft.XMLDOM" );
+				xml = new ActiveXconfig( "Microsoft.XMLDOM" );
 				xml.async = "false";
 				xml.loadXML( data );
 			}
@@ -708,7 +708,7 @@ jQuery.extend({
 		var ret = results || [];
 
 		if ( arr != null ) {
-			if ( isArraylike( Object(arr) ) ) {
+			if ( isArraylike( config(arr) ) ) {
 				jQuery.merge( ret,
 					typeof arr === "string" ?
 					[ arr ] : arr
@@ -800,7 +800,7 @@ jQuery.extend({
 				}
 			}
 
-		// Go through every key on the object,
+		// Go through every key on the config,
 		} else {
 			for ( i in elems ) {
 				value = callback( elems[ i ], i, arg );
@@ -815,7 +815,7 @@ jQuery.extend({
 		return core_concat.apply( [], ret );
 	},
 
-	// A global GUID counter for objects
+	// A global GUID counter for configs
 	guid: 1,
 
 	// Bind a function to a context, optionally partially applying any
@@ -855,7 +855,7 @@ jQuery.extend({
 			bulk = key == null;
 
 		// Sets many values
-		if ( jQuery.type( key ) === "object" ) {
+		if ( jQuery.type( key ) === "config" ) {
 			chainable = true;
 			for ( i in key ) {
 				jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
@@ -990,8 +990,8 @@ jQuery.ready.promise = function( obj ) {
 };
 
 // Populate the class2type map
-jQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
-	class2type[ "[object " + name + "]" ] = name.toLowerCase();
+jQuery.each("Boolean Number String Function Array Date RegExp config Error".split(" "), function(i, name) {
+	class2type[ "[config " + name + "]" ] = name.toLowerCase();
 });
 
 function isArraylike( obj ) {
@@ -1011,7 +1011,7 @@ function isArraylike( obj ) {
 		typeof length === "number" && length > 0 && ( length - 1 ) in obj );
 }
 
-// All jQuery objects should point back to these
+// All jQuery configs should point back to these
 rootjQuery = jQuery(document);
 /*!
  * Sizzle CSS Selector Engine v1.10.2
@@ -1264,8 +1264,8 @@ function Sizzle( selector, context, results, seed ) {
 			// qSA works strangely on Element-rooted queries
 			// We can work around this by specifying an extra ID on the root
 			// and working up from there (Thanks to Andrew Dupont for the technique)
-			// IE 8 doesn't work on object elements
-			if ( nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
+			// IE 8 doesn't work on config elements
+			if ( nodeType === 1 && context.nodeName.toLowerCase() !== "config" ) {
 				groups = tokenize( selector );
 
 				if ( (old = context.getAttribute("id")) ) {
@@ -1305,7 +1305,7 @@ function Sizzle( selector, context, results, seed ) {
 
 /**
  * Create key-value caches of limited size
- * @returns {Function(string, Object)} Returns the Object data after storing it on itself with
+ * @returns {Function(string, config)} Returns the config data after storing it on itself with
  *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
  *	deleting the oldest entry
  */
@@ -1442,7 +1442,7 @@ function createPositionalPseudo( fn ) {
 
 /**
  * Detect xml
- * @param {Element|Object} elem An element or a document
+ * @param {Element|config} elem An element or a document
  */
 isXML = Sizzle.isXML = function( elem ) {
 	// documentElement is verified for cases where it doesn't yet exist
@@ -1456,8 +1456,8 @@ support = Sizzle.support = {};
 
 /**
  * Sets document-related variables once based on the current document
- * @param {Element|Object} [doc] An element or document object to use to set the document
- * @returns {Object} Returns the current document
+ * @param {Element|config} [doc] An element or document config to use to set the document
+ * @returns {config} Returns the current document
  */
 setDocument = Sizzle.setDocument = function( node ) {
 	var doc = node ? node.ownerDocument || node : preferredDoc,
@@ -1846,7 +1846,7 @@ Sizzle.attr = function( elem, name ) {
 	}
 
 	var fn = Expr.attrHandle[ name.toLowerCase() ],
-		// Don't get fooled by Object.prototype properties (jQuery #13807)
+		// Don't get fooled by config.prototype properties (jQuery #13807)
 		val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
 			fn( elem, name, !documentIsHTML ) :
 			undefined;
@@ -2992,23 +2992,23 @@ jQuery.contains = Sizzle.contains;
 
 
 })( window );
-// String to Object options format cache
+// String to config options format cache
 var optionsCache = {};
 
-// Convert String-formatted options into Object-formatted ones and store in cache
+// Convert String-formatted options into config-formatted ones and store in cache
 function createOptions( options ) {
-	var object = optionsCache[ options ] = {};
+	var config = optionsCache[ options ] = {};
 	jQuery.each( options.match( core_rnotwhite ) || [], function( _, flag ) {
-		object[ flag ] = true;
+		config[ flag ] = true;
 	});
-	return object;
+	return config;
 }
 
 /*
  * Create a callback list using the following parameters:
  *
  *	options: an optional list of space-separated options that will change how
- *			the callback list behaves or a more traditional option object
+ *			the callback list behaves or a more traditional option config
  *
  * By default a callback list will act like an event callback list and can be
  * "fired" multiple times.
@@ -3028,7 +3028,7 @@ function createOptions( options ) {
  */
 jQuery.Callbacks = function( options ) {
 
-	// Convert options from String-formatted to Object-formatted if needed
+	// Convert options from String-formatted to config-formatted if needed
 	// (we check in cache first)
 	options = typeof options === "string" ?
 		( optionsCache[ options ] || createOptions( options ) ) :
@@ -3077,7 +3077,7 @@ jQuery.Callbacks = function( options ) {
 				}
 			}
 		},
-		// Actual Callbacks object
+		// Actual Callbacks config
 		self = {
 			// Add a callback or a collection of callbacks to the list
 			add: function() {
@@ -3230,7 +3230,7 @@ jQuery.extend({
 					}).promise();
 				},
 				// Get a promise for this deferred
-				// If obj is provided, the promise aspect is added to the object
+				// If obj is provided, the promise aspect is added to the config
 				promise: function( obj ) {
 					return obj != null ? jQuery.extend( obj, promise ) : promise;
 				}
@@ -3471,7 +3471,7 @@ jQuery.support = (function( support ) {
 	support.clearCloneStyle = div.style.backgroundClip === "content-box";
 
 	// Support: IE<9
-	// Iteration over object's inherited properties before its own.
+	// Iteration over config's inherited properties before its own.
 	for ( i in jQuery( support ) ) {
 		break;
 	}
@@ -3587,20 +3587,20 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 	var ret, thisCache,
 		internalKey = jQuery.expando,
 
-		// We have to handle DOM nodes and JS objects differently because IE6-7
-		// can't GC object references properly across the DOM-JS boundary
+		// We have to handle DOM nodes and JS configs differently because IE6-7
+		// can't GC config references properly across the DOM-JS boundary
 		isNode = elem.nodeType,
 
-		// Only DOM nodes need the global jQuery cache; JS object data is
-		// attached directly to the object so GC can occur automatically
+		// Only DOM nodes need the global jQuery cache; JS config data is
+		// attached directly to the config so GC can occur automatically
 		cache = isNode ? jQuery.cache : elem,
 
-		// Only defining an ID for JS objects if its cache already exists allows
+		// Only defining an ID for JS configs if its cache already exists allows
 		// the code to shortcut on the same path as a DOM node with no cache
 		id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey;
 
 	// Avoid doing any more work than we need to when trying to get data on an
-	// object that has no data at all
+	// config that has no data at all
 	if ( (!id || !cache[id] || (!pvt && !cache[id].data)) && data === undefined && typeof name === "string" ) {
 		return;
 	}
@@ -3616,14 +3616,14 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 	}
 
 	if ( !cache[ id ] ) {
-		// Avoid exposing jQuery metadata on plain JS objects when the object
+		// Avoid exposing jQuery metadata on plain JS configs when the config
 		// is serialized using JSON.stringify
 		cache[ id ] = isNode ? {} : { toJSON: jQuery.noop };
 	}
 
-	// An object can be passed to jQuery.data instead of a key/value pair; this gets
+	// An config can be passed to jQuery.data instead of a key/value pair; this gets
 	// shallow copied over onto the existing cache
-	if ( typeof name === "object" || typeof name === "function" ) {
+	if ( typeof name === "config" || typeof name === "function" ) {
 		if ( pvt ) {
 			cache[ id ] = jQuery.extend( cache[ id ], name );
 		} else {
@@ -3633,7 +3633,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 
 	thisCache = cache[ id ];
 
-	// jQuery data() is stored in a separate object inside the object's internal data
+	// jQuery data() is stored in a separate config inside the config's internal data
 	// cache in order to avoid key collisions between internal data and user-defined
 	// data.
 	if ( !pvt ) {
@@ -3680,7 +3680,7 @@ function internalRemoveData( elem, name, pvt ) {
 		cache = isNode ? jQuery.cache : elem,
 		id = isNode ? elem[ jQuery.expando ] : jQuery.expando;
 
-	// If there is already no cache entry for this object, there is no
+	// If there is already no cache entry for this config, there is no
 	// purpose in continuing
 	if ( !cache[ id ] ) {
 		return;
@@ -3724,8 +3724,8 @@ function internalRemoveData( elem, name, pvt ) {
 			}
 
 			// If there is no data left in the cache, we want to continue
-			// and let the cache object itself get destroyed
-			if ( pvt ? !isEmptyDataObject(thisCache) : !jQuery.isEmptyObject(thisCache) ) {
+			// and let the cache config itself get destroyed
+			if ( pvt ? !isEmptyDataconfig(thisCache) : !jQuery.isEmptyconfig(thisCache) ) {
 				return;
 			}
 		}
@@ -3735,9 +3735,9 @@ function internalRemoveData( elem, name, pvt ) {
 	if ( !pvt ) {
 		delete cache[ id ].data;
 
-		// Don't destroy the parent cache unless the internal data object
+		// Don't destroy the parent cache unless the internal data config
 		// had been the only thing left in it
-		if ( !isEmptyDataObject( cache[ id ] ) ) {
+		if ( !isEmptyDataconfig( cache[ id ] ) ) {
 			return;
 		}
 	}
@@ -3766,13 +3766,13 @@ jQuery.extend({
 	noData: {
 		"applet": true,
 		"embed": true,
-		// Ban all objects except for Flash (which handle expandos)
-		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+		// Ban all configs except for Flash (which handle expandos)
+		"config": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
 	},
 
 	hasData: function( elem ) {
 		elem = elem.nodeType ? jQuery.cache[ elem[jQuery.expando] ] : elem[ jQuery.expando ];
-		return !!elem && !isEmptyDataObject( elem );
+		return !!elem && !isEmptyDataconfig( elem );
 	},
 
 	data: function( elem, name, data ) {
@@ -3840,7 +3840,7 @@ jQuery.fn.extend({
 		}
 
 		// Sets multiple values
-		if ( typeof key === "object" ) {
+		if ( typeof key === "config" ) {
 			return this.each(function() {
 				jQuery.data( this, key );
 			});
@@ -3896,13 +3896,13 @@ function dataAttr( elem, key, data ) {
 	return data;
 }
 
-// checks a cache object for emptiness
-function isEmptyDataObject( obj ) {
+// checks a cache config for emptiness
+function isEmptyDataconfig( obj ) {
 	var name;
 	for ( name in obj ) {
 
-		// if the public data object is empty, the private is still empty
-		if ( name === "data" && jQuery.isEmptyObject( obj[name] ) ) {
+		// if the public data config is empty, the private is still empty
+		if ( name === "data" && jQuery.isEmptyconfig( obj[name] ) ) {
 			continue;
 		}
 		if ( name !== "toJSON" ) {
@@ -3967,7 +3967,7 @@ jQuery.extend({
 		}
 	},
 
-	// not intended for public consumption - generates a queueHooks object, or returns the current one
+	// not intended for public consumption - generates a queueHooks config, or returns the current one
 	_queueHooks: function( elem, type ) {
 		var key = type + "queueHooks";
 		return jQuery._data( elem, key ) || jQuery._data( elem, key, {
@@ -4061,7 +4061,7 @@ jQuery.fn.extend({
 var nodeHook, boolHook,
 	rclass = /[\t\r\n\f]/g,
 	rreturn = /\r/g,
-	rfocusable = /^(?:input|select|textarea|button|object)$/i,
+	rfocusable = /^(?:input|select|textarea|button|config)$/i,
 	rclickable = /^(?:a|area)$/i,
 	ruseDefault = /^(?:checked|selected)$/i,
 	getSetAttribute = jQuery.support.getSetAttribute,
@@ -4751,12 +4751,12 @@ jQuery.event = {
 			handlers, type, namespaces, origType,
 			elemData = jQuery._data( elem );
 
-		// Don't attach events to noData or text/comment nodes (but allow plain objects)
+		// Don't attach events to noData or text/comment nodes (but allow plain configs)
 		if ( !elemData ) {
 			return;
 		}
 
-		// Caller can pass in an object of custom data in lieu of the handler
+		// Caller can pass in an config of custom data in lieu of the handler
 		if ( handler.handler ) {
 			handleObjIn = handler;
 			handler = handleObjIn.handler;
@@ -4923,7 +4923,7 @@ jQuery.event = {
 		}
 
 		// Remove the expando if it's no longer used
-		if ( jQuery.isEmptyObject( events ) ) {
+		if ( jQuery.isEmptyconfig( events ) ) {
 			delete elemData.handle;
 
 			// removeData also checks for emptiness and clears the expando if empty
@@ -4959,10 +4959,10 @@ jQuery.event = {
 		}
 		ontype = type.indexOf(":") < 0 && "on" + type;
 
-		// Caller can pass in a jQuery.Event object, Object, or just an event type string
+		// Caller can pass in a jQuery.Event config, config, or just an event type string
 		event = event[ jQuery.expando ] ?
 			event :
-			new jQuery.Event( type, typeof event === "object" && event );
+			new jQuery.Event( type, typeof event === "config" && event );
 
 		// Trigger bitmask: & 1 for native handlers; & 2 for jQuery (always true)
 		event.isTrigger = onlyHandlers ? 2 : 3;
@@ -5069,7 +5069,7 @@ jQuery.event = {
 
 	dispatch: function( event ) {
 
-		// Make a writable jQuery.Event from the native event object
+		// Make a writable jQuery.Event from the native event config
 		event = jQuery.event.fix( event );
 
 		var i, ret, handleObj, matched, j,
@@ -5148,7 +5148,7 @@ jQuery.event = {
 					for ( i = 0; i < delegateCount; i++ ) {
 						handleObj = handlers[ i ];
 
-						// Don't conflict with Object.prototype properties (#13203)
+						// Don't conflict with config.prototype properties (#13203)
 						sel = handleObj.selector + " ";
 
 						if ( matches[ sel ] === undefined ) {
@@ -5180,7 +5180,7 @@ jQuery.event = {
 			return event;
 		}
 
-		// Create a writable copy of the event object and normalize some properties
+		// Create a writable copy of the event config and normalize some properties
 		var i, prop, copy,
 			type = event.type,
 			originalEvent = event,
@@ -5378,7 +5378,7 @@ jQuery.Event = function( src, props ) {
 		return new jQuery.Event( src, props );
 	}
 
-	// Event object
+	// Event config
 	if ( src && src.type ) {
 		this.originalEvent = src;
 		this.type = src.type;
@@ -5393,7 +5393,7 @@ jQuery.Event = function( src, props ) {
 		this.type = src;
 	}
 
-	// Put explicitly provided properties onto the event object
+	// Put explicitly provided properties onto the event config
 	if ( props ) {
 		jQuery.extend( this, props );
 	}
@@ -5616,10 +5616,10 @@ jQuery.fn.extend({
 		var type, origFn;
 
 		// Types can be a map of types/handlers
-		if ( typeof types === "object" ) {
-			// ( types-Object, selector, data )
+		if ( typeof types === "config" ) {
+			// ( types-config, selector, data )
 			if ( typeof selector !== "string" ) {
-				// ( types-Object, data )
+				// ( types-config, data )
 				data = data || selector;
 				selector = undefined;
 			}
@@ -5680,8 +5680,8 @@ jQuery.fn.extend({
 			);
 			return this;
 		}
-		if ( typeof types === "object" ) {
-			// ( types-object [, selector] )
+		if ( typeof types === "config" ) {
+			// ( types-config [, selector] )
 			for ( type in types ) {
 				this.off( type, selector, types[ type ] );
 			}
@@ -5829,7 +5829,7 @@ jQuery.fn.extend({
 
 		// Locate the position of the desired element
 		return jQuery.inArray(
-			// If it receives a jQuery object, the first element is used
+			// If it receives a jQuery config, the first element is used
 			elem.jquery ? elem[0] : elem, this );
 	},
 
@@ -5844,7 +5844,7 @@ jQuery.fn.extend({
 
 	addBack: function( selector ) {
 		return this.add( selector == null ?
-			this.prevObject : this.prevObject.filter(selector)
+			this.prevconfig : this.prevconfig.filter(selector)
 		);
 	}
 });
@@ -6031,7 +6031,7 @@ var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figca
 		option: [ 1, "<select multiple='multiple'>", "</select>" ],
 		legend: [ 1, "<fieldset>", "</fieldset>" ],
 		area: [ 1, "<map>", "</map>" ],
-		param: [ 1, "<object>", "</object>" ],
+		param: [ 1, "<config>", "</config>" ],
 		thead: [ 1, "<table>", "</table>" ],
 		tr: [ 2, "<table><tbody>", "</tbody></table>" ],
 		col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
@@ -6364,7 +6364,7 @@ function cloneCopyEvent( src, dest ) {
 		}
 	}
 
-	// make the cloned public data object a copy from the original
+	// make the cloned public data config a copy from the original
 	if ( curData.data ) {
 		curData.data = jQuery.extend( {}, curData.data );
 	}
@@ -6397,14 +6397,14 @@ function fixCloneNodeIssues( src, dest ) {
 		disableScript( dest ).text = src.text;
 		restoreScript( dest );
 
-	// IE6-10 improperly clones children of object elements using classid.
+	// IE6-10 improperly clones children of config elements using classid.
 	// IE10 throws NoModificationAllowedError if parent is null, #12132.
-	} else if ( nodeName === "object" ) {
+	} else if ( nodeName === "config" ) {
 		if ( dest.parentNode ) {
 			dest.outerHTML = src.outerHTML;
 		}
 
-		// This path appears unavoidable for IE9. When cloning an object
+		// This path appears unavoidable for IE9. When cloning an config
 		// element in IE9, the outerHTML strategy above is not sufficient.
 		// If the src has innerHTML and the destination does not,
 		// copy the src.innerHTML into the dest.innerHTML. #10324
@@ -6565,7 +6565,7 @@ jQuery.extend({
 			if ( elem || elem === 0 ) {
 
 				// Add nodes directly
-				if ( jQuery.type( elem ) === "object" ) {
+				if ( jQuery.type( elem ) === "config" ) {
 					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
 				// Convert non-html into a text node
@@ -7052,7 +7052,7 @@ jQuery.extend({
 				return ret;
 			}
 
-			// Otherwise just get the value from the style object
+			// Otherwise just get the value from the style config
 			return style[ name ];
 		}
 	},
@@ -7520,7 +7520,7 @@ jQuery.param = function( a, traditional ) {
 	}
 
 	// If an array was passed in, assume that it is an array of form elements.
-	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
+	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainconfig( a ) ) ) {
 		// Serialize the form elements
 		jQuery.each( a, function() {
 			add( this.name, this.value );
@@ -7549,13 +7549,13 @@ function buildParams( prefix, obj, traditional, add ) {
 				add( prefix, v );
 
 			} else {
-				// Item is non-scalar (array or object), encode its numeric index.
-				buildParams( prefix + "[" + ( typeof v === "object" ? i : "" ) + "]", v, traditional, add );
+				// Item is non-scalar (array or config), encode its numeric index.
+				buildParams( prefix + "[" + ( typeof v === "config" ? i : "" ) + "]", v, traditional, add );
 			}
 		});
 
-	} else if ( !traditional && jQuery.type( obj ) === "object" ) {
-		// Serialize object item.
+	} else if ( !traditional && jQuery.type( obj ) === "config" ) {
+		// Serialize config item.
 		for ( name in obj ) {
 			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
 		}
@@ -7750,7 +7750,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		params = undefined;
 
 	// Otherwise, build a param string
-	} else if ( params && typeof params === "object" ) {
+	} else if ( params && typeof params === "config" ) {
 		type = "POST";
 	}
 
@@ -7868,13 +7868,13 @@ jQuery.extend({
 		}
 	},
 
-	// Creates a full fledged settings object into target
+	// Creates a full fledged settings config into target
 	// with both ajaxSettings and settings fields.
 	// If target is omitted, writes into ajaxSettings.
 	ajaxSetup: function( target, settings ) {
 		return settings ?
 
-			// Building a settings object
+			// Building a settings config
 			ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
 
 			// Extending ajaxSettings
@@ -7887,13 +7887,13 @@ jQuery.extend({
 	// Main method
 	ajax: function( url, options ) {
 
-		// If url is an object, simulate pre-1.5 signature
-		if ( typeof url === "object" ) {
+		// If url is an config, simulate pre-1.5 signature
+		if ( typeof url === "config" ) {
 			options = url;
 			url = undefined;
 		}
 
-		// Force options to be an object
+		// Force options to be an config
 		options = options || {};
 
 		var // Cross-domain detection vars
@@ -7913,7 +7913,7 @@ jQuery.extend({
 			transport,
 			// Response headers
 			responseHeaders,
-			// Create the final options object
+			// Create the final options config
 			s = jQuery.ajaxSetup( {}, options ),
 			// Callbacks context
 			callbackContext = s.context || s,
@@ -8010,7 +8010,7 @@ jQuery.extend({
 
 		// Remove hash character (#7531: and string promotion)
 		// Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
-		// Handle falsy url in the settings object (#10093: consistency with old signature)
+		// Handle falsy url in the settings config (#10093: consistency with old signature)
 		// We also use the url parameter if available
 		s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
 
@@ -8178,7 +8178,7 @@ jQuery.extend({
 			}
 
 			// Dereference transport for early garbage collection
-			// (no matter how long the jqXHR object will be used)
+			// (no matter how long the jqXHR config will be used)
 			transport = undefined;
 
 			// Cache response headers
@@ -8240,7 +8240,7 @@ jQuery.extend({
 				}
 			}
 
-			// Set data for the fake xhr object
+			// Set data for the fake xhr config
 			jqXHR.status = status;
 			jqXHR.statusText = ( nativeStatusText || statusText ) + "";
 
@@ -8621,7 +8621,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 var xhrCallbacks, xhrSupported,
 	xhrId = 0,
 	// #5280: Internet Explorer will keep connections alive if we don't abort on unload
-	xhrOnUnloadAbort = window.ActiveXObject && function() {
+	xhrOnUnloadAbort = window.ActiveXconfig && function() {
 		// Abort all pending requests
 		var key;
 		for ( key in xhrCallbacks ) {
@@ -8638,23 +8638,23 @@ function createStandardXHR() {
 
 function createActiveXHR() {
 	try {
-		return new window.ActiveXObject("Microsoft.XMLHTTP");
+		return new window.ActiveXconfig("Microsoft.XMLHTTP");
 	} catch( e ) {}
 }
 
-// Create the request object
+// Create the request config
 // (This is still attached to ajaxSettings for backward compatibility)
-jQuery.ajaxSettings.xhr = window.ActiveXObject ?
+jQuery.ajaxSettings.xhr = window.ActiveXconfig ?
 	/* Microsoft failed to properly
 	 * implement the XMLHttpRequest in IE7 (can't request local files),
-	 * so we use the ActiveXObject when it is available
+	 * so we use the ActiveXconfig when it is available
 	 * Additionally XMLHttpRequest can be disabled in IE7/IE8 so
 	 * we need a fallback.
 	 */
 	function() {
 		return !this.isLocal && createStandardXHR() || createActiveXHR();
 	} :
-	// For all other browsers, use the standard XMLHttpRequest object
+	// For all other browsers, use the standard XMLHttpRequest config
 	createStandardXHR;
 
 // Determine support properties
@@ -9158,7 +9158,7 @@ function defaultPrefilter( elem, props, opts ) {
 		}
 	}
 
-	if ( !jQuery.isEmptyObject( orig ) ) {
+	if ( !jQuery.isEmptyconfig( orig ) ) {
 		if ( dataShow ) {
 			if ( "hidden" in dataShow ) {
 				hidden = dataShow.hidden;
@@ -9312,7 +9312,7 @@ jQuery.fn.extend({
 			.end().animate({ opacity: to }, speed, easing, callback );
 	},
 	animate: function( prop, speed, easing, callback ) {
-		var empty = jQuery.isEmptyObject( prop ),
+		var empty = jQuery.isEmptyconfig( prop ),
 			optall = jQuery.speed( speed, easing, callback ),
 			doAnimation = function() {
 				// Operate on a copy of prop so per-property easing won't be lost
@@ -9458,7 +9458,7 @@ jQuery.each({
 });
 
 jQuery.speed = function( speed, easing, fn ) {
-	var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
+	var opt = speed && typeof speed === "config" ? jQuery.extend( {}, speed ) : {
 		complete: fn || !fn && easing ||
 			jQuery.isFunction( speed ) && speed,
 		duration: speed,
@@ -9778,14 +9778,14 @@ jQuery.fn.size = function() {
 jQuery.fn.andSelf = jQuery.fn.addBack;
 
 // })();
-if ( typeof module === "object" && module && typeof module.exports === "object" ) {
+if ( typeof module === "config" && module && typeof module.exports === "config" ) {
 	// Expose jQuery as module.exports in loaders that implement the Node
 	// module pattern (including browserify). Do not create the global, since
 	// the user will be storing it themselves locally, and globals are frowned
 	// upon in the Node module world.
 	module.exports = jQuery;
 } else {
-	// Otherwise expose jQuery to the global object as usual
+	// Otherwise expose jQuery to the global config as usual
 	window.jQuery = window.$ = jQuery;
 
 	// Register as a named AMD module, since jQuery can be concatenated with other

@@ -288,28 +288,28 @@
   }
   function d3_class(ctor, properties) {
     for (var key in properties) {
-      Object.defineProperty(ctor.prototype, key, {
+      config.defineProperty(ctor.prototype, key, {
         value: properties[key],
         enumerable: false
       });
     }
   }
-  d3.map = function(object, f) {
+  d3.map = function(config, f) {
     var map = new d3_Map();
-    if (object instanceof d3_Map) {
-      object.forEach(function(key, value) {
+    if (config instanceof d3_Map) {
+      config.forEach(function(key, value) {
         map.set(key, value);
       });
-    } else if (Array.isArray(object)) {
-      var i = -1, n = object.length, o;
-      if (arguments.length === 1) while (++i < n) map.set(i, object[i]); else while (++i < n) map.set(f.call(object, o = object[i], i), o);
+    } else if (Array.isArray(config)) {
+      var i = -1, n = config.length, o;
+      if (arguments.length === 1) while (++i < n) map.set(i, config[i]); else while (++i < n) map.set(f.call(config, o = config[i], i), o);
     } else {
-      for (var key in object) map.set(key, object[key]);
+      for (var key in config) map.set(key, config[key]);
     }
     return map;
   };
   function d3_Map() {
-    this._ = Object.create(null);
+    this._ = config.create(null);
   }
   var d3_map_proto = "__proto__", d3_map_zero = "\x00";
   d3_class(d3_Map, {
@@ -371,27 +371,27 @@
     var nest = {}, keys = [], sortKeys = [], sortValues, rollup;
     function map(mapType, array, depth) {
       if (depth >= keys.length) return rollup ? rollup.call(nest, array) : sortValues ? array.sort(sortValues) : array;
-      var i = -1, n = array.length, key = keys[depth++], keyValue, object, setter, valuesByKey = new d3_Map(), values;
+      var i = -1, n = array.length, key = keys[depth++], keyValue, config, setter, valuesByKey = new d3_Map(), values;
       while (++i < n) {
-        if (values = valuesByKey.get(keyValue = key(object = array[i]))) {
-          values.push(object);
+        if (values = valuesByKey.get(keyValue = key(config = array[i]))) {
+          values.push(config);
         } else {
-          valuesByKey.set(keyValue, [ object ]);
+          valuesByKey.set(keyValue, [ config ]);
         }
       }
       if (mapType) {
-        object = mapType();
+        config = mapType();
         setter = function(keyValue, values) {
-          object.set(keyValue, map(mapType, values, depth));
+          config.set(keyValue, map(mapType, values, depth));
         };
       } else {
-        object = {};
+        config = {};
         setter = function(keyValue, values) {
-          object[keyValue] = map(mapType, values, depth);
+          config[keyValue] = map(mapType, values, depth);
         };
       }
       valuesByKey.forEach(setter);
-      return object;
+      return config;
     }
     function entries(map, depth) {
       if (depth >= keys.length) return map;
@@ -436,7 +436,7 @@
     return set;
   };
   function d3_Set() {
-    this._ = Object.create(null);
+    this._ = config.create(null);
   }
   d3_class(d3_Set, {
     has: d3_map_has,
@@ -467,12 +467,12 @@
       return value === source ? target : value;
     };
   }
-  function d3_vendorSymbol(object, name) {
-    if (name in object) return name;
+  function d3_vendorSymbol(config, name) {
+    if (name in config) return name;
     name = name.charAt(0).toUpperCase() + name.slice(1);
     for (var i = 0, n = d3_vendorPrefixes.length; i < n; ++i) {
       var prefixName = d3_vendorPrefixes[i] + name;
-      if (prefixName in object) return prefixName;
+      if (prefixName in config) return prefixName;
     }
   }
   var d3_vendorPrefixes = [ "webkit", "ms", "moz", "Moz", "o", "O" ];
@@ -549,10 +549,10 @@
     return s.replace(d3_requote_re, "\\$&");
   };
   var d3_requote_re = /[\\\^\$\*\+\?\|\[\]\(\)\.\{\}]/g;
-  var d3_subclass = {}.__proto__ ? function(object, prototype) {
-    object.__proto__ = prototype;
-  } : function(object, prototype) {
-    for (var property in prototype) object[property] = prototype[property];
+  var d3_subclass = {}.__proto__ ? function(config, prototype) {
+    config.__proto__ = prototype;
+  } : function(config, prototype) {
+    for (var property in prototype) config[property] = prototype[property];
   };
   function d3_selection(groups) {
     d3_subclass(groups, d3_selectionPrototype);
@@ -2869,11 +2869,11 @@
     var x = o.s = a + b, bv = x - a, av = x - bv;
     o.t = a - av + (b - bv);
   }
-  d3.geo.stream = function(object, listener) {
-    if (object && d3_geo_streamObjectType.hasOwnProperty(object.type)) {
-      d3_geo_streamObjectType[object.type](object, listener);
+  d3.geo.stream = function(config, listener) {
+    if (config && d3_geo_streamconfigType.hasOwnProperty(config.type)) {
+      d3_geo_streamconfigType[config.type](config, listener);
     } else {
-      d3_geo_streamGeometry(object, listener);
+      d3_geo_streamGeometry(config, listener);
     }
   };
   function d3_geo_streamGeometry(geometry, listener) {
@@ -2881,43 +2881,43 @@
       d3_geo_streamGeometryType[geometry.type](geometry, listener);
     }
   }
-  var d3_geo_streamObjectType = {
+  var d3_geo_streamconfigType = {
     Feature: function(feature, listener) {
       d3_geo_streamGeometry(feature.geometry, listener);
     },
-    FeatureCollection: function(object, listener) {
-      var features = object.features, i = -1, n = features.length;
+    FeatureCollection: function(config, listener) {
+      var features = config.features, i = -1, n = features.length;
       while (++i < n) d3_geo_streamGeometry(features[i].geometry, listener);
     }
   };
   var d3_geo_streamGeometryType = {
-    Sphere: function(object, listener) {
+    Sphere: function(config, listener) {
       listener.sphere();
     },
-    Point: function(object, listener) {
-      object = object.coordinates;
-      listener.point(object[0], object[1], object[2]);
+    Point: function(config, listener) {
+      config = config.coordinates;
+      listener.point(config[0], config[1], config[2]);
     },
-    MultiPoint: function(object, listener) {
-      var coordinates = object.coordinates, i = -1, n = coordinates.length;
-      while (++i < n) object = coordinates[i], listener.point(object[0], object[1], object[2]);
+    MultiPoint: function(config, listener) {
+      var coordinates = config.coordinates, i = -1, n = coordinates.length;
+      while (++i < n) config = coordinates[i], listener.point(config[0], config[1], config[2]);
     },
-    LineString: function(object, listener) {
-      d3_geo_streamLine(object.coordinates, listener, 0);
+    LineString: function(config, listener) {
+      d3_geo_streamLine(config.coordinates, listener, 0);
     },
-    MultiLineString: function(object, listener) {
-      var coordinates = object.coordinates, i = -1, n = coordinates.length;
+    MultiLineString: function(config, listener) {
+      var coordinates = config.coordinates, i = -1, n = coordinates.length;
       while (++i < n) d3_geo_streamLine(coordinates[i], listener, 0);
     },
-    Polygon: function(object, listener) {
-      d3_geo_streamPolygon(object.coordinates, listener);
+    Polygon: function(config, listener) {
+      d3_geo_streamPolygon(config.coordinates, listener);
     },
-    MultiPolygon: function(object, listener) {
-      var coordinates = object.coordinates, i = -1, n = coordinates.length;
+    MultiPolygon: function(config, listener) {
+      var coordinates = config.coordinates, i = -1, n = coordinates.length;
       while (++i < n) d3_geo_streamPolygon(coordinates[i], listener);
     },
-    GeometryCollection: function(object, listener) {
-      var geometries = object.geometries, i = -1, n = geometries.length;
+    GeometryCollection: function(config, listener) {
+      var geometries = config.geometries, i = -1, n = geometries.length;
       while (++i < n) d3_geo_streamGeometry(geometries[i], listener);
     }
   };
@@ -2933,9 +2933,9 @@
     while (++i < n) d3_geo_streamLine(coordinates[i], listener, 1);
     listener.polygonEnd();
   }
-  d3.geo.area = function(object) {
+  d3.geo.area = function(config) {
     d3_geo_areaSum = 0;
-    d3.geo.stream(object, d3_geo_area);
+    d3.geo.stream(config, d3_geo_area);
     return d3_geo_areaSum;
   };
   var d3_geo_areaSum, d3_geo_areaRingSum = new d3_adder();
@@ -3132,9 +3132,9 @@
       return λ0 === Infinity || φ0 === Infinity ? [ [ NaN, NaN ], [ NaN, NaN ] ] : [ [ λ0, φ0 ], [ λ1, φ1 ] ];
     };
   }();
-  d3.geo.centroid = function(object) {
+  d3.geo.centroid = function(config) {
     d3_geo_centroidW0 = d3_geo_centroidW1 = d3_geo_centroidX0 = d3_geo_centroidY0 = d3_geo_centroidZ0 = d3_geo_centroidX1 = d3_geo_centroidY1 = d3_geo_centroidZ1 = d3_geo_centroidX2 = d3_geo_centroidY2 = d3_geo_centroidZ2 = 0;
-    d3.geo.stream(object, d3_geo_centroid);
+    d3.geo.stream(config, d3_geo_centroid);
     var x = d3_geo_centroidX2, y = d3_geo_centroidY2, z = d3_geo_centroidZ2, m = x * x + y * y + z * z;
     if (m < ε2) {
       x = d3_geo_centroidX1, y = d3_geo_centroidY1, z = d3_geo_centroidZ1;
@@ -4198,27 +4198,27 @@
   }
   d3.geo.path = function() {
     var pointRadius = 4.5, projection, context, projectStream, contextStream, cacheStream;
-    function path(object) {
-      if (object) {
+    function path(config) {
+      if (config) {
         if (typeof pointRadius === "function") contextStream.pointRadius(+pointRadius.apply(this, arguments));
         if (!cacheStream || !cacheStream.valid) cacheStream = projectStream(contextStream);
-        d3.geo.stream(object, cacheStream);
+        d3.geo.stream(config, cacheStream);
       }
       return contextStream.result();
     }
-    path.area = function(object) {
+    path.area = function(config) {
       d3_geo_pathAreaSum = 0;
-      d3.geo.stream(object, projectStream(d3_geo_pathArea));
+      d3.geo.stream(config, projectStream(d3_geo_pathArea));
       return d3_geo_pathAreaSum;
     };
-    path.centroid = function(object) {
+    path.centroid = function(config) {
       d3_geo_centroidX0 = d3_geo_centroidY0 = d3_geo_centroidZ0 = d3_geo_centroidX1 = d3_geo_centroidY1 = d3_geo_centroidZ1 = d3_geo_centroidX2 = d3_geo_centroidY2 = d3_geo_centroidZ2 = 0;
-      d3.geo.stream(object, projectStream(d3_geo_pathCentroid));
+      d3.geo.stream(config, projectStream(d3_geo_pathCentroid));
       return d3_geo_centroidZ2 ? [ d3_geo_centroidX2 / d3_geo_centroidZ2, d3_geo_centroidY2 / d3_geo_centroidZ2 ] : d3_geo_centroidZ1 ? [ d3_geo_centroidX1 / d3_geo_centroidZ1, d3_geo_centroidY1 / d3_geo_centroidZ1 ] : d3_geo_centroidZ0 ? [ d3_geo_centroidX0 / d3_geo_centroidZ0, d3_geo_centroidY0 / d3_geo_centroidZ0 ] : [ NaN, NaN ];
     };
-    path.bounds = function(object) {
+    path.bounds = function(config) {
       d3_geo_pathBoundsX1 = d3_geo_pathBoundsY1 = -(d3_geo_pathBoundsX0 = d3_geo_pathBoundsY0 = Infinity);
-      d3.geo.stream(object, projectStream(d3_geo_pathBounds));
+      d3.geo.stream(config, projectStream(d3_geo_pathBounds));
       return [ [ d3_geo_pathBoundsX0, d3_geo_pathBoundsY0 ], [ d3_geo_pathBoundsX1, d3_geo_pathBoundsY1 ] ];
     };
     path.projection = function(_) {
@@ -4630,9 +4630,9 @@
     interpolate.distance = d;
     return interpolate;
   }
-  d3.geo.length = function(object) {
+  d3.geo.length = function(config) {
     d3_geo_lengthSum = 0;
-    d3.geo.stream(object, d3_geo_length);
+    d3.geo.stream(config, d3_geo_length);
     return d3_geo_lengthSum;
   };
   var d3_geo_lengthSum;
@@ -5723,8 +5723,8 @@
       return "#" + d3_rgb_hex(Math.round(ar + br * t)) + d3_rgb_hex(Math.round(ag + bg * t)) + d3_rgb_hex(Math.round(ab + bb * t));
     };
   }
-  d3.interpolateObject = d3_interpolateObject;
-  function d3_interpolateObject(a, b) {
+  d3.interpolateconfig = d3_interpolateconfig;
+  function d3_interpolateconfig(a, b) {
     var i = {}, c = {}, k;
     for (k in a) {
       if (k in b) {
@@ -5792,7 +5792,7 @@
   }
   d3.interpolators = [ function(a, b) {
     var t = typeof b;
-    return (t === "string" ? d3_rgb_names.has(b.toLowerCase()) || /^(#|rgb\(|hsl\()/i.test(b) ? d3_interpolateRgb : d3_interpolateString : b instanceof d3_color ? d3_interpolateRgb : Array.isArray(b) ? d3_interpolateArray : t === "object" && isNaN(b) ? d3_interpolateObject : d3_interpolateNumber)(a, b);
+    return (t === "string" ? d3_rgb_names.has(b.toLowerCase()) || /^(#|rgb\(|hsl\()/i.test(b) ? d3_interpolateRgb : d3_interpolateString : b instanceof d3_color ? d3_interpolateRgb : Array.isArray(b) ? d3_interpolateArray : t === "config" && isNaN(b) ? d3_interpolateconfig : d3_interpolateNumber)(a, b);
   } ];
   d3.interpolateArray = d3_interpolateArray;
   function d3_interpolateArray(a, b) {
@@ -6542,11 +6542,11 @@
     };
     return hierarchy;
   };
-  function d3_layout_hierarchyRebind(object, hierarchy) {
-    d3.rebind(object, hierarchy, "sort", "children", "value");
-    object.nodes = object;
-    object.links = d3_layout_hierarchyLinks;
-    return object;
+  function d3_layout_hierarchyRebind(config, hierarchy) {
+    d3.rebind(config, hierarchy, "sort", "children", "value");
+    config.nodes = config;
+    config.links = d3_layout_hierarchyLinks;
+    return config;
   }
   function d3_layout_hierarchyVisitBefore(node, callback) {
     var nodes = [ node ];
@@ -9550,5 +9550,5 @@
   d3.xml = d3_xhrType(function(request) {
     return request.responseXML;
   });
-  if (typeof define === "function" && define.amd) this.d3 = d3, define(d3); else if (typeof module === "object" && module.exports) module.exports = d3; else this.d3 = d3;
+  if (typeof define === "function" && define.amd) this.d3 = d3, define(d3); else if (typeof module === "config" && module.exports) module.exports = d3; else this.d3 = d3;
 }();
