@@ -18,8 +18,8 @@
     }
 
     .bar:hover {
-        fill: royalblue;
-        cursor: pointer;
+            fill: royalblue;
+            cursor: pointer;
     }
 
     .x.axis path {
@@ -50,379 +50,236 @@
 <div id="bargraph"></div>
 
 <script src="~/Content/d3.js/d3.min.js"></script>
-<script src="~/Content/d3.js/d3.tip.v0.6.3.js"></script>
 
 <script>
-    var data=@Html.Raw(years);
 
-    var barConfig = {
-        barGraphContainerDiv : "bargraph",
+    var data=@Html.Raw(years); //Assigning ViewBag Data to data Variable
+
+    var barConfig ={
+        barGraphContainerDiv : "result",
         height: 500,
         width: 800,
-        padding:60,
-        dataset: data, //Data Contain Key and Value, For Example Value = 2013 & Key = 15
-        dataApiUrl: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
+        padding:80,
+        dataset:data, //Data Contain Key and Value Format, For Example Value = 2013 & Key = 15
+        //dataApiUrl: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
         barGraphTitleText:"@charttitle",
         barCssClass: "bar",
-        barTitleClass:"graphtitletext", // rename this also according to proper JS convention
+        barTitleClass:"graphtitletext",
         barTextCssClass: "bartext",
         showCategoryLabelVertically: false,
-        showGraphHorizontally: false,
-        showAverageLine: false,
-        averageLineDataProvider: function() { return(5); },
-        showScale:false, // hide X-axis Scale or if Vertical then Y-Axis Scale
-        //Clickable_bar:true, // Fix names ! This should not be needed as you can find out is the OnBarClick has a function associated with it, so it should be clickable
-        onBarClick:function(d) { alert("Bar clicked, Value is " + d.Key); }
-    };
+        showGraphHorizontally: true,
+        showAverageLine: true,
+        showScale:true, //hide X-axis Scale or if Vertical then Y-Axis Scale
+        onBarClick:function(d) { alert("Bar clicked, Value is "+d.Key); }
+    }
 
     $(document).ready(function () {
         window.load = drawBarChart(barConfig);
     });
 
-    function drawBarChart(config) {
+
+    function drawBarChart(config){
 
         var dataset =  config.dataset;
         var w = config.width;
         var h = config.height;
-        var padding = config.padding; 
-        var title = config.barGraphTitleText ; 
-        
-        //var yrvalue="@yearvalue"; // This should come from config object
+        var padding = config.padding;
+        var title = config.barGraphTitleText;
+        var xScale,yScale,xAxis,yAxis,barwidth;
 
         //Create SVG element
-        var svg = d3.select("#" + config.barGraphContainerDiv)
+        var svg = d3.select("#"+config.barGraphContainerDiv+"")
                     .append("svg")
                     .attr("width", w + padding)
                     .attr("height", h + padding);
 
-        // Rename Object to config
-        if(Object.showGraphHorizontally)
-        {
-            //run when dataset is provided via api url
-            if (!dataset) {
-                dataset = $(function () {
-                    $.getJSON(Object.dataApiUrl, function (data) {
-                        // what is the behaviour is the data is returned after 10 seconds
-                        // as this is an asynch call so the code might run ahead before this is executed
-                        return data;
-                    });
-                });
-                console.log("yse it's dont have a value");
-            }
+        //Show  text(bar value) Above each bar 
+        var bartext= svg.selectAll("text.bar")
+                    .data(dataset)
+                    .enter().append("text")
+                    .attr("class",config.barTextCssClass);
 
-            //Create scale functions
-            var xScale = d3.scale.linear()
+        //BarGraph Title
+        svg.append("text")
+                .attr("x", (w +padding)/ 2)
+                .attr("y",padding/2)
+                .attr("class",config.barTitleClass)
+                .text(""+title+"");
+
+
+        //Draw Bar 
+        var drawbar  = svg.selectAll("rect")
+                         .data(dataset)
+                         .enter()
+                         .append("rect")
+                         .attr("class", config.barCssClass)                       
+                         .on('click', function(d){ config.onBarClick(d)});
+       
+        //Draw xAxis
+        var drawxAxis = svg.append("g")
+                          .attr("class", "axis")                       
+                          .on("click", function (d) { alert('clicked!'); })
+
+        //Draw yAxis     
+       var drawyAxis = svg.append("g")
+                        .attr("class", "axis")
+                        .on("click", function (d) { alert('clicked!'); });
+
+        
+        //This Block of code execute only when ShowAverageLine Property is true
+       if(config.showAverageLine)
+       {
+           var ScaleForAverageLine;
+           var line = d3.svg.line(); 
+           //will create average line in graph
+           svg.append("path")
+                               .datum( dataset)
+                               .attr("class", "line")
+                               .attr("d", line)
+                               .style("stroke-dasharray", ("3, 3"));    
+       }
+
+        //Check property showGraphHorizontally if it's true run this code
+        if(config.showGraphHorizontally)
+        {
+            xScale = d3.scale.linear()
                                  .domain([0, d3.max(dataset, function(d) { return d.Key; })])
                                  .range([padding, w - padding]);
 
-            var yScale = d3.scale.ordinal()
+            yScale = d3.scale.ordinal()
                                  .rangeRoundBands([0, h], .1)
                                  .domain(dataset.map(function (d) { return d.Value; }));
 
-            //Define X axis
-            var xAxis = d3.svg.axis()
+            xAxis  = d3.svg.axis()
                               .scale(xScale)
                               .orient("bottom")
 
-
-            //Define Y axis
-            var yAxis = d3.svg.axis()
+            yAxis  = d3.svg.axis()
                               .scale(yScale)
                               .orient("left")
+            
+            barwidth = yScale.rangeBand() / 2;
+            
+            //Define text(bar value) above each bar in Horizontal Bargraph.
+                    bartext.attr("x", function (d) { return xScale(d.Key)+barwidth ; })
+                           .attr("y", function (d) { return yScale(d.Value)+(padding -20) +barwidth ; })
+                           .text(function (d) { return d.Key; });
+     
+            //Draw Bar of Graph Horizontally 
+                   drawbar.attr("x", 0 + padding )
+                          .attr("width",function (d) { return  xScale(d.Key)-padding; })
+                          .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
+                          .attr("height",  yScale.rangeBand())
+  
 
-            var barwidth = yScale.rangeBand() / 2;
-            console.log("bar width is "+barwidth);
+            //will draw xAxis
 
-            //svg.selectAll("text.bar")
-            // What exactly are you doing here, please write a proper comment
-            svg.selectAll("text" + config.barCssClass) // something like this
-                .data(dataset)
-                .enter().append("text")
-                .attr("class", Object.barTextCssClass)
-                .attr("x", function (d) { return xScale(d.Key) + barwidth ; })
-                .attr("y", function (d) { return yScale(d.Value) + (padding -20) + barwidth ; })
-                .text(function (d) { return d.Key; });
+                if (config.showScale)
+                {
+                    //Append properties in drawxAxis variable
+                    drawxAxis.call(xAxis)
+                             .attr("transform", "translate(" + 0 + "," + (h + (padding-20)) + ")")
+                
+                }
+            
+            //will draw yAxis
 
-            // Also here, what is this for ?
-            svg.append("text")
-                .attr("x", (w +padding)/ 2)
-                .attr("y",padding/2)
-                .attr("class",Object.barTitleClass)
-                .text(""+title+"")
+                //Append properties in drawyAxis variable
+                drawyAxis .call(yAxis)
+                          .attr("transform", "translate(" + padding + "," + (padding-20) + ")");
+               
 
-            if(config.onBarClick)
-            {
-                svg.selectAll("rect")
-                .data(dataset)
-                .enter()
-                .append("rect")
-                .attr("class", Object.barCssClass)
-                .attr("x", 0 + padding )
-                    .attr("width",function (d) { return  xScale(d.Key)-padding; })
-                    .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
-                    .attr("height",  yScale.rangeBand())
-               .on('click', config.onBarClick); //function(d){ Object.onBarClick(d)})
+            //Check Property showAverageLine if it's true then this Block of Code will run.
+                if(config.showAverageLine)
+                {
+                    ScaleForAverageLine= d3.scale.ordinal()
+                                        .rangeBands([0, h + padding + 5], 0)
+                                        .domain( dataset.map(function (d) { return d.Value; }));
+                    
+                    dataSum = d3.sum( dataset, function (d) { return d.Key; });                   
 
-                // remove this if not needed...
-
-                @*.on('click', function (d){
-                    var xaxisdescription=(d.Value).toString();
-                    //isnum check the xaxis value if it's an integer like 2010 return true else Name of the Months like May,June then return false
-                    var isnum = /^\d+$/.test(xaxisdescription);
-                    //true then load Months of the year
-                    if(isnum)
-                    {
-                        //call controller with ajax
-                        fetchResult('q1_d3',
-                       {
-                           setID: $('#set_selection').val(),
-                           seID: $('#q1_se').val(),
-                           upOrDown: $('#q1_uod').val(),
-                           percent: $('#q1_percent').val(),
-                           fromYear: $('#q1_from_year').val(),
-                           toYear: $('#q1_to_year').val(),
-                           yearvalue :d.Value,
-                       });
-
-                    }
-                    else
-                        //False then load Days of the Month
-                    {
-                        fetchResult('q1_d3_1',
-                        {
-                            setID: $('#set_selection').val(),
-                            seID: $('#q1_se').val(),
-                            upOrDown: $('#q1_uod').val(),
-                            percent: $('#q1_percent').val(),
-                            fromYear: $('#q1_from_year').val(),
-                            toYear: $('#q1_to_year').val(),
-                            yearvalue :"@yearvalue",
-                            monthValue: d.Key
-                        });
-                    }
-                });*@
-            }
-            else // What is this else about? Please write it as this else is very far from the if
-            {
-                svg.selectAll("rect")
-                    .data(dataset)
-                    .enter()
-                    .append("rect")
-                    .attr("class", Object.barCssClass)
-                    .attr("x", 0 + padding )
-                        .attr("width",function (d) { return  xScale(d.Key)-padding; })
-                        .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
-                        .attr("height",  yScale.rangeBand());
-
-            }
-
-
-            if (Object.showScale)
-            {
-            //Create X axis
-            svg.append("g")
-                .attr("class", "axis")
-                //.attr("transform", "translate(0," + h  + ")")
-                .attr("transform", "translate(" + 0 + "," + (h + (padding-20)) + ")")
-                .call(xAxis)
-                .on("click", function(d) {  alert('clicked!'); });
-            }
-
-            //Create Y axis
-            svg.append("g")
-                .attr("class", "axis")
-                //.attr("transform", "translate(" + padding + ",0)")
-                .attr("transform", "translate(" + padding + "," + (padding-20) + ")")
-                .call(yAxis)
-                .on("click", function (d) { alert('clicked!'); });
-
-
-                //This axis used only in drawing Average Line.
-                if (Object.showAverageLine) {
-                    var y2 = d3.scale.ordinal()
-                                     .rangeBands([0, h + padding + 5], 0)
-                                     .domain( dataset.map(function (d) { return d.Value; }));
-                    var dataSum = d3.sum( dataset, function (d) { return d.Key; });
-
-                    var line = d3.svg.line()
-                       .x(function (d, i) { return xScale(dataSum /  dataset.length); })
-                       .y(function (d, i) { return y2(d.Value) + i + (padding - 20); })
-
-                    svg.append("path")
-                        .datum( dataset)
-                        .attr("class", "line")
-                        .attr("d", line)
-                        .style("stroke-dasharray", ("3, 3"));
-
+                    line.x(function (d) { return xScale(dataSum /  dataset.length); })
+                        .y(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding - 20); });
                 }
 
            }
 
-
+        //Check property showGraphHorizontally if it's false then run this code
         else{
 
-            //run when dataset is provided via api url
-            if(!dataset.hasOwnProperty)
-            {
-
-                dataset= $(function () {
-                    $.getJSON(Object.dataApiUrl, function (data) {
-                        return  data;
-                    });
-                });
-                console.log("yse it's dont have a value");
-            }
-
-            var xScale = d3.scale.ordinal()
-                        .domain(dataset.map(function (d) { return d.Value; }))
+            xScale = d3.scale.ordinal()
+                         .domain(dataset.map(function (d) { return d.Value; }))
                          .rangeRoundBands([0, w], .1)
 
 
-            var yScale = d3.scale.linear()
+            yScale = d3.scale.linear()
                         .domain([0, d3.max(dataset, function (d) { return d.Key; })])
                         .range([h - padding , 0]);
 
-            var xAxis = d3.svg.axis()
+            xAxis  = d3.svg.axis()
                               .scale(xScale)
                               .orient("bottom");
 
-
-            //Define Y axis
-            var yAxis = d3.svg.axis()
+            yAxis  = d3.svg.axis()
                               .scale(yScale)
                               .orient("left")
 
+            barwidth = xScale.rangeBand() / 2;
 
-            //Create X axis
+            //Define text(bar value) above each bar in Vertical Bargraph.
+                bartext.attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
+                bartext.attr("y", function (d) { return yScale(d.Key)+padding-5; })
+                bartext.text(function (d) { return d.Key; });
 
-            if(Object.showCategoryLabelVertically)
+             //Draw Bar of Graph Vertically
+                 drawbar.attr("x", function (d) { return xScale(d.Value) + padding; })
+                 drawbar.attr("width", xScale.rangeBand())
+                 drawbar.attr("y", function (d) { return yScale(d.Key)+padding; })
+                 drawbar.attr("height", function (d) { return h - yScale(d.Key)-padding; })
+                   
+            
+            // Will Create x-Scale
+            if(config.showCategoryLabelVertically)
             {
-                svg.append("g")
-                  .attr("class", "axis")
-                  .attr("transform", "translate(" + padding + "," + h + ")")
-                  .call(xAxis)
-                  .on("click", function (d) { alert('clicked!'); })
-                //Text for Xaxis Scale values.
-                .selectAll("text")
-                .attr("y", 0)
-                .attr("x", 9)
-                .attr("dy", ".35em")
-                .attr("transform", "rotate(90)")
-                .style("text-anchor", "start");
+                //Append properties in drawxAxis variable
+                drawxAxis.call(xAxis)
+                         .attr("transform", "translate(" + padding + "," + h + ")")               
+                         .selectAll("text")
+                         .attr("y", 0)
+                         .attr("x", 9)
+                         .attr("dy", ".35em")
+                         .attr("transform", "rotate(90)")
+                         .style("text-anchor", "start");
             }
+           
+            // if showCategoryLabelVertically is false then else will execute
             else{
-                svg.append("g")
-                      .attr("class", "axis")
-                      .attr("transform", "translate(" + padding + "," + h + ")")
-                      .call(xAxis)
-                      .on("click", function (d) { alert('clicked!'); });
+                //Append properties in drawxAxis variable
+                drawxAxis.call(xAxis)
+                         .attr("transform", "translate(" + padding + "," + h + ")");
+                     
             }
-            //show only when show scale is true
-            if(Object.showScale){
-            //Create Y axis
-            svg.append("g")
-                .attr("class", "axis")
-                .attr("transform", "translate(" + padding + "," + padding + ")")
-                .call(yAxis);
+           
+            // Will Check showScale is true or false if true then show y-Scale
+            if(config.showScale){
+            
+                //Append properties in drawyAxis variable
+                drawyAxis.call(yAxis)
+                         .attr("transform", "translate(" + padding + "," + padding + ")");
+                
             }
 
-            var barwidth = xScale.rangeBand() / 2;
-            svg.selectAll("text.bar")
-                .data(dataset)
-                .enter().append("text")
-                .attr("class",Object.barTextCssClass)
-                .attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
-                .attr("y", function (d) { return yScale(d.Key)+padding-5; })
-                .text(function (d) { return d.Key; });
-
-
-            svg.append("text")
-                .attr("x", (w +padding)/ 2)
-                .attr("y",padding/2)
-                .attr("class",Object.barTitleClass)
-                .text(""+title+"")
-
-            if(Object.Clickable_bar)
+            //Check Property showAverageLine if it's true then this Block of Code will run.
+            if(config.showAverageLine)
             {
-                svg.selectAll("rect")
-                    .data(dataset)
-                    .enter()
-                    .append("rect")
-                    .attr("class", Object.barCssClass)
-                    .attr("x", function (d) { return xScale(d.Value) + padding; })
-                    .attr("width", xScale.rangeBand())
-                    .attr("y", function (d) { return yScale(d.Key)+padding; })
-                    .attr("height", function (d) { return h - yScale(d.Key)-padding; })
-                    .on('click', function(d){ Object.onBarClick(d)})
-                    @*.on('click', function (d){
-                        var xaxisdescription=(d.Value).toString();
-                        //isnum check the xaxis value if it's an integer like 2010 return true else Name of the Months like May,June then return false
-                        var isnum = /^\d+$/.test(xaxisdescription);
-                        //true then load Months of the year
-                        if(isnum)
-                        {
-                            //call controller with ajax
-                            fetchResult('q1_d3',
-                           {
-                               setID: $('#set_selection').val(),
-                               seID: $('#q1_se').val(),
-                               upOrDown: $('#q1_uod').val(),
-                               percent: $('#q1_percent').val(),
-                               fromYear: $('#q1_from_year').val(),
-                               toYear: $('#q1_to_year').val(),
-                               yearvalue :d.Value,
-                           });
-
-                        }
-                        else
-                            //False then load Days of the Month
-                        {
-                            fetchResult('q1_d3_1',
-                            {
-                                setID: $('#set_selection').val(),
-                                seID: $('#q1_se').val(),
-                                upOrDown: $('#q1_uod').val(),
-                                percent: $('#q1_percent').val(),
-                                fromYear: $('#q1_from_year').val(),
-                                toYear: $('#q1_to_year').val(),
-                                yearvalue :"@yearvalue",
-                                monthValue: d.Key
-                            });
-                        }
-                    });*@
-            }
-            else{
-                svg.selectAll("rect")
-                       .data(dataset)
-                       .enter()
-                       .append("rect")
-                       .attr("class", Object.barCssClass)
-                       .attr("x", function (d) { return xScale(d.Value) + padding; })
-                       .attr("width", xScale.rangeBand())
-                       .attr("y", function (d) { return yScale(d.Key)+padding; })
-                       .attr("height", function (d) { return h - yScale(d.Key)-padding; })
-            }
-
-            //Create Average Line
-            if (Object.showAverageLine)
-            {
-                var x2 = d3.scale.ordinal()
-                         .rangeBands([0, w], 0)
-                         .domain( dataset.map(function (d) { return d.Value; }));
-
+                ScaleForAverageLine=d3.scale.ordinal()
+                                      .rangeBands([0, w], 0)
+                                      .domain( dataset.map(function (d) { return d.Value; }));
+                
                 var dataSum = d3.sum( dataset, function (d) { return d.Key; });
-
-                var line = d3.svg.line()
-                   .x(function (d, i) {
-                       return x2(d.Value) + i + (padding);
-                   })
-                   .y(function (d, i) { return yScale(dataSum /  dataset.length); });
-
-                svg.append("path")
-                    .datum( dataset)
-                    .attr("class", "line")
-                    .attr("d", line)
-                .style("stroke-dasharray", ("3, 3"));
+                
+                line.x(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding); })
+                    .y(function (d) { return yScale(dataSum /  dataset.length); });
             }
         }
     }
