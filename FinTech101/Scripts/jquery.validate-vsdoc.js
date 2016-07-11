@@ -46,7 +46,7 @@ $.extend($.fn, {
 		/// elements. Each one can be disabled, see the onxxx options (onsubmit, onfocusout,
 		/// onkeyup, onclick). focusInvalid focuses elements when submitting a invalid form.
 		/// </summary>
-		/// <param name="options" type="config">
+		/// <param name="options" type="Object">
 		/// A set of key/value pairs that configure the validate. All options are optional.
 		/// </param>
 
@@ -447,7 +447,7 @@ $.extend($.validator, {
 			/// Show the specified messages.
 			/// Keys have to refer to the names of elements, values are displayed for those elements, using the configured error placement.
 			/// </summary>
-			/// <param name="errors" type="config">
+			/// <param name="errors" type="Object">
 			/// One or more key/value pairs of input names and messages.
 			/// </param>
 
@@ -497,10 +497,10 @@ $.extend($.validator, {
 			/// </summary>
 			/// <returns type="Number" />
 
-			return this.configLength(this.invalid);
+			return this.objectLength(this.invalid);
 		},
 		
-		configLength: function( obj ) {
+		objectLength: function( obj ) {
 			var count = 0;
 			for ( var i in obj )
 				count++;
@@ -554,7 +554,7 @@ $.extend($.validator, {
 				!this.name && validator.settings.debug && window.console && console.error( "%o has no name assigned", this);
 			
 				// select only the first element for each name, and only those with rules specified
-				if ( this.name in rulesCache || !validator.configLength($(this).rules()) )
+				if ( this.name in rulesCache || !validator.objectLength($(this).rules()) )
 					return false;
 				
 				rulesCache[this.name] = true;
@@ -629,7 +629,7 @@ $.extend($.validator, {
 			}
 			if (dependencyMismatch)
 				return;
-			if ( this.configLength(rules) )
+			if ( this.objectLength(rules) )
 				this.successList.push(element);
 			return true;
 		},
@@ -1260,7 +1260,7 @@ $.format = $.validator.format;
 // IE has native support, in other browsers, use event caputuring (neither bubbles)
 
 // provides delegate(type: String, delegate: Selector, handler: Callback) plugin for easier event delegation
-// handler is only called when $(event.target).is(delegate), in the scope of the jquery-config for event.target 
+// handler is only called when $(event.target).is(delegate), in the scope of the jquery-object for event.target 
 ;(function($) {
 	// only implement if not provided by jQuery core (since 1.4)
 	// TODO verify if jQuery 1.4's implementation is compatible with older jQuery special-event APIs

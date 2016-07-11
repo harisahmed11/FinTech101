@@ -240,7 +240,7 @@ d3.tip = function() {
   //    |   |
   //    +-+-+
   //
-  // Returns an config {n, s, e, w, nw, sw, ne, se}
+  // Returns an Object {n, s, e, w, nw, sw, ne, se}
   function getScreenBBox() {
     var targetel   = target || d3.event.target,
         bbox       = {},

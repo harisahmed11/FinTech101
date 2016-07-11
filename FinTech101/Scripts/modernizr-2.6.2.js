@@ -32,7 +32,7 @@
 /*
  * Modernizr tests which native CSS3 and HTML5 features are available in
  * the current UA and makes the results available to you in two ways:
- * as properties on a global Modernizr config, and as classes on the
+ * as properties on a global Modernizr object, and as classes on the
  * <html> element. This information allows you to progressively enhance
  * your pages with a granular level of control over the experience.
  *
@@ -251,13 +251,13 @@ window.Modernizr = (function( window, document, undefined ) {
     _hasOwnProperty = ({}).hasOwnProperty, hasOwnProp;
 
     if ( !is(_hasOwnProperty, 'undefined') && !is(_hasOwnProperty.call, 'undefined') ) {
-      hasOwnProp = function (config, property) {
-        return _hasOwnProperty.call(config, property);
+      hasOwnProp = function (object, property) {
+        return _hasOwnProperty.call(object, property);
       };
     }
     else {
-      hasOwnProp = function (config, property) { /* yes, this can give false positives/negatives, but most of the time we don't care about those */
-        return ((property in config) && is(config.constructor.prototype[property], 'undefined'));
+      hasOwnProp = function (object, property) { /* yes, this can give false positives/negatives, but most of the time we don't care about those */
+        return ((property in object) && is(object.constructor.prototype[property], 'undefined'));
       };
     }
 
@@ -286,7 +286,7 @@ window.Modernizr = (function( window, document, undefined ) {
                   self,
                   args.concat(slice.call(arguments))
               );
-              if (config(result) === result) {
+              if (Object(result) === result) {
                   return result;
               }
               return self;
@@ -867,7 +867,7 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
     /*>>webforms*/
-    // input features and input types go directly onto the ret config, bypassing the tests loop.
+    // input features and input types go directly onto the ret object, bypassing the tests loop.
     // Hold this guy to execute in a moment.
     function webforms() {
         /*>>input*/
@@ -897,7 +897,7 @@ window.Modernizr = (function( window, document, undefined ) {
         /*>>inputtypes*/
         // Run through HTML5's new input types to see if the UA understands any.
         //   This is put behind the tests runloop because it doesn't return a
-        //   true/false like all the other tests; instead, it returns an config
+        //   true/false like all the other tests; instead, it returns an object
         //   containing each input type with its corresponding true/false value
 
         // Big thanks to @miketaylr for the html5 forms expertise. miketaylr.com/
@@ -983,14 +983,14 @@ window.Modernizr = (function( window, document, undefined ) {
 
     /**
      * addTest allows the user to define their own feature tests
-     * the result will be added onto the Modernizr config,
+     * the result will be added onto the Modernizr object,
      * as well as an appropriate className set on the html element
      *
      * @param feature - String naming the feature
      * @param test - Function returning true if feature is supported, false if not
      */
      Modernizr.addTest = function ( feature, test ) {
-       if ( typeof feature == 'config' ) {
+       if ( typeof feature == 'object' ) {
          for ( var key in feature ) {
            if ( hasOwnProp( feature, key ) ) {
              Modernizr.addTest( key, feature[ key ] );
@@ -1034,7 +1034,7 @@ window.Modernizr = (function( window, document, undefined ) {
       var options = window.html5 || {};
 
       /** Used to skip problem elements */
-      var reSkip = /^<|^(?:button|map|select|textarea|config|iframe|option|optgroup)$/i;
+      var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
 
       /** Not all elements can be cloned in IE **/
       var saveClones = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
@@ -1109,7 +1109,7 @@ window.Modernizr = (function( window, document, undefined ) {
        * Returns the data associated to the given document
        * @private
        * @param {Document} ownerDocument The document.
-       * @returns {config} An config of data.
+       * @returns {Object} An object of data.
        */
       function getExpandoData(ownerDocument) {
         var data = expandoData[ownerDocument[expando]];
@@ -1127,7 +1127,7 @@ window.Modernizr = (function( window, document, undefined ) {
        * @memberOf html5
        * @param {String} nodeName name of the element
        * @param {Document} ownerDocument The context document.
-       * @returns {config} The shived element.
+       * @returns {Object} The shived element.
        */
       function createElement(nodeName, ownerDocument, data){
         if (!ownerDocument) {
@@ -1163,7 +1163,7 @@ window.Modernizr = (function( window, document, undefined ) {
        * returns a shived DocumentFragment for the given document
        * @memberOf html5
        * @param {Document} ownerDocument The context document.
-       * @returns {config} The shived DocumentFragment.
+       * @returns {Object} The shived DocumentFragment.
        */
       function createDocumentFragment(ownerDocument, data){
         if (!ownerDocument) {
@@ -1187,7 +1187,7 @@ window.Modernizr = (function( window, document, undefined ) {
        * Shivs the `createElement` and `createDocumentFragment` methods of the document.
        * @private
        * @param {Document|DocumentFragment} ownerDocument The document.
-       * @param {config} data of the document.
+       * @param {Object} data of the document.
        */
       function shivMethods(ownerDocument, data) {
         if (!data.cache) {
@@ -1250,9 +1250,9 @@ window.Modernizr = (function( window, document, undefined ) {
       /*--------------------------------------------------------------------------*/
 
       /**
-       * The `html5` config is exposed so that more elements can be shived and
+       * The `html5` object is exposed so that more elements can be shived and
        * existing shiving can be detected on iframes.
-       * @type config
+       * @type Object
        * @example
        *
        * // options can be changed before the script is included
@@ -1290,13 +1290,13 @@ window.Modernizr = (function( window, document, undefined ) {
         'shivMethods': (options.shivMethods !== false),
 
         /**
-         * A string to describe the type of `html5` config ("default" or "default print").
+         * A string to describe the type of `html5` object ("default" or "default print").
          * @memberOf html5
          * @type String
          */
         'type': 'default',
 
-        // shivs the document according to the specified `html5` config options
+        // shivs the document according to the specified `html5` object options
         'shivDocument': shivDocument,
 
         //creates a shived element
@@ -1317,7 +1317,7 @@ window.Modernizr = (function( window, document, undefined ) {
     }(this, document));
     /*>>shiv*/
 
-    // Assign private properties to the return config with prefix
+    // Assign private properties to the return object with prefix
     Modernizr._version      = version;
 
     // expose these for the plugin API. Look in the source for how to join() them against your input

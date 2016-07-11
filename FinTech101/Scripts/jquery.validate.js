@@ -438,10 +438,10 @@ $.extend($.validator, {
 		},
 
 		numberOfInvalids: function() {
-			return this.configLength(this.invalid);
+			return this.objectLength(this.invalid);
 		},
 
-		configLength: function( obj ) {
+		objectLength: function( obj ) {
 			var count = 0;
 			for ( var i in obj ) {
 				count++;
@@ -497,7 +497,7 @@ $.extend($.validator, {
 				}
 
 				// select only the first element for each name, and only those with rules specified
-				if ( this.name in rulesCache || !validator.configLength($(this).rules()) ) {
+				if ( this.name in rulesCache || !validator.objectLength($(this).rules()) ) {
 					return false;
 				}
 
@@ -589,7 +589,7 @@ $.extend($.validator, {
 			if ( dependencyMismatch ) {
 				return;
 			}
-			if ( this.configLength(rules) ) {
+			if ( this.objectLength(rules) ) {
 				this.successList.push(element);
 			}
 			return true;
@@ -1230,7 +1230,7 @@ $.format = $.validator.format;
 }(jQuery));
 
 // provides delegate(type: String, delegate: Selector, handler: Callback) plugin for easier event delegation
-// handler is only called when $(event.target).is(delegate), in the scope of the jquery-config for event.target
+// handler is only called when $(event.target).is(delegate), in the scope of the jquery-object for event.target
 (function($) {
 	$.extend($.fn, {
 		validateDelegate: function( delegate, type, handler ) {
