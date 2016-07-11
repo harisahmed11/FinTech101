@@ -1,0 +1,286 @@
+﻿@using FinTech101.Models
+@{
+    var years = ViewBag.years;
+    string charttitle = Convert.ToString(ViewBag.title);
+    //int? yearvalue = ViewBag.yrvalue;
+}
+
+<style>
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .bar {
+        fill: red;
+    }
+
+    .bar:hover {
+            fill: royalblue;
+            cursor: pointer;
+    }
+
+    .x.axis path {
+        display: none;
+    }
+
+    .graphtitletext {
+        text-anchor: middle;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .bartext {
+        text-anchor: middle;
+        font-weight: bold;
+    }
+
+    .line {
+        fill: none;
+        stroke: #444;
+        stroke-width: 1.5px;
+        stroke-opacity: 0.5;
+    }
+</style>
+
+
+
+<div id="bargraph"></div>
+
+<script src="~/Content/d3.js/d3.min.js"></script>
+
+<script>
+
+    var data=@Html.Raw(years); //Assigning ViewBag Data to data Variable
+
+    var barConfig ={
+        barGraphContainerDiv : "result",
+        height: 500,
+        width: 800,
+        padding:80,
+        dataset:data, //Data Contain Key and Value Format, For Example Value = 2013 & Key = 15
+        //dataApiUrl: 'https://api.github.com/users/mralexgray/repos', //Demo Api Url just for creating logic
+        barGraphTitleText:"@charttitle",
+        barCssClass: "bar",
+        barTitleClass:"graphtitletext",
+        barTextCssClass: "bartext",
+        showCategoryLabelVertically: false,
+        showGraphHorizontally: false,
+        showAverageLine: true,
+        showScale:false, //hide X-axis Scale or if Vertical then Y-Axis Scale
+        onBarClick:function(d) { alert("Bar clicked, Value is "+d.Key); }
+    }
+
+    $(document).ready(function () {
+        window.load = drawBarChart(barConfig);
+    });
+
+
+    function drawBarChart(config){
+
+        var dataset =  config.dataset;
+        var w = config.width;
+        var h = config.height;
+        var padding = config.padding;
+        var title = config.barGraphTitleText;
+        var xScale,yScale,xAxis,yAxis,barwidth;
+
+        //Create SVG element
+        var svg = d3.select("#"+config.barGraphContainerDiv+"")
+                    .append("svg")
+                    .attr("width", w + padding)
+                    .attr("height", h + padding);
+
+        //Show  text(bar value) Above each bar 
+        var bartext= svg.selectAll("text.bar")
+                    .data(dataset)
+                    .enter().append("text")
+                    .attr("class",config.barTextCssClass);
+
+        //BarGraph Title
+        svg.append("text")
+                .attr("x", (w +padding)/ 2)
+                .attr("y",padding/2)
+                .attr("class",config.barTitleClass)
+                .text(""+title+"");
+
+
+        //Draw Bar 
+        var drawbar  = svg.selectAll("rect")
+                         .data(dataset)
+                         .enter()
+                         .append("rect")
+                         .attr("class", config.barCssClass)                       
+                         .on('click', function(d){ config.onBarClick(d)});
+       
+        //Draw xAxis
+        var drawxAxis = svg.append("g")
+                          .attr("class", "axis")                       
+                          .on("click", function (d) { alert('clicked!'); })
+
+        //Draw yAxis     
+       var drawyAxis = svg.append("g")
+                        .attr("class", "axis")
+                        .on("click", function (d) { alert('clicked!'); });
+
+        
+        //This Block of code execute only when ShowAverageLine Property is true
+       if(config.showAverageLine)
+       {
+           var ScaleForAverageLine;
+           var line = d3.svg.line(); 
+           //will create average line in graph
+           svg.append("path")
+                               .datum( dataset)
+                               .attr("class", "line")
+                               .attr("d", line)
+                               .style("stroke-dasharray", ("3, 3"));    
+       }
+
+        //Check property showGraphHorizontally if it's true run this code
+        if(config.showGraphHorizontally)
+        {
+            xScale = d3.scale.linear()
+                                 .domain([0, d3.max(dataset, function(d) { return d.Key; })])
+                                 .range([padding, w - padding]);
+
+            yScale = d3.scale.ordinal()
+                                 .rangeRoundBands([0, h], .1)
+                                 .domain(dataset.map(function (d) { return d.Value; }));
+
+            xAxis  = d3.svg.axis()
+                              .scale(xScale)
+                              .orient("bottom")
+
+            yAxis  = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+            
+            barwidth = yScale.rangeBand() / 2;
+            
+            //Define text(bar value) above each bar in Horizontal Bargraph.
+                    bartext.attr("x", function (d) { return xScale(d.Key)+barwidth ; })
+                           .attr("y", function (d) { return yScale(d.Value)+(padding -20) +barwidth ; })
+                           .text(function (d) { return d.Key; });
+     
+            //Draw Bar of Graph Horizontally 
+                   drawbar.attr("x", 0 + padding )
+                          .attr("width",function (d) { return  xScale(d.Key)-padding; })
+                          .attr("y", function (d) { return yScale(d.Value) + (padding-20) })
+                          .attr("height",  yScale.rangeBand())
+  
+
+            //will draw xAxis
+
+                if (config.showScale)
+                {
+                    //Append properties in drawxAxis variable
+                    drawxAxis.call(xAxis)
+                             .attr("transform", "translate(" + 0 + "," + (h + (padding-20)) + ")")
+                
+                }
+            
+            //will draw yAxis
+
+                //Append properties in drawyAxis variable
+                drawyAxis .call(yAxis)
+                          .attr("transform", "translate(" + padding + "," + (padding-20) + ")");
+               
+
+            //Check Property showAverageLine if it's true then this Block of Code will run.
+                if(config.showAverageLine)
+                {
+                    ScaleForAverageLine= d3.scale.ordinal()
+                                        .rangeBands([0, h + padding + 5], 0)
+                                        .domain( dataset.map(function (d) { return d.Value; }));
+                    
+                    dataSum = d3.sum( dataset, function (d) { return d.Key; });                   
+
+                    line.x(function (d) { return xScale(dataSum /  dataset.length); })
+                        .y(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding - 20); });
+                }
+
+           }
+
+        //Check property showGraphHorizontally if it's false then run this code
+        else{
+
+            xScale = d3.scale.ordinal()
+                         .domain(dataset.map(function (d) { return d.Value; }))
+                         .rangeRoundBands([0, w], .1)
+
+
+            yScale = d3.scale.linear()
+                        .domain([0, d3.max(dataset, function (d) { return d.Key; })])
+                        .range([h - padding , 0]);
+
+            xAxis  = d3.svg.axis()
+                              .scale(xScale)
+                              .orient("bottom");
+
+            yAxis  = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+
+            barwidth = xScale.rangeBand() / 2;
+
+            //Define text(bar value) above each bar in Vertical Bargraph.
+                bartext.attr("x", function (d) { return xScale(d.Value) + padding +barwidth; })
+                bartext.attr("y", function (d) { return yScale(d.Key)+padding-5; })
+                bartext.text(function (d) { return d.Key; });
+
+             //Draw Bar of Graph Vertically
+                 drawbar.attr("x", function (d) { return xScale(d.Value) + padding; })
+                 drawbar.attr("width", xScale.rangeBand())
+                 drawbar.attr("y", function (d) { return yScale(d.Key)+padding; })
+                 drawbar.attr("height", function (d) { return h - yScale(d.Key)-padding; })
+                   
+            
+            // Will Create x-Scale
+            if(config.showCategoryLabelVertically)
+            {
+                //Append properties in drawxAxis variable
+                drawxAxis.call(xAxis)
+                         .attr("transform", "translate(" + padding + "," + h + ")")               
+                         .selectAll("text")
+                         .attr("y", 0)
+                         .attr("x", 9)
+                         .attr("dy", ".35em")
+                         .attr("transform", "rotate(90)")
+                         .style("text-anchor", "start");
+            }
+           
+            // if showCategoryLabelVertically is false then else will execute
+            else{
+                //Append properties in drawxAxis variable
+                drawxAxis.call(xAxis)
+                         .attr("transform", "translate(" + padding + "," + h + ")");
+                     
+            }
+           
+            // Will Check showScale is true or false if true then show y-Scale
+            if(config.showScale){
+            
+                //Append properties in drawyAxis variable
+                drawyAxis.call(yAxis)
+                         .attr("transform", "translate(" + padding + "," + padding + ")");
+                
+            }
+
+            //Check Property showAverageLine if it's true then this Block of Code will run.
+            if(config.showAverageLine)
+            {
+                ScaleForAverageLine=d3.scale.ordinal()
+                                      .rangeBands([0, w], 0)
+                                      .domain( dataset.map(function (d) { return d.Value; }));
+                
+                var dataSum = d3.sum( dataset, function (d) { return d.Key; });
+                
+                line.x(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding); })
+                    .y(function (d) { return yScale(dataSum /  dataset.length); });
+            }
+        }
+    }
+</script>
