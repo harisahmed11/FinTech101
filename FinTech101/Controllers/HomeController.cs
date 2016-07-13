@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
+
 namespace FinTech101.Controllers
 {
     public class HomeController : Controller
@@ -15,7 +16,7 @@ namespace FinTech101.Controllers
         {
             return View();
         }
-
+    
         public ActionResult Fintech(int setID = 1)
         {
             FintechHomeViewModel model = new FintechHomeViewModel();

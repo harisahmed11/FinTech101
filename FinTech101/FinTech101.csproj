@@ -284,7 +284,6 @@
     <Content Include="Views\Home\q1_d3.cshtml" />
     <Content Include="Views\Home\q1_d3_1.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
