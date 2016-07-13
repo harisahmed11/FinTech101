@@ -62,7 +62,7 @@
         width: 800,
         padding: 80,
         dataset:data,  //Data Contain Key and Value Format, For Example Value = 2013 & Key = 15, Value = 2014 & Key = 25
-        dataApiUrl: 'http://localhost:61531/api/GraphApi', //Demo Api Url just for creating logic
+        dataApiUrl: 'http://localhost:61531/api/GraphApi', //Demo Api Url
         barGraphTitleText:"@charttitle",
         barCssClass: "bar",
         barTitleClass:"graphtitletext",
@@ -97,6 +97,7 @@
                 $.get(uri)
                      .done(function (data) {
                          // On success, 'data' contains a list of Key and Value Items for BarGraph.
+                         //data recieved in Json format it conatin Key & Value
                          dataset= data;
                      });
            
