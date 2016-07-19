@@ -1,4 +1,4 @@
-﻿@using GraphDataApi;
+﻿
 @using FinTech101.Models;
 
 @{
@@ -19,10 +19,10 @@
         fill: red;
     }
 
-    .bar:hover {
+        .bar:hover {
             fill: royalblue;
             cursor: pointer;
-    }
+        }
 
     .x.axis path {
         display: none;
@@ -54,25 +54,34 @@
 <script src="~/Content/d3.js/d3.min.js"></script>
 
 <script>
-    var data= @Html.Raw(years);
+    @*var data= @Html.Raw(years);*@
+    var data = [{ "Key": 20, "Value": "2001" }, { "Key": 21, "Value": "2002" }, { "Key": 22, "Value": "2003" }, { "Key": 23, "Value": "2004" }, { "Key": 24, "Value": "2005" }, { "Key": 25, "Value": "2006" }, { "Key": 26, "Value": "2007" }, { "Key": 27, "Value": "2008" }, { "Key": 28, "Value": "2009" }, { "Key": 29, "Value": "2010" }
+       , { "Key": 30, "Value": "2011" }, { "Key": 31, "Value": "2012" }, { "Key": 32, "Value": "2013" }, { "Key": 33, "Value": "2014" }, { "Key": 34, "Value": "2015" }, { "Key": 35, "Value": "2016" }, { "Key": 36, "Value": "2017" }, { "Key": 37, "Value": "2018" }, { "Key": 38, "Value": "2019" }, { "Key": 39, "Value": "2020" }];
 
     var barConfig = {
         barGraphContainerDiv : "result",
         height: 500,
         width: 800,
         padding: 80,
+        margin : {
+            top: 60,
+            bottom: 80,
+            left: 60,
+            right: 0
+        },
         dataset:data,  //Data Contain Key and Value Format, For Example Value = 2013 & Key = 15, Value = 2014 & Key = 25
         dataApiUrl: 'http://localhost:61531/api/GraphApi', //Demo Api Url
         barGraphTitleText:"@charttitle",
         barCssClass: "bar",
         barTitleClass:"graphtitletext",
         barTextCssClass: "bartext",
-        showCategoryLabelVertically: false,
+        showCategoryLabelVertically: true, //Only Work in Vertical Bar Graph
         showGraphHorizontally: false,
         showAverageLine: true,
         averageLineDataProvider:function(){  return 20 }, //will run only when showAverageLine property is true.
         showScale:true, //hide X-axis Scale or if Vertical then Y-Axis Scale
-        onBarClick:function(d) { alert("Bar clicked, Value is "+d.Key); }
+        onBarClick:function(d) { alert("Bar clicked, Value is "+d.Key); },
+        allowZoom: true
     }
 
     $(document).ready(function () {
@@ -84,231 +93,310 @@
 
         var dataset;
 
-        //this condition check the source of data for a BarGraph 
+        //this condition check the source of data for a BarGraph
         // if dataset property in barconfig is provided then Simply load from them.
         if(config.dataset) {
             //Load dataset variable form config dataset property
-            dataset=config.dataset;          
-        }          
+            dataset=config.dataset;
+        }
         else { // else dataset property in barconfig is Not provided then load data from Apiurl
-                
+
             var uri = config.dataApiUrl;
             $.get(uri)
                 .done(function (data) {
-                        // On success, 'data' contains a list of Key and Value Items for BarGraph.
-                        //data recieved in Json format it conatin Key & Value
-                        dataset= data;
-                    });
+                    // On success, 'data' contains a list of Key and Value Items for BarGraph.
+                    //data recieved in Json format it conatin Key & Value
+                    dataset= data;
+                });
         }
-     
-        //here checkVariable function is created just because of Api Dataloading issue (data loading from Api takes some time) so, this function load Graph after 5 sec.
-        function checkVariable() {   
-          
-            var w = config.width;
-            var h = config.height;
-            var padding = config.padding;
-            var title = config.barGraphTitleText;
-            var xScale,yScale,xAxis,yAxis,barwidth;
 
-            //Create SVG element
-            var svg = d3.select("#"+config.barGraphContainerDiv+"")
-                        .append("svg")
-                        .attr("width", w + padding)
-                        .attr("height", h + padding);
+        var w = config.width;
+        var h = config.height;
+        var padding = config.padding;
+        var margin = config.margin;
+        var title = config.barGraphTitleText;
+        var xScale,yScale,xAxis,yAxis,barwidth;
 
-            //Common Attributes for Displaying  text(bar value Above each bar) in both Horizontal & Vertical BarGraph
-            var bartext= svg.selectAll("text.bar")
-                        .data(dataset)
-                        .enter().append("text")
-                        .attr("class",config.bartextcssclass);
+        //Create SVG element
+        var svg = d3.select("#"+config.barGraphContainerDiv+"")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
 
-            //Common attributes for Drawing Bar in both Horizontal & Vertical BarGraph
-            var drawbar  = svg.selectAll("rect")
-                             .data(dataset)
-                             .enter()
-                             .append("rect")
-                             .attr("class", config.barCssClass)
-                            //.on('click', function(d){ config.onBarClick(d) });
-                            .on('click', config.onBarClick);
+        var g = svg.append("g")
+                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        g.append("defs").append("clipPath")
+                       .attr("id", "clip")
+                       .append("rect")
+                       .attr("width", w - margin.left - margin.right)
+                       .attr("height", h - margin.top - margin.bottom);
+
+        g.append("g")
+         .attr("class", "scatter")
+         .attr("clip-path", "url(#clip)");
+
+        var gs = svg.select("g.scatter");
+
+        //Common attributes for Drawing Bar in both Horizontal & Vertical BarGraph
+        var drawbar  = gs.selectAll("rect")
+                         .data(dataset)
+                         .enter()
+                         .append("rect")
+                         .attr("class", config.barCssClass)
+                        //.on('click', function(d){ config.onBarClick(d) });
+                         .on('click', config.onBarClick);
+
+        //Common Attributes for Displaying  text(bar value Above each bar) in both Horizontal & Vertical BarGraph
+        var bartext= gs.selectAll("gs.rect")
+                    .data(dataset)
+                    .enter().append("text")
+                    .attr("class",config.bartextcssclass);
+
+        ////Common attributes for Drawing x-Scale in both Horizontal & Vertical BarGraph.
+        //var drawxAxis = svg.append("g")
+        //                  .attr("class", "axis")
+        //                  .on("click", function (d) { alert('clicked!'); })
+
+        ////Common attributes for Drawing y-Scale in both Horizontal & Vertical BarGraph.
+        //var drawyAxis = svg.append("g")
+        //                 .attr("class", "axis")
+        //                 .on("click", function (d) { alert('clicked!'); });
+
+        //Common attributes for Drawing Average Line in Both Horizontal & Vertical BarGraph
+        if(config.showAverageLine)
+        {
+            //dataSum = d3.sum( dataset, function (d) { return d.Key; });
+            var ScaleForAverageLine;
+
+            var line = d3.svg.line()
+
+            ScaleForAverageLine = d3.scale.ordinal()
+                                              .domain(dataset.map(function (d) { return d.Value; }));
+
+            //will create average line in graph
+            var drawAvgLine = svg.append("path")
+                                .datum( dataset)
+                                .attr("class", "line")
+                                .style("stroke-dasharray", ("3, 3"));
+        }
+
+        //BarGraph Title
+        svg.append("text")
+               .attr("x", (w + padding)/ 2)
+               .attr("y",padding/2)
+               .attr("class",config.barTitleClass)
+               .text(""+title+"");
 
 
-            //Common attributes for Drawing x-Scale in both Horizontal & Vertical BarGraph.
-            var drawxAxis = svg.append("g")
-                              .attr("class", "axis")
-                              .on("click", function (d) { alert('clicked!'); })
+        //if showGraphHorizontally property is true then display Graph Horizontally
+        if(config.showGraphHorizontally)
+        {
+            xScale = d3.scale.linear()
+                                 .domain([0, d3.max( dataset, function(d) { return d.Key; } ) ])
+                                 .range([padding, w - padding]);
 
-            //Common attributes for Drawing y-Scale in both Horizontal & Vertical BarGraph.
-            var drawyAxis = svg.append("g")
-                             .attr("class", "axis")
-                             .on("click", function (d) { alert('clicked!'); });
+            yScale = d3.scale.ordinal()
+                                 .rangeRoundBands([0, h], .1)
+                                 .domain( dataset.map(function (d) { return d.Value; }) );
 
-            //Common attributes for Drawing Average Line in Both Horizontal & Vertical BarGraph
+            xAxis  = d3.svg.axis()
+                              .scale(xScale)
+                              .orient("bottom")
+
+            yAxis  = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+
+            barwidth = yScale.rangeBand() / 2;
+
+            //Specific attributes for Displaying text(bar value above each bar) in Horizontal Bargraph.
+            bartext.attr("x", function (d) { return xScale(d.Key)+(barwidth/2); })
+                   .attr("y", function (d) { return yScale(d.Value) + (padding - 20) + barwidth ; })
+                   .text(function (d) { return d.Key; });
+
+            //Specific attributes for Drawing Bar Horizontally
+            drawbar.attr("x", 0 + padding )
+                   .attr("width",function (d) { return  xScale(d.Key) - padding; })
+                   .attr("y", function (d) { return yScale(d.Value) + (padding - 20) })
+                   .attr("height",  yScale.rangeBand())
+
+
+            //Specific attributes for Drawing x-Scale in Horizontal Formate
+            //will run only when showScale property is true.
+            if (config.showScale)
+            {
+                //Append properties in drawxAxis variable
+                drawxAxis.call(xAxis)
+                         .attr("transform", "translate(" + 0 + "," + (h + (padding - 20)) + ")");
+            }
+
+            //Specific attributes for Drawing y-Scale in Horizontal Formate
+            drawyAxis .call(yAxis)
+                      .attr("transform", "translate(" + padding + "," + (padding - 20) + ")");
+
+
+            //Specific attributes for Drawing AverageLine Horizontally
+            //will run only when showAverageLine property is true.
             if(config.showAverageLine)
             {
-                //dataSum = d3.sum( dataset, function (d) { return d.Key; });
-                var ScaleForAverageLine;
+                //Define x and y coordiantes of a common variable 'line'.
+                line.x(function (d) { return xScale( config.averageLineDataProvider() ); })    //averageLineDataProvider is a function for calculating Average point.....
+                    .y(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding - 20); });
 
-                var line = d3.svg.line()
+                //Add RangBands for Horizontal Graph
+                ScaleForAverageLine.rangeBands([0, h+(padding)+(barwidth*3)], 0);
 
-                ScaleForAverageLine = d3.scale.ordinal()
-                                                  .domain( dataset.map(function (d) { return d.Value; }));
+                //Will Display Avg line
+                pathappend.attr("d", line);
 
-                //will create average line in graph
-                var pathappend = svg.append("path")
-                                    .datum( dataset)
-                                    .attr("class", "line")
-                                    .style("stroke-dasharray", ("3, 3"));
             }
 
-            //BarGraph Title
-            svg.append("text")
-                   .attr("x", (w + padding)/ 2)
-                   .attr("y",padding/2)
-                   .attr("class",config.barTitleClass)
-                   .text(""+title+"");
+        }
+        else { //if showGraphHorizontally property is false then display Graph Vertically
+
+            xScale = d3.scale.ordinal()
+                         .domain(dataset.map(function (d) { return d.Value; }))
+                         .rangeRoundBands([0, w- margin.left - margin.right] , .1)
 
 
-            //if showGraphHorizontally property is true then display Graph Horizontally
-            if(config.showGraphHorizontally)
+            yScale = d3.scale.linear()
+                        .domain([0 , d3.max(dataset, function (d) { return d.Key; })+5])
+                        .range([h - margin.top - margin.bottom, 0]);
+
+            xAxis  = d3.svg.axis()
+                              .scale(xScale)
+                              .orient("bottom");
+
+            yAxis  = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+
+            //Specific attributes for Drawing Bar Vertically
+            drawbar.attr("x", function (d) { return xScale(d.Value); })
+                   .attr("width", xScale.rangeBand() )
+                   .attr("y", function (d) { return yScale(d.Key); })
+                   .attr("height",function (d) { return h - margin.top - margin.bottom - yScale(d.Key); })
+
+            //barwidth = xScale.rangeBand() / 2;
+
+            //Specific attributes for Displaying text(bar value above each bar) in Vertical Bargraph.
+            bartext.attr("x", function (d) { return xScale(d.Value) + (xScale.rangeBand() / 2) -6; })
+                   .attr("y", function (d) { return yScale(d.Key)-6; })
+                   .text(function (d) { return d.Key; });
+
+
+
+
+
+            //Specific attributes for Drawing x-Scale in Horizontal Formate
+            if(config.showCategoryLabelVertically) {
+                g.append("defs").append("clipPath")
+                       .attr("id", "clipForxAxis")
+                       .append("rect")
+                       .attr("width", w - margin.left - margin.right)
+                       .attr("height", h + margin.bottom);
+
+                g.append("g")
+                  .attr("class", "xAxisClipping")
+                  .attr("clip-path", "url(#clipForxAxis)");
+
+                var gx = svg.select("g.xAxisClipping")
+
+                gx.append("g")
+                           .attr("class", "x axis")
+                           .call(xAxis)
+                           .attr("transform", "translate(" + 0 + "," + (h - margin.bottom - margin.top) + ")")
+                           .on("click", function (d) { alert('clicked!'); })
+                         .selectAll("text")
+                         .attr("y", 3)
+                         .attr("x", function (d) { return xScale(d.Value) })
+                         .attr("dy", ".50em")
+                         .attr("transform", "rotate(90)")
+                         .style("text-anchor", "start");
+            }
+            else { // if showCategoryLabelVertically is false then else will execute
+                //Append properties in drawxAxis variable
+
+                //drawxAxis.call(xAxis)
+                //.attr("transform", "translate(" + padding + "," + h + ")");
+
+                g.append("defs").append("clipPath")
+                       .attr("id", "clipForxAxis")
+                       .append("rect")
+                       .attr("width", w - margin.left - margin.right)
+                       .attr("height", h + margin.bottom);
+
+                g.append("g")
+                  .attr("class", "xAxisClipping")
+                  .attr("clip-path", "url(#clipForxAxis)");
+
+                var gx = svg.select("g.xAxisClipping")
+
+                gx.append("g")
+                           .attr("class", "x axis")
+                           .call(xAxis)
+                           .attr("transform", "translate(" + 0 + "," + (h - margin.bottom - margin.top) + ")")
+                           .on("click", function (d) { alert('clicked!'); })
+            }
+
+
+            //Specific attributes for Drawing y-Scale in Horizontal Formate
+            // Will Check showScale is true or false if true then show y-Scale
+            if(config.showScale) {
+
+                //Append properties in drawyAxis variable
+                g.append("g")
+                  .attr("class", "y axis")
+                  .call(yAxis)
+                  .on("click", function (d) { alert('clicked!'); });
+
+            }
+
+            //Specific attributes for Drawing AverageLine Vertically
+            //will run only when showAverageLine property is true.
+            if(config.showAverageLine) {
+                //Define x and y coordiantes of a variable line.
+                line.x(function (d, i) { return ScaleForAverageLine(d.Value); })
+                    .y(function (d) { return yScale(config.averageLineDataProvider()); });
+
+                ScaleForAverageLine.rangeRoundBands([0, w ], 0);
+
+
+                drawAvgLine.attr("d", line)
+                           .attr("transform", "translate(" + margin.left + "," + 0 + ")");
+            }
+
+
+            if(config.allowZoom)
             {
-                xScale = d3.scale.linear()
-                                     .domain([0, d3.max( dataset, function(d) { return d.Key; } ) ])
-                                     .range([padding, w - padding]);
+                var zoom = d3.behavior.zoom()
+                        .scaleExtent([1, 4])
+                        .on("zoom", zoomed);
 
-                yScale = d3.scale.ordinal()
-                                     .rangeRoundBands([0, h], .1)
-                                     .domain( dataset.map(function (d) { return d.Value; }) );
-
-                xAxis  = d3.svg.axis()
-                                  .scale(xScale)
-                                  .orient("bottom")
-
-                yAxis  = d3.svg.axis()
-                                  .scale(yScale)
-                                  .orient("left")
-
-                barwidth = yScale.rangeBand() / 2;
-
-                //Specific attributes for Displaying text(bar value above each bar) in Horizontal Bargraph.
-                bartext.attr("x", function (d) { return xScale(d.Key)+(barwidth/2); })
-                       .attr("y", function (d) { return yScale(d.Value) + (padding - 20) + barwidth ; })
-                       .text(function (d) { return d.Key; });
-
-                //Specific attributes for Drawing Bar Horizontally
-                drawbar.attr("x", 0 + padding )
-                       .attr("width",function (d) { return  xScale(d.Key) - padding; })
-                       .attr("y", function (d) { return yScale(d.Value) + (padding - 20) })
-                       .attr("height",  yScale.rangeBand())
+                g.append("svg:rect")
+                             .attr("class", "zoom xy box")
+                             .attr("width", w - margin.left - margin.right)
+                             .attr("height", h - margin.top - margin.bottom)
+                             .style("visibility", "hidden")
+                             .attr("pointer-events", "all")
+                             .call(zoom);
 
 
-                //Specific attributes for Drawing x-Scale in Horizontal Formate
-                //will run only when showScale property is true.
-                if (config.showScale)
-                {
-                    //Append properties in drawxAxis variable
-                    drawxAxis.call(xAxis)
-                             .attr("transform", "translate(" + 0 + "," + (h + (padding - 20)) + ")");
-                }
+                function zoomed() {
 
-                //Specific attributes for Drawing y-Scale in Horizontal Formate
-                drawyAxis .call(yAxis)
-                          .attr("transform", "translate(" + padding + "," + (padding - 20) + ")");
+                    bartext.attr("transform", "translate(" + d3.event.translate[0] + ",0)scale(" + d3.event.scale + ",1)");
 
+                    drawbar.attr("transform", "translate(" + d3.event.translate[0] + ",0)scale(" + d3.event.scale + ",1)");
+                    //console.log(d3.event.translate[0] + " "+ d3.event.translate[1]  +" " + xScale.rangeBand());
 
-                //Specific attributes for Drawing AverageLine Horizontally
-                //will run only when showAverageLine property is true.
-                if(config.showAverageLine)
-                {
-                    //Define x and y coordiantes of a common variable 'line'.
-                    line.x(function (d) { return xScale( config.averageLineDataProvider() ); })    //averageLineDataProvider is a function for calculating Average point.....
-                        .y(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding - 20); });
+                    svg.select("g.x.axis").attr("transform", "translate(" + d3.event.translate[0] + "," + ((h - margin.top - margin.bottom)) + ")")
+                        .call(xAxis.scale(xScale.rangeRoundBands([0, (w - margin.left - margin.right) * d3.event.scale], .1 * d3.event.scale)));
 
-                    //Add RangBands for Horizontal Graph
-                    ScaleForAverageLine.rangeBands([0, h+(padding)+(barwidth*3)], 0);
-
-                    //Will Display Avg line
-                    pathappend.attr("d", line);
-
-                }
-
-            }
-            else { //if showGraphHorizontally property is false then display Graph Vertically
-
-                xScale = d3.scale.ordinal()
-                             .domain(dataset.map(function (d) { return d.Value; }))
-                             .rangeRoundBands([0, w] , .1)
-
-
-                yScale = d3.scale.linear()
-                            .domain([0 , d3.max(dataset, function (d) { return d.Key; })])
-                            .range([h - padding, 0]);
-
-                xAxis  = d3.svg.axis()
-                                  .scale(xScale)
-                                  .orient("bottom");
-
-                yAxis  = d3.svg.axis()
-                                  .scale(yScale)
-                                  .orient("left")
-
-                barwidth = xScale.rangeBand() / 2;
-
-                //Specific attributes for Displaying text(bar value above each bar) in Vertical Bargraph.
-                bartext.attr("x", function (d) { return xScale(d.Value) + padding + barwidth ; })
-                bartext.attr("y", function (d) { return yScale(d.Key) +(padding -10)  ; })
-                bartext.text(function (d) { return d.Key; });
-
-                //Specific attributes for Drawing Bar Vertically
-                drawbar.attr("x", function (d) { return xScale(d.Value) + padding ; })
-                drawbar.attr("width", xScale.rangeBand() )
-                drawbar.attr("y", function (d) { return yScale(d.Key) + padding ; })
-                drawbar.attr("height", function (d) { return h - yScale(d.Key) - padding; })
-
-
-                //Specific attributes for Drawing x-Scale in Horizontal Formate
-                if(config.showCategoryLabelVertically) {
-                    //Append properties in drawxAxis variable
-                    drawxAxis.call(xAxis)
-                             .attr("transform", "translate(" + padding + "," + h + ")")
-                             .selectAll("text")
-                             .attr("y", 0)
-                             .attr("x", 9)
-                             .attr("dy", ".35em")
-                             .attr("transform", "rotate(90)")
-                             .style("text-anchor", "start");
-                }
-                else { // if showCategoryLabelVertically is false then else will execute
-                    //Append properties in drawxAxis variable
-                    drawxAxis.call(xAxis)
-                             .attr("transform", "translate(" + padding + "," + h + ")");
-
-                }
-
-                //Specific attributes for Drawing y-Scale in Horizontal Formate
-                // Will Check showScale is true or false if true then show y-Scale
-                if(config.showScale) {
-
-                    //Append properties in drawyAxis variable
-                    drawyAxis.call(yAxis)
-                             .attr("transform", "translate(" + padding + "," + padding + ")");
-
-                }
-
-                //Specific attributes for Drawing AverageLine Vertically
-                //will run only when showAverageLine property is true.
-                if(config.showAverageLine) {
-                    //Define x and y coordiantes of a variable line.
-                    line.x(function (d, i) { return ScaleForAverageLine(d.Value) + i + (padding); })
-                        .y(function (d) { return yScale( config.averageLineDataProvider() ) + padding; });
-
-                    ScaleForAverageLine.rangeBands([0, w+(padding)+(barwidth*3)], 0);
-
-                    pathappend.attr("d", line);
+                    svg.select("g.y.axis").call(yAxis);
                 }
             }
         }
 
-        //Load Graph after 5 sec.
-        setTimeout(checkVariable,5000);
     }
 </script>

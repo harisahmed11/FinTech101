@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+
+    <style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .bar {
+            fill: red;
+        }
+
+            .bar:hover {
+                fill: royalblue;
+                cursor: pointer;
+            }
+
+        .x.axis path {
+            display: none;
+        }
+
+        .graphtitletext {
+            text-anchor: middle;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .bartext {
+            text-anchor: middle;
+            font-weight: bold;
+        }
+
+        .line {
+            fill: none;
+            stroke: #444;
+            stroke-width: 1.5px;
+            stroke-opacity: 0.5;
+        }
+    </style>
+
+    <script src="Content/d3.js/d3.min.js"></script>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+</head>
+
+<body>
+
+    <div id="bargraph"></div>
+    //Learning link https://jsfiddle.net/z82bedoy/2/
+
+    <script>
+        var data = [{ "Key": 20, "Value": "2001" }, { "Key": 21, "Value": "2002" }, { "Key": 22, "Value": "2003" }, { "Key": 23, "Value": "2004" }, { "Key": 24, "Value": "2005" }, { "Key": 25, "Value": "2006" }, { "Key": 26, "Value": "2007" }, { "Key": 27, "Value": "2008" }, { "Key": 28, "Value": "2009" }, { "Key": 29, "Value": "2010" }
+        , { "Key": 30, "Value": "2011" }, { "Key": 31, "Value": "2012" }, { "Key": 32, "Value": "2013" }, { "Key": 33, "Value": "2014" }, { "Key": 34, "Value": "2015" }, { "Key": 35, "Value": "2016" }, { "Key": 36, "Value": "2017" }, { "Key": 37, "Value": "2018" }, { "Key": 38, "Value": "2019" }, { "Key": 39, "Value": "2020" }];
+
+        var barConfig = {
+        barGraphContainerDiv: "bargraph",
+        height: 600,
+        width: 800,
+        padding: 80,
+        dataset:data,  //Data Contain Key and Value Format, For Example Value = 2013 & Key = 15, Value = 2014 & Key = 25
+        dataApiUrl: 'http://localhost:61531/api/GraphApi', //Demo Api Url
+        barGraphTitleText:"@charttitle",
+        barCssClass: "bar",
+        barTitleClass:"graphtitletext",
+        barTextCssClass: "bartext",
+        showCategoryLabelVertically: false,
+        showGraphHorizontally: false,
+        showAverageLine: true,
+        averageLineDataProvider:function(){  return 20 }, //will run only when showAverageLine property is true.
+        showScale:true, //hide X-axis Scale or if Vertical then Y-Axis Scale
+        onBarClick:function(d) { alert("Bar clicked, Value is "+d.Key); }
+    }
+
+    $(document).ready(function () {
+        window.load = drawBarChart(barConfig);
+    });
+
+
+    function drawBarChart(config) {
+
+        var dataset;
+
+        //this condition check the source of data for a BarGraph
+        // if dataset property in barconfig is provided then Simply load from them.
+        if (config.dataset) {
+            //Load dataset variable form config dataset property
+            dataset = config.dataset;
+        }
+        else { // else dataset property in barconfig is Not provided then load data from Apiurl
+
+            var uri = config.dataApiUrl;
+            $.get(uri)
+                .done(function (data) {
+                    // On success, 'data' contains a list of Key and Value Items for BarGraph.
+                    //data recieved in Json format it conatin Key & Value
+                    dataset = data;
+                });
+        }
+
+        var w = config.width;
+        var h = config.height;
+        var padding = config.padding;
+        var margin = {
+            top: 60,
+            bottom: 80,
+            left: 60,
+            right: 0
+        };
+
+
+        var title = config.barGraphTitleText;
+        var xScale, yScale, xAxis, yAxis, barwidth;
+
+
+        xScale = d3.scale.linear()
+                                    .domain([0, (d3.max(dataset, function (d) { return d.Key; }))+10])
+                                    .range([0, w]);
+
+        yScale = d3.scale.ordinal()
+                             .rangeRoundBands([h -  margin.top - margin.bottom,0], .1)
+                             .domain(dataset.map(function (d) { return d.Value; }));
+
+        xAxis = d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom")
+
+        yAxis = d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left")
+
+
+        var svg = d3.select("#" + config.barGraphContainerDiv + "")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
+        var g = svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        g.append("defs").append("clipPath")
+                        .attr("id", "clip")
+                        .append("rect")
+                        .attr("width", w - margin.left - margin.right)
+                        .attr("height", h - margin.top)
+                        .attr("transform", "translate(" + margin.left + "," + 0 + ")");
+
+        g.append("defs").append("clipPath")
+                            .attr("id", "clipForyAxis")
+                            .append("rect")
+                            .attr("width", margin.left)
+                            .attr("height", h - margin.top - margin.bottom);
+
+        //code for yaxis
+        g.append("g")
+         .attr("class", "yAxisClipping")
+         .attr("clip-path", "url(#clipForyAxis)");
+
+        var gy = svg.select("g.yAxisClipping");
+
+        gy.append("g").attr("class", "y axis")
+                   .call(yAxis)
+                   .on("click", function (d) { alert('clicked!'); })
+                   .attr("transform", "translate(" + margin.left + "," + 0+ ")");
+
+        //code for yaxis end
+
+
+        //code to append x axis
+
+        g.append("g")
+         .attr("class", "scatter")
+         .attr("clip-path", "url(#clip)");
+
+        var gs = svg.select("g.scatter");
+
+        g.append("g").attr("class", "x axis")
+                   .call(xAxis)
+                   .on("click", function (d) { alert('clicked!'); })
+                   .attr("transform", "translate(" + (margin.left) + "," + (h-margin.top-margin.bottom)+ ")");
+
+        var drawbar = gs.selectAll("rect")
+                           .data(dataset)
+                           .enter()
+                           .append("svg:rect")
+                           .style("fill", "steelblue")
+                          .attr("x", 0 + margin.left)
+                          .attr("width", function (d) { return xScale(d.Key) })
+                          .attr("y", function (d) { return yScale(d.Value) })
+                          .attr("height", yScale.rangeBand());
+
+        var textabovebar = gs.selectAll("gs.rect")
+                                .data(dataset)
+                                .enter().append("text")
+                                .attr("class", config.bartextcssclass)
+                                .attr("x", function (d) { return xScale(d.Key) + margin.left + 5; })
+                                .attr("y", function (d) { return yScale(d.Value)+(yScale.rangeBand()/1.5); })
+                                .text(function (d) { return d.Key; });
+
+        //this code for average line
+
+        var ScaleForAverageLine;
+
+        var line = d3.svg.line()
+
+        ScaleForAverageLine = d3.scale.ordinal()
+                                          .domain(dataset.map(function (d) { return d.Value; }))
+                                          .rangeBands([0, h-margin.bottom], 0);
+
+        //will create average line in graph
+        var pathappend = gs.append("path")
+                            .datum(dataset)
+                            .attr("class", "line")
+                            .style("stroke-dasharray", ("3, 3"));
+
+        //Define x and y coordiantes of a variable line.
+        line.x(function (d) { return xScale(config.averageLineDataProvider())+margin.left; })    //averageLineDataProvider is a function for calculating Average point.....
+                        .y(function (d) { return ScaleForAverageLine(d.Value); });
+
+        //Will Display Avg line
+        pathappend.attr("d", line);
+
+        //Average line end
+        var zoom = d3.behavior.zoom()
+                   .y(yScale)
+                   .scaleExtent([1, 4])
+                   .on("zoom", zoom);
+
+        g.append("svg:rect")
+                     .attr("class", "zoom xy box")
+                     .attr("width", w - margin.left - margin.right)
+                     .attr("height", h - margin.top - margin.bottom)
+                     .style("visibility", "hidden")
+                     .attr("pointer-events", "all")
+                     .call(zoom);
+
+
+        function zoom() {
+
+           // textabovebar.attr("transform", "translate(0," + d3.event.translate[0] + ")scale(" + d3.event.scale + ",1)");
+
+            drawbar.attr("transform", "translate(0," + 0 + ")scale(" + d3.event.scale + ",1)");
+            //console.log(d3.event.translate[0] + " "+ d3.event.translate[1]  +" " + xScale.rangeBand());
+
+            //svg.select("g.y.axis").attr("transform", "translate(" + ((w - margin.top - margin.bottom)) + "," + 0 + ")")
+              //  .call(yAxis.scale(yScale.rangeRoundBands([0, (w - margin.left - margin.right) * d3.event.scale], .1 * d3.event.scale)));
+
+            //svg.select("g.x.axis").call(yAxis);
+        }
+
+
+    }
+    </script>
+</body>
+</html>

@@ -204,6 +204,8 @@
     <Content Include="Content\d3.js\d3.min.js" />
     <Content Include="Content\d3.js\d3.tip.v0.6.3.js" />
     <Content Include="favicon.ico" />
+    <Content Include="FinalHorizontalGraph.html" />
+    <Content Include="FinalizeGraphZooming.html" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
